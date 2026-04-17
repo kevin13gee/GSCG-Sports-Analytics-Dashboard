@@ -1,0 +1,1324 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Sports Analytics & Science Programs</title>
+<script src="https://cdn.plot.ly/plotly-2.27.0.min.js"></script>
+<!-- GU Brand: Adobe Typekit (Proxima Nova + Adelle) -->
+<link rel="stylesheet" href="https://use.typekit.net/zaj3ayb.css">
+<!-- GU Brand: Figtree — free fallback when Typekit unavailable -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Figtree:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,400&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --gu-font-sans:  "proxima-nova", "figtree", Arial, Helvetica, sans-serif;
+    --gu-font-serif: "adelle", "figtree", Georgia, serif;
+    --gu-blue:       #06274F;
+    --gu-blue-dk:    #041E42;
+    --gu-river-blue: #5E8AB4;
+    --gu-wheat:      #DECB99;
+    --gu-warm-beige: #E4E1DC;
+    --gu-basalt:     #434854;
+  }
+
+  body { font-family: var(--gu-font-sans); background: #f1f5f9; color: #1e293b; }
+
+  .header { background: linear-gradient(135deg, var(--gu-blue-dk) 0%, var(--gu-blue) 100%); color: white; padding: 18px 32px; display:flex; align-items:center; justify-content:space-between; border-bottom: 1px solid rgba(255,255,255,.06); }
+  
+  .header-left h1 { font-family: var(--gu-font-serif); font-size: 1.45rem; font-weight: 700; letter-spacing: -0.4px; }
+  .header-left p { color: rgba(222,203,153,.75); font-size: 0.82rem; margin-top: 3px; }
+  .header-right { display:flex; gap:10px; align-items:center; }
+  .export-btn { display:inline-flex; align-items:center; gap:6px; padding:7px 14px; border-radius:8px; border:1.5px solid rgba(255,255,255,.2); background:transparent; color:rgba(255,255,255,.6); font-size:.8rem; cursor:pointer; transition:all .2s; }
+  .export-btn:hover { border-color:var(--gu-wheat); color:var(--gu-wheat); background:rgba(222,203,153,.08); }
+
+  /* Filter bar */
+  .filter-bar { background:white; border-bottom:1px solid #e2e8f0; padding:10px 32px; display:flex; align-items:center; gap:16px; flex-wrap:wrap; position:sticky; top:0; z-index:100; box-shadow:0 1px 8px rgba(0,0,0,.07); }
+  .filter-group { display:flex; align-items:center; gap:5px; }
+  .filter-label { font-size:.7rem; font-weight:600; color:#64748b; text-transform:uppercase; letter-spacing:.5px; white-space:nowrap; }
+  .toggle-btn { padding:4px 11px; border-radius:99px; border:1.5px solid #cbd5e1; background:white; font-size:.78rem; cursor:pointer; color:#475569; transition:all .15s; }
+  .toggle-btn.active { background:var(--gu-river-blue); border-color:var(--gu-river-blue); color:white; font-weight:600; }
+  .toggle-btn:hover:not(.active) { border-color:var(--gu-river-blue); color:var(--gu-river-blue); }
+  .filter-select { padding:4px 8px; border-radius:6px; border:1.5px solid #cbd5e1; font-size:.78rem; color:#475569; background:white; cursor:pointer; max-width:140px; }
+  .filter-divider { width:1px; height:24px; background:#e2e8f0; }
+  .filter-reset { padding:4px 12px; border-radius:6px; border:1.5px solid #e2e8f0; background:white; font-size:.78rem; color:#64748b; cursor:pointer; margin-left:auto; }
+  .filter-reset:hover { border-color:#ef4444; color:#ef4444; }
+  .filter-count { font-size:.75rem; color:#64748b; white-space:nowrap; }
+  .filter-count strong { color:#0f172a; }
+
+  /* Tabs */
+  .tabs { background:white; border-bottom:1px solid #e2e8f0; padding:0 32px; display:flex; }
+  .tab-btn { display:inline-flex; align-items:center; gap:6px; padding:13px 20px; font-size:.875rem; font-weight:500; color:#64748b; border:none; background:none; cursor:pointer; border-bottom:2px solid transparent; transition:color .15s, border-color .15s; white-space:nowrap; }
+  .tab-btn.active { color:var(--gu-blue); border-bottom-color:var(--gu-river-blue); font-weight:600; }
+  .tab-btn:hover:not(.active) { color:var(--gu-blue); background:#f8fafc; }
+
+  /* Content */
+  .tab-panel { display:none; padding:24px 32px; }
+  .tab-panel.active { display:block; }
+
+  /* Stat cards */
+  .stat-row { display:grid; grid-template-columns:repeat(5,1fr); gap:14px; margin-bottom:22px; }
+  .stat-card { background:white; border-radius:12px; padding:18px 16px; box-shadow:0 1px 3px rgba(0,0,0,.07); border:1px solid #f1f5f9; text-align:center; transition:box-shadow .2s, transform .2s; cursor:default; }
+  .stat-card:hover { box-shadow:0 4px 14px rgba(0,0,0,.1); transform:translateY(-1px); }
+  .stat-card .val { font-size:1.9rem; font-weight:700; color:#0f172a; line-height:1; }
+  .stat-card .lbl { font-size:.75rem; color:#64748b; margin-top:5px; font-weight:500; }
+
+  /* Cards */
+  .card { background:white; border-radius:12px; padding:20px; box-shadow:0 1px 3px rgba(0,0,0,.07); border:1px solid #f1f5f9; margin-bottom:18px; }
+  .card h3 { font-size:.92rem; font-weight:600; color:#0f172a; margin-bottom:12px; }
+  .card-note { font-size:.75rem; color:#94a3b8; margin-top:6px; }
+  .chart-row { display:grid; grid-template-columns:1fr 1fr; gap:18px; margin-bottom:18px; }
+  .chart-row-3 { display:grid; grid-template-columns:1fr 1fr 1fr; gap:18px; margin-bottom:18px; }
+
+  /* Table */
+  .table-wrap { overflow-x:auto; }
+  .data-table { width:100%; border-collapse:collapse; font-size:.82rem; }
+  .data-table th { text-align:left; padding:9px 12px; background:#f8fafc; color:#64748b; font-weight:600; font-size:.72rem; text-transform:uppercase; letter-spacing:.4px; border-bottom:1px solid #e2e8f0; cursor:pointer; user-select:none; white-space:nowrap; }
+  .data-table th:hover { color:var(--gu-river-blue); }
+  .data-table th.sorted { color:var(--gu-river-blue); }
+  .data-table td { padding:9px 12px; border-bottom:1px solid #f1f5f9; color:#334155; vertical-align:middle; }
+  .data-table tr:hover td { background:#f8fafc; cursor:pointer; }
+  .data-table tr:last-child td { border-bottom:none; }
+  .table-search { padding:7px 12px; border-radius:8px; border:1.5px solid #e2e8f0; font-size:.85rem; width:260px; outline:none; margin-bottom:12px; }
+  .table-search:focus { border-color:var(--gu-river-blue); }
+
+  /* Badges */
+  .badge { display:inline-block; padding:2px 8px; border-radius:99px; font-size:.68rem; font-weight:600; white-space:nowrap; }
+  .badge-major { background:#dbeafe; color:#1d4ed8; }
+  .badge-masters { background:#ede9fe; color:#6d28d9; }
+  .badge-certificate { background:#d1fae5; color:#065f46; }
+  .badge-concentration { background:#fef3c7; color:#92400e; }
+  .badge-minor { background:#fce7f3; color:#9d174d; }
+  .badge-lab { background:#e0f2fe; color:#0369a1; }
+  .badge-institute { background:#f0fdf4; color:#166534; }
+  .badge-other { background:#f1f5f9; color:#475569; }
+  .badge-analytics { background:#eff6ff; color:#2563eb; }
+  .badge-science { background:#fdf4ff; color:#7e22ce; }
+  .badge-public { background:#ecfdf5; color:#047857; }
+  .badge-private { background:#fef2f2; color:#b91c1c; }
+  .badge-unknown { background:#f1f5f9; color:#64748b; }
+
+  /* Explorer */
+  .explorer-select-wrap { margin-bottom:22px; }
+  .explorer-select-wrap select { width:100%; max-width:480px; padding:10px 14px; border-radius:8px; border:1.5px solid #cbd5e1; font-size:.95rem; color:#1e293b; background:white; }
+  .detail-header { margin-bottom:16px; }
+  .detail-header h2 { font-size:1.35rem; font-weight:700; color:#0f172a; }
+  .detail-header .prog-name { font-size:.875rem; color:#64748b; margin-top:3px; }
+  .chip-row { display:flex; gap:7px; flex-wrap:wrap; margin:10px 0 18px; }
+  .chip { padding:4px 13px; border-radius:99px; font-size:.78rem; font-weight:600; background:#f1f5f9; color:#475569; }
+  .scale-row { display:grid; grid-template-columns:1fr 1fr; gap:14px; margin-bottom:18px; }
+  .scale-card { background:white; border-radius:10px; padding:14px 16px; box-shadow:0 1px 3px rgba(0,0,0,.08); }
+  .scale-lbl { font-size:.7rem; font-weight:600; color:#64748b; margin-bottom:8px; text-transform:uppercase; letter-spacing:.4px; }
+  .scale-bar-wrap { display:flex; align-items:center; gap:10px; }
+  .scale-bar-bg { flex:1; height:10px; background:#e2e8f0; border-radius:99px; overflow:hidden; }
+  .scale-bar-fill { height:100%; border-radius:99px; transition:width .4s; }
+  .scale-val { font-size:1.1rem; font-weight:700; color:#0f172a; min-width:32px; text-align:right; }
+  .axis-labels { display:flex; justify-content:space-between; font-size:.68rem; color:#94a3b8; margin-top:3px; }
+  .info-grid { display:grid; grid-template-columns:1fr 1fr; gap:12px; margin-bottom:18px; }
+  .info-item { background:white; border-radius:8px; padding:12px 14px; box-shadow:0 1px 3px rgba(0,0,0,.06); }
+  .info-key { font-size:.68rem; font-weight:600; color:#94a3b8; text-transform:uppercase; letter-spacing:.5px; margin-bottom:3px; }
+  .info-val { font-size:.85rem; color:#1e293b; line-height:1.4; }
+  .expandable { border:1px solid #e2e8f0; border-radius:8px; margin-bottom:8px; overflow:hidden; }
+  .expandable summary { padding:11px 16px; font-weight:600; font-size:.85rem; color:#374151; cursor:pointer; background:white; list-style:none; display:flex; justify-content:space-between; align-items:center; }
+  .expandable summary::-webkit-details-marker { display:none; }
+  .expandable summary::after { content:"▾"; color:#94a3b8; transition:transform .2s; }
+  .expandable[open] summary::after { transform:rotate(-180deg); }
+  .expandable .exp-body { padding:12px 16px; background:#f8fafc; font-size:.85rem; line-height:1.6; color:#374151; }
+  .website-link { display:inline-flex; align-items:center; gap:5px; color:var(--gu-river-blue); font-size:.85rem; text-decoration:none; font-weight:500; }
+  .website-link:hover { text-decoration:underline; }
+
+  .empty-state { text-align:center; padding:40px; color:#94a3b8; font-size:.9rem; }
+  .data-note { font-size:.73rem; color:#94a3b8; font-style:italic; margin-top:6px; }
+
+  /* CH level toggle */
+  .section-toggle { display:flex; gap:6px; margin-bottom:14px; align-items:center; }
+  .section-toggle-label { font-size:.72rem; font-weight:600; color:#64748b; text-transform:uppercase; letter-spacing:.5px; margin-right:4px; }
+
+  /* ── Program Profile ─────────────────────────────────────────────────── */
+  .profile-select-wrap { display:flex; align-items:center; gap:12px; margin-bottom:28px; }
+  .profile-select-wrap select { flex:1; max-width:460px; padding:10px 14px; border-radius:8px; border:1.5px solid #cbd5e1; font-size:.95rem; color:#1e293b; background:white; }
+  .profile-print-btn { padding:9px 18px; border-radius:8px; border:none; background:#0f172a; color:white; font-size:.85rem; font-weight:600; cursor:pointer; display:inline-flex; align-items:center; gap:7px; transition:background .2s; }
+  .profile-print-btn:hover { background:#1e293b; }
+
+  .profile-page { background:white; border-radius:14px; box-shadow:0 2px 12px rgba(0,0,0,.1); overflow:hidden; max-width:960px; margin:0 auto; }
+
+  .profile-hero { background:linear-gradient(135deg,var(--gu-blue-dk) 0%,var(--gu-blue) 60%,#0d3572 100%); color:white; padding:32px 36px; }
+  .profile-hero-top { display:flex; justify-content:space-between; align-items:flex-start; gap:16px; margin-bottom:14px; }
+  .profile-uni { font-family:var(--gu-font-serif); font-size:1.6rem; font-weight:700; letter-spacing:-.4px; line-height:1.2; }
+  .profile-prog-name { font-size:.9rem; color:#94a3b8; margin-top:5px; line-height:1.4; }
+  .profile-hero-badges { display:flex; gap:8px; flex-wrap:wrap; margin-top:14px; }
+  .profile-badge { padding:4px 13px; border-radius:99px; font-size:.75rem; font-weight:600; border:1.5px solid rgba(255,255,255,.25); color:rgba(255,255,255,.9); white-space:nowrap; }
+  .profile-badge.accent { background:rgba(94,138,180,.35); border-color:var(--gu-river-blue); }
+  .profile-website { margin-top:6px; }
+  .profile-website a { color:#93c5fd; font-size:.82rem; text-decoration:none; }
+  .profile-website a:hover { text-decoration:underline; }
+
+  .profile-body { padding:28px 36px; }
+
+  .profile-grid-2 { display:grid; grid-template-columns:1fr 1fr; gap:20px; margin-bottom:24px; }
+  .profile-grid-3 { display:grid; grid-template-columns:1fr 1fr 1fr; gap:16px; margin-bottom:24px; }
+  .profile-section-title { font-size:.68rem; font-weight:700; color:#94a3b8; text-transform:uppercase; letter-spacing:.8px; margin-bottom:14px; padding-bottom:6px; border-bottom:1px solid #f1f5f9; }
+
+  .profile-fact-block { background:#f8fafc; border-radius:10px; padding:16px; }
+  .profile-fact-block .lbl { font-size:.68rem; font-weight:600; color:#94a3b8; text-transform:uppercase; letter-spacing:.5px; margin-bottom:3px; }
+  .profile-fact-block .val { font-size:.92rem; color:#0f172a; font-weight:500; line-height:1.4; }
+
+  .profile-scale-block { background:#f8fafc; border-radius:10px; padding:16px; }
+  .profile-scale-block .lbl { font-size:.68rem; font-weight:600; color:#94a3b8; text-transform:uppercase; letter-spacing:.5px; margin-bottom:10px; }
+  .profile-scale-bar-bg { height:12px; background:#e2e8f0; border-radius:99px; overflow:hidden; margin-bottom:4px; }
+  .profile-scale-bar-fill { height:100%; border-radius:99px; }
+  .profile-scale-meta { display:flex; justify-content:space-between; font-size:.7rem; color:#94a3b8; }
+  .profile-scale-val { font-size:1.5rem; font-weight:700; color:#0f172a; text-align:right; }
+
+  .profile-text-block { background:#f8fafc; border-radius:10px; padding:18px; margin-bottom:20px; }
+  .profile-text-block p { font-size:.875rem; color:#374151; line-height:1.65; }
+
+  .profile-divider { border:none; border-top:1px solid #f1f5f9; margin:20px 0; }
+
+  .profile-empty { text-align:center; padding:60px 32px; color:#94a3b8; }
+  .profile-empty p { font-size:.9rem; margin-top:8px; }
+
+  /* Print styles */
+  @media print {
+    .header, .filter-bar, .tabs, .profile-select-wrap, .profile-print-btn { display:none !important; }
+    body { background:white; }
+    .tab-panel { display:block !important; padding:0; }
+    #tab-overview, #tab-map, #tab-directory, #tab-scatter, #tab-credits { display:none !important; }
+    #tab-profile { display:block !important; }
+    .profile-page { box-shadow:none; border-radius:0; max-width:100%; }
+    .profile-hero { -webkit-print-color-adjust:exact; print-color-adjust:exact; }
+  }
+</style>
+</head>
+<body>
+
+<div class="header">
+  <div class="header-left">
+    <h1>Sports Analytics &amp; Science Programs</h1>
+    <p>56 programs across the US &mdash; Gonzaga University SBA research dashboard</p>
+  </div>
+  <div class="header-right">
+    <button class="export-btn" id="exportBtn">
+      <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+      Export filtered CSV
+    </button>
+  </div>
+</div>
+
+<div class="filter-bar">
+  <div class="filter-group">
+    <span class="filter-label">Focus</span>
+    <button class="toggle-btn active" data-filter="focus" data-val="all">All</button>
+    <button class="toggle-btn" data-filter="focus" data-val="Analytics">Analytics</button>
+    <button class="toggle-btn" data-filter="focus" data-val="Science">Science</button>
+  </div>
+  <div class="filter-divider"></div>
+  <div class="filter-group">
+    <span class="filter-label">Institution</span>
+    <button class="toggle-btn active" data-filter="inst" data-val="all">All</button>
+    <button class="toggle-btn" data-filter="inst" data-val="Public">Public</button>
+    <button class="toggle-btn" data-filter="inst" data-val="Private">Private</button>
+  </div>
+  <div class="filter-divider"></div>
+  <div class="filter-group">
+    <span class="filter-label">Level</span>
+    <button class="toggle-btn active" data-filter="level" data-val="all">All</button>
+    <button class="toggle-btn" data-filter="level" data-val="ug">Undergrad</button>
+    <button class="toggle-btn" data-filter="level" data-val="grad">Graduate</button>
+  </div>
+  <div class="filter-divider"></div>
+  <div class="filter-group">
+    <span class="filter-label">Type</span>
+    <select class="filter-select" id="typeFilter">
+      <option value="all">All Types</option>
+    </select>
+  </div>
+  <div class="filter-group">
+    <span class="filter-label">State</span>
+    <select class="filter-select" id="stateFilter">
+      <option value="all">All States</option>
+    </select>
+  </div>
+  <span class="filter-count" id="filterCount"></span>
+  <button class="filter-reset" id="resetBtn">Reset</button>
+</div>
+
+<div class="tabs">
+  <button class="tab-btn active" data-tab="overview">
+    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg>
+    Overview
+  </button>
+  <button class="tab-btn" data-tab="directory">
+    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="8" y1="6" x2="21" y2="6"/><line x1="8" y1="12" x2="21" y2="12"/><line x1="8" y1="18" x2="21" y2="18"/><line x1="3" y1="6" x2="3.01" y2="6"/><line x1="3" y1="12" x2="3.01" y2="12"/><line x1="3" y1="18" x2="3.01" y2="18"/></svg>
+    Directory
+  </button>
+  <button class="tab-btn" data-tab="map">
+    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polygon points="3 6 9 3 15 6 21 3 21 18 15 21 9 18 3 21"/><line x1="9" y1="3" x2="9" y2="18"/><line x1="15" y1="6" x2="15" y2="21"/></svg>
+    Map
+  </button>
+  <button class="tab-btn" data-tab="scatter">
+    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="7" cy="17" r="2"/><circle cx="17" cy="7" r="2"/><circle cx="12" cy="12" r="2"/><circle cx="4" cy="9" r="2"/><circle cx="20" cy="17" r="2"/></svg>
+    Analytics Plot
+  </button>
+  <button class="tab-btn" data-tab="credits">
+    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg>
+    Curriculum
+  </button>
+  <button class="tab-btn" data-tab="profile">
+    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
+    Program Explorer
+  </button>
+</div>
+
+<!-- OVERVIEW -->
+<div class="tab-panel active" id="tab-overview">
+  <div class="stat-row" id="statRow"></div>
+
+  <div class="chart-row">
+    <div class="card"><h3>Programs by Type</h3><div id="chartByType" style="height:280px"></div></div>
+    <div class="card"><h3>Public vs. Private</h3><div id="chartPubPriv" style="height:280px"></div></div>
+  </div>
+
+  <div class="card">
+    <h3>Tuition Comparison</h3>
+    <p class="card-note">Sorted by in-state tuition. <span id="tuitionNote"></span></p>
+    <div id="chartTuition" style="height:380px"></div>
+  </div>
+
+  <div class="card">
+    <h3>Year Programs Were Established</h3>
+    <p class="card-note" id="yearNote"></p>
+    <div id="chartYear" style="height:240px"></div>
+  </div>
+</div>
+
+<!-- MAP & DIRECTORY -->
+<div class="tab-panel" id="tab-map">
+  <div class="card">
+    <div style="display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:4px">
+      <div>
+        <h3 style="margin:0">Program Locations</h3>
+        <p class="card-note" style="margin:6px 0 0">One bubble per program. Size = constant. Color = program type. Hover for details, click to open in Explorer.</p>
+      </div>
+      <button id="pac12Toggle" onclick="togglePac12()" style="flex-shrink:0;margin-left:16px;padding:6px 14px;border-radius:20px;border:1.5px solid #cbd5e1;background:white;color:#475569;font-size:.75rem;font-weight:600;cursor:pointer;letter-spacing:.3px;transition:all .15s">🏈 Pac-12</button>
+    </div>
+    <div id="chartMap" style="height:460px"></div>
+  </div>
+</div>
+
+<!-- DIRECTORY -->
+<div class="tab-panel" id="tab-directory">
+  <div class="card">
+    <div style="display:flex;align-items:center;gap:12px;margin-bottom:12px;">
+      <h3 style="margin:0">Program Directory</h3>
+      <input class="table-search" id="tableSearch" placeholder="Search programs...">
+      <span id="tableCount" style="font-size:.8rem;color:#64748b;margin-left:auto"></span>
+    </div>
+    <div class="table-wrap">
+      <table class="data-table">
+        <thead><tr>
+          <th>University ↕</th>
+          <th>Type ↕</th>
+          <th>Program Name ↕</th>
+          <th>State ↕</th>
+          <th>Focus ↕</th>
+          <th>UG ↕</th>
+          <th>Grad ↕</th>
+          <th>Est. ↕</th>
+          <th>Technical ↕</th>
+          <th>Exp. Learn ↕</th>
+          <th></th>
+        </tr></thead>
+        <tbody id="dirTableBody"></tbody>
+      </table>
+    </div>
+  </div>
+</div>
+
+<!-- ANALYTICS PLOT -->
+<div class="tab-panel" id="tab-scatter">
+  <div class="card">
+    <h3>Technical &amp; Experiential Learning</h3>
+    <p class="card-note">Hover any dot for full details. X-axis: technical depth (1 = low, 5 = high). Y-axis: depth of experiential learning. Click a dot to open that program. Multiple programs sharing the same scores are spread within their intersection.</p>
+    <div style="display:flex;flex-wrap:wrap;gap:10px 18px;margin-bottom:14px;">
+      <span style="display:flex;align-items:center;gap:6px;font-size:.8rem;color:#475569"><span style="width:12px;height:12px;border-radius:50%;background:#3b82f6;display:inline-block"></span>Major</span>
+      <span style="display:flex;align-items:center;gap:6px;font-size:.8rem;color:#475569"><span style="width:12px;height:12px;border-radius:50%;background:#ef4444;display:inline-block"></span>Masters</span>
+      <span style="display:flex;align-items:center;gap:6px;font-size:.8rem;color:#475569"><span style="width:12px;height:12px;border-radius:50%;background:#a855f7;display:inline-block"></span>Online Masters</span>
+      <span style="display:flex;align-items:center;gap:6px;font-size:.8rem;color:#475569"><span style="width:12px;height:12px;border-radius:50%;background:#10b981;display:inline-block"></span>Certificate</span>
+      <span style="display:flex;align-items:center;gap:6px;font-size:.8rem;color:#475569"><span style="width:12px;height:12px;border-radius:50%;background:#f59e0b;display:inline-block"></span>Concentration</span>
+      <span style="display:flex;align-items:center;gap:6px;font-size:.8rem;color:#475569"><span style="width:12px;height:12px;border-radius:50%;background:#ec4899;display:inline-block"></span>Minor</span>
+      <span style="display:flex;align-items:center;gap:6px;font-size:.8rem;color:#475569"><span style="width:12px;height:12px;border-radius:50%;background:#06b6d4;display:inline-block"></span>Lab</span>
+      <span style="display:flex;align-items:center;gap:6px;font-size:.8rem;color:#475569"><span style="width:12px;height:12px;border-radius:50%;background:#84cc16;display:inline-block"></span>Institute</span>
+      <span style="display:flex;align-items:center;gap:6px;font-size:.8rem;color:#475569"><span style="width:12px;height:12px;border-radius:50%;background:#f97316;display:inline-block"></span>Club</span>
+      <span style="display:flex;align-items:center;gap:6px;font-size:.8rem;color:#475569"><span style="width:12px;height:12px;border-radius:50%;background:#14b8a6;display:inline-block"></span>Micro-Credential</span>
+    </div>
+    <div id="chartScatter" style="width:100%;max-width:620px;aspect-ratio:1;margin:0 auto"></div>
+  </div>
+</div>
+
+<!-- CURRICULUM -->
+<div class="tab-panel" id="tab-credits">
+  <div class="card">
+    <div style="display:flex;align-items:center;gap:12px;flex-wrap:wrap;margin-bottom:14px;">
+      <h3 style="margin:0">Credit Hours by Subject Area</h3>
+      <div class="section-toggle">
+        <span class="section-toggle-label">Show:</span>
+        <button class="toggle-btn active" id="chAll" data-level="all">All</button>
+        <button class="toggle-btn" id="chUG" data-level="ug">Undergrad</button>
+        <button class="toggle-btn" id="chGrad" data-level="grad">Graduate</button>
+      </div>
+    </div>
+    <div style="margin-bottom:14px;">
+      <div style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:8px;margin-bottom:8px;">
+        <div style="font-size:.75rem;color:#94a3b8;letter-spacing:.04em;text-transform:uppercase;font-weight:600;">Filter by subject — click to select, click again to deselect</div>
+        <button onclick="resetChSubjects()" id="chSubjectReset" style="padding:4px 14px;border-radius:999px;border:1.5px solid #cbd5e1;background:white;color:#475569;font-size:.78rem;font-weight:600;cursor:pointer;">Reset</button>
+      </div>
+      <div style="display:flex;flex-wrap:wrap;gap:8px;" id="chSubjectKey"></div>
+    </div>
+    <p class="data-note" id="chNote"></p>
+    <div id="chartCH"></div>
+  </div>
+  <div class="card">
+    <h3>Average Credit Hours per Subject</h3>
+    <p class="card-note">Averages across programs that reported credit hours in that subject.</p>
+    <div id="chartCHDonut" style="height:340px"></div>
+  </div>
+  <div class="card">
+    <h3>Subject Emphasis by Institution Type</h3>
+    <p class="card-note">Total tracked credit hours per subject, split by Public vs. Private.</p>
+    <div id="chartCHInst" style="height:320px"></div>
+  </div>
+</div>
+
+<!-- PROGRAM EXPLORER -->
+<div class="tab-panel" id="tab-profile">
+  <div class="profile-select-wrap">
+    <select id="profileSelect">
+      <option value="">— Choose a program to explore —</option>
+    </select>
+    <button class="profile-print-btn" id="printBtn">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="6 9 6 2 18 2 18 9"/><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"/><rect x="6" y="14" width="12" height="8"/></svg>
+      Print / Save PDF
+    </button>
+  </div>
+  <div id="profileContent">
+    <div class="profile-empty">
+      <svg width="52" height="52" viewBox="0 0 24 24" fill="none" stroke="#cbd5e1" stroke-width="1.25" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
+      <p>Select a program above to view its full profile.</p>
+    </div>
+  </div>
+</div>
+
+<script>
+const RAW_DATA = [{"University Name":"Abilene Christian University","Sports Analytics or Sports Science":"Analytics","Mission Statement":"With practical experience and academic excellence, ACUs online B.S. in Sport Leadership and Management equips you with essential skills in leadership, communication, governance and analytics grounded in business knowledge and Christ-centered values. With a wide range of courses and learning opportunities, this program is essential for any sports fan looking to make their love a career.","Vision Statement":null,"Website link":"Abilene Christian University","Program type (dropdown)":"Major","Additional program type (if necessary)":"Online","Undergrad program":"Yes","Graduate program":"No","City":"Abilene","State":"TX","Private/Public":"Private","Undergrad Population":5101,"Grad Population":2100,"# of students in program":null,"In-State Tuition":61950,"Out-of-State Tuition":61950,"Program Name":"Bachelor of Science in Sports Leadership and Management","Year Established":2025,"Credit Hours Undergraduate  (or N/A)":null,"Credit Hours Graduate (or N/A)":"30","Credit hours in business":15,"Credit hours in human physiology":0,"Credit hours in kinesiology":0,"Credit hours in sports management":9,"Credit hours in computer science":0,"Credit hours in data analytics":6,"Degree of Experiental Learning (0-5)":1,"Technical vs Applied (0-5)":1,"Technical Aspects: (Computer Science, Data Engineering, Algorithms, Machine Learning, Other, N/A)":null,"Applied Aspects: (Marketing, Sports Management, Finance, Kinesiology, Human Physology, Other, N/A":"Virtually no technical stuff- focused on management, leadership, and ethics, partnership with Texas Rangers","Department/College housed in (ex: Business, Education, Economics, etc)":"Sports Science","Sports analytics focus (business, tech, human phys, etc)":"Data-driven, decision making","Problem They're solving":"real-world relevance, business communication","External partners (Athletics, community)":"Society for American Baseball Research","Required internship or capstone (if applicable)":null,"Student clubs (if applicable)":null},
+{"University Name":"American University","Sports Analytics or Sports Science":"Analytics","Mission Statement":"To advance knowledge and foster intellectual curiosity by leveraging technology and data to equip graduates with next-generation sports management skills.","Vision Statement":"To be a leading student-centered research university where passionate learners unleash the power of collaborative discovery in the sports industry.","Website link":"American University","Program type (dropdown)":"Masters","Additional program type (if necessary)":"Online","Undergrad program":"No","Graduate program":"Yes","City":"Washington D.C","State":"DC","Private/Public":"Private","Undergrad Population":7476,"Grad Population":4845,"# of students in program":"100","In-State Tuition":58500,"Out-of-State Tuition":58500,"Program Name":"M.S. in Sports Analytics and Management; Graduate Certificate in Sports Analytics and Management","Year Established":2016,"Credit Hours Undergraduate  (or N/A)":null,"Credit Hours Graduate (or N/A)":"30","Credit hours in business":9,"Credit hours in human physiology":0,"Credit hours in kinesiology":0,"Credit hours in sports management":12,"Credit hours in computer science":3,"Credit hours in data analytics":6,"Degree of Experiental Learning (0-5)":3,"Technical vs Applied (0-5)":1,"Technical Aspects: (Computer Science, Data Engineering, Algorithms, Machine Learning, Other, N/A)":null,"Applied Aspects: (Marketing, Sports Management, Finance, Kinesiology, Human Physology, Other, N/A":"Built for \"Front Office\" roles, focuses on how to use data for marketing, social media, and digital strategy, more sport management and marketing focus","Department/College housed in (ex: Business, Education, Economics, etc)":"Profoessional/Graduate","Sports analytics focus (business, tech, human phys, etc)":"Business, tech, social media, esports, fantasy sports, management oriented, digital strategy","Problem They're solving":"Skills gap between traditional sports management graduates and industry needs; produces next-generation sports managers with analytics and technology proficiency","External partners (Athletics, community)":"Curriculum council (ESPN, NFLPA, US Soccer, JP Morgan Chase)","Required internship or capstone (if applicable)":"Professional Studies Experience (PSE)  four-phase model integrating real-world skill-building throughout all courses","Student clubs (if applicable)":null},
+{"University Name":"Appalachain State University","Sports Analytics or Sports Science":"Analytics","Mission Statement":"The program is designed for students who wish to learn about data analytics as applied to the abundant information about sports of all types.","Vision Statement":null,"Website link":"Appalachian State University","Program type (dropdown)":"Certificate","Additional program type (if necessary)":null,"Undergrad program":"Yes","Graduate program":"No","City":"Boone","State":"NC","Private/Public":"Public","Undergrad Population":19560,"Grad Population":2010,"# of students in program":"30","In-State Tuition":7500,"Out-of-State Tuition":21000,"Program Name":"Sports Analytics Undergraduate Certificate","Year Established":2019,"Credit Hours Undergraduate  (or N/A)":"15","Credit Hours Graduate (or N/A)":null,"Credit hours in business":3,"Credit hours in human physiology":0,"Credit hours in kinesiology":0,"Credit hours in sports management":3,"Credit hours in computer science":0,"Credit hours in data analytics":9,"Degree of Experiental Learning (0-5)":4,"Technical vs Applied (0-5)":3,"Technical Aspects: (Computer Science, Data Engineering, Algorithms, Machine Learning, Other, N/A)":"Very technical (housed in math school!) with statistical modeling, database management, coding","Applied Aspects: (Marketing, Sports Management, Finance, Kinesiology, Human Physology, Other, N/A":"Ties to sport economics","Department/College housed in (ex: Business, Education, Economics, etc)":"Mathematics","Sports analytics focus (business, tech, human phys, etc)":"Data science, math","Problem They're solving":"adding practical skills to practice applying math, stats, and data skills to industry","External partners (Athletics, community)":"App State Athletics","Required internship or capstone (if applicable)":"required internship w app state athletics","Student clubs (if applicable)":null},
+{"University Name":"Arizona State University","Sports Analytics or Sports Science":"Science","Mission Statement":"To prepare students to work directly with athletes using evidence-based approaches and performance technologies to elevate human performance.","Vision Statement":null,"Website link":"Arizona State","Program type (dropdown)":"Major","Additional program type (if necessary)":null,"Undergrad program":"Yes","Graduate program":"No","City":"Tempe","State":"AZ","Private/Public":"Public","Undergrad Population":65450,"Grad Population":31171,"# of students in program":"55","In-State Tuition":12975,"Out-of-State Tuition":35167,"Program Name":"Sports Science and Performance Programming","Year Established":2021,"Credit Hours Undergraduate  (or N/A)":"30","Credit Hours Graduate (or N/A)":null,"Credit hours in business":0,"Credit hours in human physiology":6,"Credit hours in kinesiology":9,"Credit hours in sports management":3,"Credit hours in computer science":0,"Credit hours in data analytics":6,"Degree of Experiental Learning (0-5)":3,"Technical vs Applied (0-5)":1,"Technical Aspects: (Computer Science, Data Engineering, Algorithms, Machine Learning, Other, N/A)":null,"Applied Aspects: (Marketing, Sports Management, Finance, Kinesiology, Human Physology, Other, N/A":"Applied biomechanics primarily, focused on the human athlete; hands-on application of data to nutrition, kinesiology, strength/conditioning","Department/College housed in (ex: Business, Education, Economics, etc)":"Health sciences","Sports analytics focus (business, tech, human phys, etc)":"tech/athlete focused","Problem They're solving":"evidence-based approaches to evelate human performance","External partners (Athletics, community)":"athletes, tactical personnel, recreational participants","Required internship or capstone (if applicable)":"not required but they take intership hours for credit","Student clubs (if applicable)":null},
+{"University Name":"Baylor University","Sports Analytics or Sports Science":"Analytics","Mission Statement":"To enhance the quality of research involving statistical methods by providing meaningful educational experiences for students in applied research.","Vision Statement":"To equip individuals to understand life as a divine calling and thus serve society and the world in the name of our Lord Jesus Christ.","Website link":"Baylor","Program type (dropdown)":"Concentration","Additional program type (if necessary)":"Concentration","Undergrad program":"Yes","Graduate program":"No","City":"Waco","State":"TX","Private/Public":"Private","Undergrad Population":14915,"Grad Population":5711,"# of students in program":"46 for stats, 10-15 in sports","In-State Tuition":63620,"Out-of-State Tuition":63620,"Program Name":"Statistics (Sports Analytics Concentration)","Year Established":2021,"Credit Hours Undergraduate  (or N/A)":null,"Credit Hours Graduate (or N/A)":"30","Credit hours in business":0,"Credit hours in human physiology":0,"Credit hours in kinesiology":0,"Credit hours in sports management":0,"Credit hours in computer science":3,"Credit hours in data analytics":24,"Degree of Experiental Learning (0-5)":2,"Technical vs Applied (0-5)":5,"Technical Aspects: (Computer Science, Data Engineering, Algorithms, Machine Learning, Other, N/A)":"Purely statistics with a concentration; required courses incliude linear algebra and calc 1-3. very mathematically rigorous","Applied Aspects: (Marketing, Sports Management, Finance, Kinesiology, Human Physology, Other, N/A":null,"Department/College housed in (ex: Business, Education, Economics, etc)":"Statistics","Sports analytics focus (business, tech, human phys, etc)":"Statistical - data","Problem They're solving":"research focused","External partners (Athletics, community)":"A senior-level project where you apply high-level statistical methodology to real-world research problems in sports.","Required internship or capstone (if applicable)":null,"Student clubs (if applicable)":"RangersU, collab with society of american baseball research"},
+{"University Name":"Boston College","Sports Analytics or Sports Science":"Analytics","Mission Statement":"To develop leaders who creatively address stakeholder needs through the application of Jesuit-informed ethics and high-level data analysis.","Vision Statement":null,"Website link":"Boston College","Program type (dropdown)":"Masters","Additional program type (if necessary)":"Certificate","Undergrad program":"No","Graduate program":"Yes","City":"Boston","State":"MA","Private/Public":"Private","Undergrad Population":9654,"Grad Population":5072,"# of students in program":null,"In-State Tuition":72180,"Out-of-State Tuition":72180,"Program Name":"Master of Science in Sport Analytics","Year Established":2021,"Credit Hours Undergraduate  (or N/A)":null,"Credit Hours Graduate (or N/A)":"30","Credit hours in business":6,"Credit hours in human physiology":0,"Credit hours in kinesiology":0,"Credit hours in sports management":9,"Credit hours in computer science":3,"Credit hours in data analytics":12,"Degree of Experiental Learning (0-5)":5,"Technical vs Applied (0-5)":5,"Technical Aspects: (Computer Science, Data Engineering, Algorithms, Machine Learning, Other, N/A)":"Extremely technical with machine learning and AI Algorithms, but students build predictive models for real world teams","Applied Aspects: (Marketing, Sports Management, Finance, Kinesiology, Human Physology, Other, N/A":null,"Department/College housed in (ex: Business, Education, Economics, etc)":"Professional/Graduate","Sports analytics focus (business, tech, human phys, etc)":"Sports, business","Problem They're solving":"AI and machine learning algorithms, data in the business of sports (ticket sales, marketing, recruitment), technology systems","External partners (Athletics, community)":"Industry leaders (advisory board members), Boston sports","Required internship or capstone (if applicable)":null,"Student clubs (if applicable)":null},
+{"University Name":"Canisius University","Sports Analytics or Sports Science":"Analytics","Mission Statement":"To offer outstanding professional programs distinguished by transformative learning experiences that engage students in the global sports market.","Vision Statement":"To transform our community of learners into thoughtful, faithful, and compassionate global citizens and leaders in the field of sports data.","Website link":"Canisius University","Program type (dropdown)":"Certificate","Additional program type (if necessary)":"Institute","Undergrad program":"No","Graduate program":"Yes","City":"Buffalo","State":"NY","Private/Public":"Private","Undergrad Population":1724,"Grad Population":727,"# of students in program":null,"In-State Tuition":40000,"Out-of-State Tuition":40000,"Program Name":"Advanced Certificate in Sport Data Analytics; M.S. Sport Administration","Year Established":2025,"Credit Hours Undergraduate  (or N/A)":null,"Credit Hours Graduate (or N/A)":"12","Credit hours in business":0,"Credit hours in human physiology":0,"Credit hours in kinesiology":0,"Credit hours in sports management":3,"Credit hours in computer science":0,"Credit hours in data analytics":9,"Degree of Experiental Learning (0-5)":2,"Technical vs Applied (0-5)":3,"Technical Aspects: (Computer Science, Data Engineering, Algorithms, Machine Learning, Other, N/A)":"Predictive metrics and data algorithms","Applied Aspects: (Marketing, Sports Management, Finance, Kinesiology, Human Physology, Other, N/A":"Designed for sports professionals with focus on sports betting; uses data for decision making, focus on visualization","Department/College housed in (ex: Business, Education, Economics, etc)":"Business (with communication/health sciences)","Sports analytics focus (business, tech, human phys, etc)":"Performance analytics + sports betting data analytics; R, Tableau, player tracking, biomechanics, predictive modeling, risk management for betting markets","Problem They're solving":"Gap in sports business leadership + analytics talent; bridges on-field analytics with executive business skills","External partners (Athletics, community)":"Buffalo Bills, Sabres, Bandits, Bisons","Required internship or capstone (if applicable)":"M.S. Sport Administration: D1 game-day operations practicums (ticketing, marketing, facilities); internship built into MSA program","Student clubs (if applicable)":"Institute for Research in Sports (IRIS)  research arm; sport management programs"},
+{"University Name":"Clemson University","Sports Analytics or Sports Science":"Analytics","Mission Statement":"To provide a comprehensive, data-driven wellness and business experience through cutting-edge technology and individualized strategies.","Vision Statement":"To provide support, environment, and infrastructure to promote academic, athletic, personal, professional, and social development and excellence.","Website link":"Clemson University","Program type (dropdown)":"Masters","Additional program type (if necessary)":null,"Undergrad program":"No","Graduate program":"Yes","City":"Clemson","State":"SC","Private/Public":"Public","Undergrad Population":23401,"Grad Population":5676,"# of students in program":null,"In-State Tuition":15116,"Out-of-State Tuition":39498,"Program Name":"Masters of Science in Sports Business","Year Established":2025,"Credit Hours Undergraduate  (or N/A)":null,"Credit Hours Graduate (or N/A)":"36","Credit hours in business":12,"Credit hours in human physiology":0,"Credit hours in kinesiology":0,"Credit hours in sports management":9,"Credit hours in computer science":0,"Credit hours in data analytics":15,"Degree of Experiental Learning (0-5)":5,"Technical vs Applied (0-5)":4,"Technical Aspects: (Computer Science, Data Engineering, Algorithms, Machine Learning, Other, N/A)":"Very balanced- technical foundation of data mining, predictive analytics, coding","Applied Aspects: (Marketing, Sports Management, Finance, Kinesiology, Human Physology, Other, N/A":"Very balanced- business background with finance, econ, negotation; capstone applies tech to world","Department/College housed in (ex: Business, Education, Economics, etc)":"Business management","Sports analytics focus (business, tech, human phys, etc)":"Business","Problem They're solving":"Gap in sports business leadership/analytics talent; combining on-field analytics with executive business skills","External partners (Athletics, community)":"Clemson Athletics/IPTAY; industry consulting via faculty; NIL ecosystem through TigerImpact","Required internship or capstone (if applicable)":"Capstone required (case study/analysis engaging a real collegiate or professional sports team)","Student clubs (if applicable)":null},
+{"University Name":"George Mason University","Sports Analytics or Sports Science":"Analytics","Mission Statement":"To deliver exceptional educational opportunities in statistical science that meet the analytical needs of a diverse community of sports stakeholders.","Vision Statement":"To provide a framework for students to develop connections between statistical concepts and their applications in an increasingly data-centric world.","Website link":"George Mason University","Program type (dropdown)":"Minor","Additional program type (if necessary)":null,"Undergrad program":"Yes","Graduate program":"No","City":"George Mason","State":"VA","Private/Public":"Public","Undergrad Population":28400,"Grad Population":11432,"# of students in program":null,"In-State Tuition":14316,"Out-of-State Tuition":39212,"Program Name":"Sports Analytics Minor","Year Established":2022,"Credit Hours Undergraduate  (or N/A)":"24","Credit Hours Graduate (or N/A)":null,"Credit hours in business":6,"Credit hours in human physiology":0,"Credit hours in kinesiology":0,"Credit hours in sports management":9,"Credit hours in computer science":3,"Credit hours in data analytics":6,"Degree of Experiental Learning (0-5)":2,"Technical vs Applied (0-5)":2,"Technical Aspects: (Computer Science, Data Engineering, Algorithms, Machine Learning, Other, N/A)":"Purely statistics with a concentration; required courses include research methods, statistical theory; sports application comes after (1-2 classes)","Applied Aspects: (Marketing, Sports Management, Finance, Kinesiology, Human Physology, Other, N/A":null,"Department/College housed in (ex: Business, Education, Economics, etc)":"Sport management","Sports analytics focus (business, tech, human phys, etc)":"Data analysis","Problem They're solving":"Organizations improve identifying talent, scouting opponents and predicting industry trends","External partners (Athletics, community)":"Playfly Sports","Required internship or capstone (if applicable)":null,"Student clubs (if applicable)":"GMU Sports Analytics Team"},
+{"University Name":"Indiana University Indianapolis","Sports Analytics or Sports Science":"Analytics","Mission Statement":"The Applied Data Science master's program gives its students the tools to turn information into insight.","Vision Statement":"Provide students with the opportunity to land top roles in business analytics and strategy within sports organizations across the country.","Website link":"IU Indianapolis","Program type (dropdown)":"Masters","Additional program type (if necessary)":null,"Undergrad program":"No","Graduate program":"Yes","City":"Indianapolis","State":"IN","Private/Public":"Private","Undergrad Population":14504,"Grad Population":8333,"# of students in program":null,"In-State Tuition":10760,"Out-of-State Tuition":35566,"Program Name":"Applied Data Science M.S: Sports Analytics Specialization","Year Established":null,"Credit Hours Undergraduate  (or N/A)":null,"Credit Hours Graduate (or N/A)":"30","Credit hours in business":3,"Credit hours in human physiology":0,"Credit hours in kinesiology":0,"Credit hours in sports management":3,"Credit hours in computer science":0,"Credit hours in data analytics":21,"Degree of Experiental Learning (0-5)":4,"Technical vs Applied (0-5)":5,"Technical Aspects: (Computer Science, Data Engineering, Algorithms, Machine Learning, Other, N/A)":"More technical: Data visualization, data science, statistics, database design, etc","Applied Aspects: (Marketing, Sports Management, Finance, Kinesiology, Human Physology, Other, N/A":null,"Department/College housed in (ex: Business, Education, Economics, etc)":"Informatics, Computing, Engineering","Sports analytics focus (business, tech, human phys, etc)":"Data analysis and analytics","Problem They're solving":"Helping students gain core skills in data analysis, management, infrastructure, and ethical project management to prepare them for the rapidly evolving sports industry","External partners (Athletics, community)":"\"10 professional sports teams and major athletic bodies\" (ex. NCAA in Indianapolis)","Required internship or capstone (if applicable)":"Master's consulting project","Student clubs (if applicable)":null},
+{"University Name":"Marquette University","Sports Analytics or Sports Science":"Science","Mission Statement":"The master of science in sports and exercise analytics at Marquette University intersects physiology and biomechanics with data sceince to address specific questions regarding elite athletic, sport, exercise, and human performance.","Vision Statement":"Provide students with the analytic skills to develop new applications and interfaces for large and complex sport and human performance data sets. Prepare students to pursue careers in sport and exercise performance data sciene.","Website link":"Marquette University","Program type (dropdown)":"Masters","Additional program type (if necessary)":null,"Undergrad program":"No","Graduate program":"Yes","City":"Milwaukee","State":"WI","Private/Public":"Private","Undergrad Population":8045,"Grad Population":3721,"# of students in program":"8","In-State Tuition":53890,"Out-of-State Tuition":53890,"Program Name":"Master's In Sports and Exercise Analytics","Year Established":2017,"Credit Hours Undergraduate  (or N/A)":null,"Credit Hours Graduate (or N/A)":"33","Credit hours in business":0,"Credit hours in human physiology":9,"Credit hours in kinesiology":0,"Credit hours in sports management":0,"Credit hours in computer science":0,"Credit hours in data analytics":15,"Degree of Experiental Learning (0-5)":3,"Technical vs Applied (0-5)":4,"Technical Aspects: (Computer Science, Data Engineering, Algorithms, Machine Learning, Other, N/A)":"More technical: Data science + Human performance/exercise physiology","Applied Aspects: (Marketing, Sports Management, Finance, Kinesiology, Human Physology, Other, N/A":null,"Department/College housed in (ex: Business, Education, Economics, etc)":"Physical Therapy","Sports analytics focus (business, tech, human phys, etc)":"Physiology and Biomechanics","Problem They're solving":"Analytic skills to develop new applications and interfaces for large and complex sport and human performance","External partners (Athletics, community)":"Marquette Athletics,","Required internship or capstone (if applicable)":"Thesis/Professional Project (capstone)","Student clubs (if applicable)":null},
+{"University Name":"Northern Illinois University","Sports Analytics or Sports Science":"Analytics","Mission Statement":"With a growing number of sport organizations embracing the role of data analytics in organizational decision making, there is increasing demand for professionals within the industry.","Vision Statement":"Provide students with the tools to pursue a career in sport analytics or data analysis.","Website link":"Northern Illinois","Program type (dropdown)":"Minor","Additional program type (if necessary)":null,"Undergrad program":"Yes","Graduate program":"No","City":"DeKalb","State":"IL","Private/Public":"Public","Undergrad Population":12118,"Grad Population":3608,"# of students in program":"20","In-State Tuition":13060,"Out-of-State Tuition":13060,"Program Name":"Minor in Sport Analytics","Year Established":2021,"Credit Hours Undergraduate  (or N/A)":"18-21","Credit Hours Graduate (or N/A)":null,"Credit hours in business":3,"Credit hours in human physiology":0,"Credit hours in kinesiology":0,"Credit hours in sports management":3,"Credit hours in computer science":0,"Credit hours in data analytics":12,"Degree of Experiental Learning (0-5)":2,"Technical vs Applied (0-5)":3,"Technical Aspects: (Computer Science, Data Engineering, Algorithms, Machine Learning, Other, N/A)":"More technical: Wide range of analytic course electives - not necessarily sports related however","Applied Aspects: (Marketing, Sports Management, Finance, Kinesiology, Human Physology, Other, N/A":null,"Department/College housed in (ex: Business, Education, Economics, etc)":"Education","Sports analytics focus (business, tech, human phys, etc)":"Seems more like a sports management minor with a few technical classes and elective options","Problem They're solving":"Provide students with the tools to pursue a career in sport analytics or data analysis","External partners (Athletics, community)":null,"Required internship or capstone (if applicable)":null,"Student clubs (if applicable)":null},
+{"University Name":"Northwestern University","Sports Analytics or Sports Science":"Analytics","Mission Statement":"The graduate certificate in Sports Analytics focuses on the skills necessary to work in today's data-intensive and data-driven world.","Vision Statement":"Provides the technical and leadership training required for key positions in sports team management and analytics","Website link":"Northwestern","Program type (dropdown)":"Certificate","Additional program type (if necessary)":null,"Undergrad program":"No","Graduate program":"Yes","City":"Evanston","State":"IL","Private/Public":"Private","Undergrad Population":9399,"Grad Population":14457,"# of students in program":null,"In-State Tuition":69375,"Out-of-State Tuition":69375,"Program Name":"Sports Analytics Certificate Program","Year Established":null,"Credit Hours Undergraduate  (or N/A)":null,"Credit Hours Graduate (or N/A)":"12","Credit hours in business":0,"Credit hours in human physiology":0,"Credit hours in kinesiology":0,"Credit hours in sports management":0,"Credit hours in computer science":0,"Credit hours in data analytics":12,"Degree of Experiental Learning (0-5)":2,"Technical vs Applied (0-5)":4,"Technical Aspects: (Computer Science, Data Engineering, Algorithms, Machine Learning, Other, N/A)":"More technical: purely made of analytics course","Applied Aspects: (Marketing, Sports Management, Finance, Kinesiology, Human Physology, Other, N/A":null,"Department/College housed in (ex: Business, Education, Economics, etc)":"Data Science","Sports analytics focus (business, tech, human phys, etc)":"Stats + different sports analytics (management/performance)","Problem They're solving":"providing skills necessary to work in today's data-intensive and data-driven world.","External partners (Athletics, community)":null,"Required internship or capstone (if applicable)":null,"Student clubs (if applicable)":null},
+{"University Name":"Ohio University","Sports Analytics or Sports Science":"Analytics","Mission Statement":"The online Sport Analytics Certificate opens foors to new opportunities in a cutting-edge field. This program provides the advanced technical background students need to make an impact in the world.","Vision Statement":"Helps students develop the in-depth knowedge required for successful sports analytics implementation and upon completion, students will have the skills to increase job prospects and marketability.","Website link":"Ohio","Program type (dropdown)":"Certificate","Additional program type (if necessary)":null,"Undergrad program":"No","Graduate program":"Yes","City":"Athens","State":"OH","Private/Public":"Public","Undergrad Population":20444,"Grad Population":5879,"# of students in program":"6","In-State Tuition":14582,"Out-of-State Tuition":25796,"Program Name":"Online Sport Analytics Certificate","Year Established":2024,"Credit Hours Undergraduate  (or N/A)":null,"Credit Hours Graduate (or N/A)":"15","Credit hours in business":0,"Credit hours in human physiology":0,"Credit hours in kinesiology":0,"Credit hours in sports management":0,"Credit hours in computer science":0,"Credit hours in data analytics":15,"Degree of Experiental Learning (0-5)":2,"Technical vs Applied (0-5)":3,"Technical Aspects: (Computer Science, Data Engineering, Algorithms, Machine Learning, Other, N/A)":"More technical: advanced machine learning + \"data wrangling\" + advanced dashboard generation + much more","Applied Aspects: (Marketing, Sports Management, Finance, Kinesiology, Human Physology, Other, N/A":null,"Department/College housed in (ex: Business, Education, Economics, etc)":"Sports","Sports analytics focus (business, tech, human phys, etc)":"Data analysis and analytics","Problem They're solving":"Provides the advanced technical background needed to make an impact in the world of sports","External partners (Athletics, community)":"N/A but distinguished faculty from \"diverse academic and professional backgrounds\"","Required internship or capstone (if applicable)":null,"Student clubs (if applicable)":null},
+{"University Name":"Rice University","Sports Analytics or Sports Science":"Analytics","Mission Statement":"Provide students with rigorous training in areas such as data science, computer science, statistics, and sports management to challenge students to solve practical issues in the sports industry","Vision Statement":"Allow students to develop strong data analysis and analytical thinking skills to address important questions in the sport industry","Website link":"Rice","Program type (dropdown)":"Major","Additional program type (if necessary)":null,"Undergrad program":"Yes","Graduate program":"Yes","City":"Houston","State":"TX","Private/Public":"Private","Undergrad Population":4789,"Grad Population":4100,"# of students in program":null,"In-State Tuition":62874,"Out-of-State Tuition":62874,"Program Name":"Sports Analytics Major + M.S Data Science with Sports Analytics Specialization","Year Established":2022,"Credit Hours Undergraduate  (or N/A)":"46-48","Credit Hours Graduate (or N/A)":"M.S requirements + Spots Analytics","Credit hours in business":0,"Credit hours in human physiology":0,"Credit hours in kinesiology":0,"Credit hours in sports management":6,"Credit hours in computer science":0,"Credit hours in data analytics":39,"Degree of Experiental Learning (0-5)":3,"Technical vs Applied (0-5)":1,"Technical Aspects: (Computer Science, Data Engineering, Algorithms, Machine Learning, Other, N/A)":"More Technical: Curriculum as all analytics based with a few sports management courses | Some emphasis on working with external partners however (applied)","Applied Aspects: (Marketing, Sports Management, Finance, Kinesiology, Human Physology, Other, N/A":null,"Department/College housed in (ex: Business, Education, Economics, etc)":"Sports","Sports analytics focus (business, tech, human phys, etc)":"Data analytics, statistics, calculus,","Problem They're solving":"Develop skills in sport analytics by learning to analyze and manage data using statistical and machine learning methods, effectively communicate insights to non-technical audiences, build programming abilities for data extraction and analysis, and understand how these competencies apply across different roles in the sport management industry.","External partners (Athletics, community)":"Rice Athletics, Center for Human Performance, Sports Analytics club","Required internship or capstone (if applicable)":"Internship required for credit","Student clubs (if applicable)":"Sports Analytics Club"},
+{"University Name":"Samford University","Sports Analytics or Sports Science":"Analytics","Mission Statement":"The Samford University Center for Sports Analytics partners with sports organizations worldwide to solve complex business and strategic challenges through data-driven insights","Vision Statement":"Deliver exceptional talent to the sports industry while advancing thought leadership in sports business analytics on the global stage","Website link":"Samford","Program type (dropdown)":"Major","Additional program type (if necessary)":"Sports Business Strategy and Analytics + Team Strategy and Player Performance","Undergrad program":"Yes","Graduate program":"No","City":"Homewood","State":"AL","Private/Public":"Private","Undergrad Population":4210,"Grad Population":1887,"# of students in program":null,"In-State Tuition":40760,"Out-of-State Tuition":40760,"Program Name":"The Samford University Center for Sports Analytics","Year Established":null,"Credit Hours Undergraduate  (or N/A)":"66","Credit Hours Graduate (or N/A)":null,"Credit hours in business":45,"Credit hours in human physiology":0,"Credit hours in kinesiology":0,"Credit hours in sports management":0,"Credit hours in computer science":0,"Credit hours in data analytics":18,"Degree of Experiental Learning (0-5)":4,"Technical vs Applied (0-5)":3,"Technical Aspects: (Computer Science, Data Engineering, Algorithms, Machine Learning, Other, N/A)":null,"Applied Aspects: (Marketing, Sports Management, Finance, Kinesiology, Human Physology, Other, N/A":"More Applied: emphasis on intership and working with partners","Department/College housed in (ex: Business, Education, Economics, etc)":"Business","Sports analytics focus (business, tech, human phys, etc)":"Business, data analytics","Problem They're solving":"Business and competitive dimensions of analytics: analytic skills + industry professionalism","External partners (Athletics, community)":"Supporting staff have lots of ethos: many different external partners","Required internship or capstone (if applicable)":"required internship: \"data analytics intership\"","Student clubs (if applicable)":null},
+{"University Name":"Syracuse University","Sports Analytics or Sports Science":"Analytics","Mission Statement":"Provide students with the educational knowledge, skill development, research skills and experiential sport industry background to excel in the specialized field of sport analytics.","Vision Statement":"Help students emerge themsevles into a field that is changing the way sports operate on many fronts.","Website link":"Syracuse","Program type (dropdown)":"Major","Additional program type (if necessary)":"Online Masters","Undergrad program":"Yes","Graduate program":"Yes","City":"Syracuse","State":"NY","Private/Public":"Private","Undergrad Population":15957,"Grad Population":6632,"# of students in program":null,"In-State Tuition":63710,"Out-of-State Tuition":63710,"Program Name":"B.S. in Sport Analytics / M.S. in Sport Analytics","Year Established":null,"Credit Hours Undergraduate  (or N/A)":"125","Credit Hours Graduate (or N/A)":null,"Credit hours in business":null,"Credit hours in human physiology":null,"Credit hours in kinesiology":null,"Credit hours in sports management":null,"Credit hours in computer science":null,"Credit hours in data analytics":null,"Degree of Experiental Learning (0-5)":4,"Technical vs Applied (0-5)":4,"Technical Aspects: (Computer Science, Data Engineering, Algorithms, Machine Learning, Other, N/A)":null,"Applied Aspects: (Marketing, Sports Management, Finance, Kinesiology, Human Physology, Other, N/A":"More Applied: many external partners, interships, and club experiences","Department/College housed in (ex: Business, Education, Economics, etc)":"Sports","Sports analytics focus (business, tech, human phys, etc)":"Sports, tech, STEM, econ","Problem They're solving":"Connecting data science skills with sport industry domain knowledge, bringing analytics to teams","External partners (Athletics, community)":"Syracuse University Athletics, pro teams and leagues through internships, study abroad opportunities","Required internship or capstone (if applicable)":"Required senior thesis research project","Student clubs (if applicable)":"Baseball Sabermetrics Club; Basketball Analytics Club; Football Analytics Blitz; Hockey Analytics; Soccer Analytics; Sport Analytics Women (SAW); Women in Sports & Events (WISE); Sport Management Club; Sport Analytics Living Learning Community"},
+{"University Name":"Temple University","Sports Analytics or Sports Science":"Analytics","Mission Statement":"Producing data-driven managers and executives for the sports industry through its STEM-designated Master of Science in Sport Business.","Vision Statement":"Aims to prepare students to become industry leaders, managers, and analysts.","Website link":"Temple","Program type (dropdown)":"Concentration","Additional program type (if necessary)":"Masters","Undergrad program":"No","Graduate program":"Yes","City":"Philadelphia","State":"PA","Private/Public":"Public","Undergrad Population":21720,"Grad Population":8258,"# of students in program":null,"In-State Tuition":19608,"Out-of-State Tuition":35232,"Program Name":"The Master of Science in Sport Businesss STEM?designated Sport Analytics concentration","Year Established":2010,"Credit Hours Undergraduate  (or N/A)":"124","Credit Hours Graduate (or N/A)":"36","Credit hours in business":9,"Credit hours in human physiology":0,"Credit hours in kinesiology":0,"Credit hours in sports management":0,"Credit hours in computer science":0,"Credit hours in data analytics":0,"Degree of Experiental Learning (0-5)":3,"Technical vs Applied (0-5)":2,"Technical Aspects: (Computer Science, Data Engineering, Algorithms, Machine Learning, Other, N/A)":null,"Applied Aspects: (Marketing, Sports Management, Finance, Kinesiology, Human Physology, Other, N/A":"More Applied: consumer behavoir, marketing strategies","Department/College housed in (ex: Business, Education, Economics, etc)":"School of Sport, Tourism, and Hospitality Management","Sports analytics focus (business, tech, human phys, etc)":"Science/Business","Problem They're solving":"addresses the growing need for sport industry leaders who can combine strong quantitative and STEM-based skills with sport business knowledge to make data-driven decisions","External partners (Athletics, community)":null,"Required internship or capstone (if applicable)":null,"Student clubs (if applicable)":null},
+{"University Name":"University of Akron","Sports Analytics or Sports Science":"Analytics","Mission Statement":"Aims to prepare students for careers as sports analysts by combining quantitative skills in math, statistics, and computer programming with core business principles","Vision Statement":"To prepare students for industry careers by merging quantitative skills with sport industry experience","Website link":"u of akron","Program type (dropdown)":"Major","Additional program type (if necessary)":null,"Undergrad program":"Yes","Graduate program":"No","City":"Akron","State":"OH","Private/Public":"Public","Undergrad Population":11160,"Grad Population":3100,"# of students in program":null,"In-State Tuition":13740,"Out-of-State Tuition":21650,"Program Name":"Bachelor of Science in Sports Analytics","Year Established":null,"Credit Hours Undergraduate  (or N/A)":"120","Credit Hours Graduate (or N/A)":null,"Credit hours in business":120,"Credit hours in human physiology":0,"Credit hours in kinesiology":0,"Credit hours in sports management":0,"Credit hours in computer science":0,"Credit hours in data analytics":0,"Degree of Experiental Learning (0-5)":5,"Technical vs Applied (0-5)":4,"Technical Aspects: (Computer Science, Data Engineering, Algorithms, Machine Learning, Other, N/A)":null,"Applied Aspects: (Marketing, Sports Management, Finance, Kinesiology, Human Physology, Other, N/A":"capstone project","Department/College housed in (ex: Business, Education, Economics, etc)":"Department of Management and the College of Business","Sports analytics focus (business, tech, human phys, etc)":"Business","Problem They're solving":"Working to give their students versatility in all aspects of the sports industry","External partners (Athletics, community)":null,"Required internship or capstone (if applicable)":null,"Student clubs (if applicable)":null},
+{"University Name":"University of Charleston","Sports Analytics or Sports Science":"Analytics","Mission Statement":"Prepares students for careers in the sports industrysuch as scouting, player development, and marketingby providing in-seat, experiential learning","Vision Statement":"Prepares students for diverse careers in the sports industryincluding coaching, scouting, and marketingby blending analytical skills with industry knowledge.","Website link":"College of Charleston","Program type (dropdown)":"Major","Additional program type (if necessary)":"Concentration","Undergrad program":"Yes","Graduate program":"No","City":"Charleston","State":"SC","Private/Public":"Public","Undergrad Population":10880,"Grad Population":1046,"# of students in program":"21","In-State Tuition":13226,"Out-of-State Tuition":34500,"Program Name":"B.S. Data Science / M.S. Data Science & Analytics","Year Established":null,"Credit Hours Undergraduate  (or N/A)":"81","Credit Hours Graduate (or N/A)":"45","Credit hours in business":45,"Credit hours in human physiology":0,"Credit hours in kinesiology":0,"Credit hours in sports management":0,"Credit hours in computer science":0,"Credit hours in data analytics":0,"Degree of Experiental Learning (0-5)":4,"Technical vs Applied (0-5)":1,"Technical Aspects: (Computer Science, Data Engineering, Algorithms, Machine Learning, Other, N/A)":null,"Applied Aspects: (Marketing, Sports Management, Finance, Kinesiology, Human Physology, Other, N/A":"More applied: Internship, uses technology like data analytic tools and wearable sensors","Department/College housed in (ex: Business, Education, Economics, etc)":"Departments of Computer Science and Mathematics (joint program) for B.S","Sports analytics focus (business, tech, human phys, etc)":"Technology / data science  machine learning, AI, big data; sports analytics is one of four possible emphasis tracks","Problem They're solving":"First undergraduate data science program in the US (nationally ranked); producing data-capable professionals across industries including sports; pioneering M.S. Data Science for SC","External partners (Athletics, community)":"CofC Athletics (exercise science/kinesiology dept. partnership with athletics); Faculty member Dr. Mark Witte co-founded Sports Analytics Consulting LLC; Chicago White Sox hired a CofC data science alum","Required internship or capstone (if applicable)":"Research/practicum components within data science curriculum; bachelor's essay option in economics (sports analytics topic possible)","Student clubs (if applicable)":"Not specifically a sports analytics club; data science-focused organizations"},
+{"University Name":"University of Delaware","Sports Analytics or Sports Science":"Analytics","Mission Statement":"Teaching students to collect, analyze, and interpret athletic data to improve performance and prevent injuries.","Vision Statement":"Aims to train students to collect, analyze, and interpret athletic data to improve team performance and prevent injuries.","Website link":"Delaware","Program type (dropdown)":"Major","Additional program type (if necessary)":null,"Undergrad program":"Yes","Graduate program":"Yes","City":"Newark","State":"DE","Private/Public":"Private","Undergrad Population":19071,"Grad Population":4386,"# of students in program":null,"In-State Tuition":16810,"Out-of-State Tuition":41400,"Program Name":"Sports Performance Analytics Major","Year Established":2025,"Credit Hours Undergraduate  (or N/A)":"120","Credit Hours Graduate (or N/A)":"30","Credit hours in business":6,"Credit hours in human physiology":0,"Credit hours in kinesiology":0,"Credit hours in sports management":3,"Credit hours in computer science":0,"Credit hours in data analytics":3,"Degree of Experiental Learning (0-5)":4,"Technical vs Applied (0-5)":4,"Technical Aspects: (Computer Science, Data Engineering, Algorithms, Machine Learning, Other, N/A)":"More technical: game theoretic analysis, player performance analysis, wearable tech","Applied Aspects: (Marketing, Sports Management, Finance, Kinesiology, Human Physology, Other, N/A":null,"Department/College housed in (ex: Business, Education, Economics, etc)":"Applied Economics and Statistics","Sports analytics focus (business, tech, human phys, etc)":"Data Analytics - Performance Data","Problem They're solving":"Improve performance and achieve competitive advantage through theoretical and experiential side of sports performance analytics","External partners (Athletics, community)":"Athletic department","Required internship or capstone (if applicable)":"Internship credit: Senior year","Student clubs (if applicable)":null},
+{"University Name":"University of Florida","Sports Analytics or Sports Science":"Analytics","Mission Statement":"Leveraging AI-powered analytics to improve athlete well-being, reduce injury, and optimize team performance, while providing research, education, and strategic decision-making support.","Vision Statement":"Utilizing AI-powered data to revolutionize athlete performance, wellness, and team success through a collaborative, interdisciplinary approach.","Website link":"University of Florida","Program type (dropdown)":"Lab","Additional program type (if necessary)":"Online Masters","Undergrad program":"Yes","Graduate program":"No","City":"Gainesville","State":"FL","Private/Public":"Public","Undergrad Population":39794,"Grad Population":24698,"# of students in program":null,"In-State Tuition":12740,"Out-of-State Tuition":30000,"Program Name":"Sports Analytics Laboratory","Year Established":2025,"Credit Hours Undergraduate  (or N/A)":null,"Credit Hours Graduate (or N/A)":"36","Credit hours in business":0,"Credit hours in human physiology":0,"Credit hours in kinesiology":0,"Credit hours in sports management":0,"Credit hours in computer science":0,"Credit hours in data analytics":0,"Degree of Experiental Learning (0-5)":3,"Technical vs Applied (0-5)":2,"Technical Aspects: (Computer Science, Data Engineering, Algorithms, Machine Learning, Other, N/A)":"More technical: AI insights for recruiting and scouting","Applied Aspects: (Marketing, Sports Management, Finance, Kinesiology, Human Physology, Other, N/A":"Sports analytics and performance immersive experience","Department/College housed in (ex: Business, Education, Economics, etc)":"Health and Human Performance","Sports analytics focus (business, tech, human phys, etc)":"Health and human performance","Problem They're solving":"Integrating AI-powered analytics with Gator Athletics, utilizing the HiPerGator supercomputer","External partners (Athletics, community)":"Men's basketball team, UF's Warrington College of Business and Health and Human Performance","Required internship or capstone (if applicable)":null,"Student clubs (if applicable)":"Sports Analytics Club"},
+{"University Name":"Miami University of Ohio","Sports Analytics or Sports Science":"Analytics","Mission Statement":"Prepares students to analyze, interpret, and communicate data within the sport industry, focusing on performance, marketing, and business applications","Vision Statement":"Aims to prepare students for leadership roles by fostering expertise in data analysis, interpretation, and communication, specifically for business and performance applications.","Website link":"Miami Ohio","Program type (dropdown)":"Minor","Additional program type (if necessary)":null,"Undergrad program":"Yes","Graduate program":"No","City":"Oxford","State":"OH","Private/Public":"Public","Undergrad Population":16800,"Grad Population":2000,"# of students in program":"100","In-State Tuition":17500,"Out-of-State Tuition":39000,"Program Name":"Sports Analytics Minor","Year Established":2020,"Credit Hours Undergraduate  (or N/A)":"12","Credit Hours Graduate (or N/A)":null,"Credit hours in business":3,"Credit hours in human physiology":0,"Credit hours in kinesiology":0,"Credit hours in sports management":0,"Credit hours in computer science":0,"Credit hours in data analytics":3,"Degree of Experiental Learning (0-5)":2,"Technical vs Applied (0-5)":3,"Technical Aspects: (Computer Science, Data Engineering, Algorithms, Machine Learning, Other, N/A)":"More techinical: Data visualization, database programming","Applied Aspects: (Marketing, Sports Management, Finance, Kinesiology, Human Physology, Other, N/A":null,"Department/College housed in (ex: Business, Education, Economics, etc)":"Math, Stats, and Data Analytics","Sports analytics focus (business, tech, human phys, etc)":"Data/analytics focused","Problem They're solving":"Exploring the ways in which sport organizations analytze, interpret, and communicate data efficiently and effectively","External partners (Athletics, community)":null,"Required internship or capstone (if applicable)":null,"Student clubs (if applicable)":null},
+{"University Name":"University of Michigan","Sports Analytics or Sports Science":"Analytics","Mission Statement":"Help students develop skills in statistics, data science, and analytical thinking through sports","Vision Statement":"Transforming sports through student-led research, data science, and hands-on, interdisciplinary collaboration to optimize performance, prevent injury, and innovate within the sports industry","Website link":"Michigan","Program type (dropdown)":"Certificate","Additional program type (if necessary)":null,"Undergrad program":"Yes","Graduate program":"No","City":"Ann Arbor","State":"MI","Private/Public":"Public","Undergrad Population":35000,"Grad Population":18000,"# of students in program":null,"In-State Tuition":10083,"Out-of-State Tuition":33981,"Program Name":"Sports Performance Analytics","Year Established":null,"Credit Hours Undergraduate  (or N/A)":"15","Credit Hours Graduate (or N/A)":null,"Credit hours in business":0,"Credit hours in human physiology":0,"Credit hours in kinesiology":3,"Credit hours in sports management":0,"Credit hours in computer science":0,"Credit hours in data analytics":0,"Degree of Experiental Learning (0-5)":1,"Technical vs Applied (0-5)":3,"Technical Aspects: (Computer Science, Data Engineering, Algorithms, Machine Learning, Other, N/A)":"Uses python and sports datasets","Applied Aspects: (Marketing, Sports Management, Finance, Kinesiology, Human Physology, Other, N/A":"Uses wearable technology, apply machine learning techinques","Department/College housed in (ex: Business, Education, Economics, etc)":"Michigan Online","Sports analytics focus (business, tech, human phys, etc)":"Business","Problem They're solving":"address the gap between collecting sports data and actually using it effectively by teaching predictive modeling and analytics","External partners (Athletics, community)":"Draws from real data sets in pro sport but not partnered with anybody","Required internship or capstone (if applicable)":null,"Student clubs (if applicable)":null},
+{"University Name":"University of Mississippi","Sports Analytics or Sports Science":"Analytics","Mission Statement":"Prepare professionals for the evolving sports industry by integrating cutting-edge analytics, data science, and visualization techniques","Vision Statement":"Aims to redefine the sports industry by integrating data-driven insights with practical applications in performance and business","Website link":"University of Mississippi","Program type (dropdown)":"Masters","Additional program type (if necessary)":"Online, Lab","Undergrad program":"No","Graduate program":"Yes","City":"Oxford","State":"MS","Private/Public":"Public","Undergrad Population":21500,"Grad Population":4949,"# of students in program":null,"In-State Tuition":9990,"Out-of-State Tuition":30150,"Program Name":"The Master of Science in Sport Analyics","Year Established":null,"Credit Hours Undergraduate  (or N/A)":null,"Credit Hours Graduate (or N/A)":"30","Credit hours in business":6,"Credit hours in human physiology":3,"Credit hours in kinesiology":0,"Credit hours in sports management":0,"Credit hours in computer science":0,"Credit hours in data analytics":12,"Degree of Experiental Learning (0-5)":4,"Technical vs Applied (0-5)":4,"Technical Aspects: (Computer Science, Data Engineering, Algorithms, Machine Learning, Other, N/A)":"Quantitative and Qualitative Research Methods, Data Analytics in Strength and Conditioning","Applied Aspects: (Marketing, Sports Management, Finance, Kinesiology, Human Physology, Other, N/A":null,"Department/College housed in (ex: Business, Education, Economics, etc)":"Science in Sports Analytics","Sports analytics focus (business, tech, human phys, etc)":"Sport Performance","Problem They're solving":"Practical, career-ready skills in data analysis, machine learning and visualization","External partners (Athletics, community)":"Center for Sports and Performance Analytics in Korea and Center for Global Sport and Recreation Studies in Hong Kong","Required internship or capstone (if applicable)":null,"Student clubs (if applicable)":null},
+{"University Name":"University of Nevada Las Vegas","Sports Analytics or Sports Science":"Analytics","Mission Statement":"We champion innovation, foster economic development, and elevate education, sport business, and sport science.","Vision Statement":"Back to Initiatives The Sports Data & Analytics (SDA) initiative at the Sports Innovation Institute develops cutting-edge analytics to bring data-driven, objective assessments to our sports management and sports performance projects. Our data analytics team engages with academic faculty and industry professionals to enhance impact and facilitate positive change on the sports ecosystem. We specialize in collecting, analyzing, and interpreting vast amounts of data to enhance decision-making and performance across various aspects of sports and exercise. By integrating data with real-time insights by clinicians and coaches, our SDA team helps optimize athlete health, improve performance, and provide a competitive edge in all sports environments, ranging from professional to youth","Website link":"UNLV","Program type (dropdown)":"Institute","Additional program type (if necessary)":null,"Undergrad program":"No","Graduate program":"Yes","City":"Las Vegas","State":"NV","Private/Public":"Public","Undergrad Population":26186,"Grad Population":5376,"# of students in program":null,"In-State Tuition":10394,"Out-of-State Tuition":28788,"Program Name":"Sports Data & Analytics","Year Established":2018,"Credit Hours Undergraduate  (or N/A)":null,"Credit Hours Graduate (or N/A)":"0","Credit hours in business":0,"Credit hours in human physiology":0,"Credit hours in kinesiology":0,"Credit hours in sports management":0,"Credit hours in computer science":0,"Credit hours in data analytics":0,"Degree of Experiental Learning (0-5)":3,"Technical vs Applied (0-5)":2,"Technical Aspects: (Computer Science, Data Engineering, Algorithms, Machine Learning, Other, N/A)":"machine learning, database management, data visualization","Applied Aspects: (Marketing, Sports Management, Finance, Kinesiology, Human Physology, Other, N/A":"Focuses on enhancing athletic performance and optimizing management with real-time insights from coaches and industry partners.","Department/College housed in (ex: Business, Education, Economics, etc)":"Sports Innovation Institute","Sports analytics focus (business, tech, human phys, etc)":"Data","Problem They're solving":"develop cutting-edge analytics to bring data-driven, objective assessments to sports management and performance projects","External partners (Athletics, community)":"Cleveland Clinic Lou Ruvo Center for Brain Health and the Ultimate Fighting Championship (UFC) Performance Institute","Required internship or capstone (if applicable)":null,"Student clubs (if applicable)":null},
+{"University Name":"University of New Hampshire","Sports Analytics or Sports Science":"Analytics","Mission Statement":"We blend creative thinking with hands-on problem-solving, preparing you to make a meaningful impact in today's dynamic business world.","Vision Statement":"Whether you're a passionate athlete or a budding data scientist, this innovative course offers a unique opportunity to merge your interests and gain a competitive edge in the world of sports analytics.","Website link":"University of New Hampshire","Program type (dropdown)":"Lab","Additional program type (if necessary)":"Collaborates with college of Business and the business analytics dept in a lab","Undergrad program":"Yes","Graduate program":"No","City":"Durham","State":"NH","Private/Public":"Public","Undergrad Population":11365,"Grad Population":2233,"# of students in program":null,"In-State Tuition":15908,"Out-of-State Tuition":37070,"Program Name":"The UNH Sports Analytics Lab","Year Established":2023,"Credit Hours Undergraduate  (or N/A)":"8","Credit Hours Graduate (or N/A)":null,"Credit hours in business":0,"Credit hours in human physiology":0,"Credit hours in kinesiology":0,"Credit hours in sports management":0,"Credit hours in computer science":0,"Credit hours in data analytics":0,"Degree of Experiental Learning (0-5)":2,"Technical vs Applied (0-5)":2,"Technical Aspects: (Computer Science, Data Engineering, Algorithms, Machine Learning, Other, N/A)":null,"Applied Aspects: (Marketing, Sports Management, Finance, Kinesiology, Human Physology, Other, N/A":"analyzing player performance and facility upgrades.","Department/College housed in (ex: Business, Education, Economics, etc)":"Peter T. Paul College of Business and Economics","Sports analytics focus (business, tech, human phys, etc)":"Business","Problem They're solving":"Transform raw data into actionable insights for athletic teams","External partners (Athletics, community)":"UNH athletics+ overall trends in college sports","Required internship or capstone (if applicable)":null,"Student clubs (if applicable)":null},
+{"University Name":"University of North Carolina at Charlotte","Sports Analytics or Sports Science":"Analytics","Mission Statement":"Provide transdisciplinary and rigorous education and research in data science that equips students with the skills needed for analyzing and interpreting data, fostering a collaborative and diverse environment, and promoting ethical data practices.","Vision Statement":"The vision of UNC Charlottes School of Data Science is to be a leader in advancing data science education, research, and applications by driving innovation and addressing complex societal challenges.","Website link":"UNC Charlotte","Program type (dropdown)":"Major","Additional program type (if necessary)":"certicificate+bachelor of science","Undergrad program":"Yes","Graduate program":"Yes","City":"Charlotte","State":"NC","Private/Public":"Public","Undergrad Population":26213,"Grad Population":5994,"# of students in program":null,"In-State Tuition":7100,"Out-of-State Tuition":22000,"Program Name":"Bachelor of Science in Sports Analytics","Year Established":2025,"Credit Hours Undergraduate  (or N/A)":"120","Credit Hours Graduate (or N/A)":null,"Credit hours in business":0,"Credit hours in human physiology":0,"Credit hours in kinesiology":6,"Credit hours in sports management":0,"Credit hours in computer science":10,"Credit hours in data analytics":24,"Degree of Experiental Learning (0-5)":4,"Technical vs Applied (0-5)":4,"Technical Aspects: (Computer Science, Data Engineering, Algorithms, Machine Learning, Other, N/A)":null,"Applied Aspects: (Marketing, Sports Management, Finance, Kinesiology, Human Physology, Other, N/A":"led in part by an ESPN senior statistician, features practical, hands-on work in biomechanics and human performance with local teams like the Carolina Panthers and Charlotte FC.","Department/College housed in (ex: Business, Education, Economics, etc)":"Collaboration between School of Data Science and College of Health and Human Services","Sports analytics focus (business, tech, human phys, etc)":"Science","Problem They're solving":"Prepares graduates for dynamic entry level roles in sports analytics","External partners (Athletics, community)":"Carolina Panther, Carolina Hurricanes, and Charlotte FC","Required internship or capstone (if applicable)":null,"Student clubs (if applicable)":null},
+{"University Name":"University of Notre Dame","Sports Analytics or Sports Science":"Analytics","Mission Statement":"Sports Analytics concentration focuses on bridging the gap between data teams and decision-makers within the sports industry.","Vision Statement":"Allows you to gain the essential skills and knowledge to become a fundamental conduit between the data teams and decision-makers in management.","Website link":"University of Notre Dame","Program type (dropdown)":"Masters","Additional program type (if necessary)":"Concentration","Undergrad program":"Yes","Graduate program":"Yes","City":"Notre Dame","State":"IN","Private/Public":"Private","Undergrad Population":8880,"Grad Population":4162,"# of students in program":null,"In-State Tuition":62693,"Out-of-State Tuition":62693,"Program Name":"MSBA  Sports Analytics Concentration","Year Established":2022,"Credit Hours Undergraduate  (or N/A)":"32","Credit Hours Graduate (or N/A)":null,"Credit hours in business":0,"Credit hours in human physiology":0,"Credit hours in kinesiology":0,"Credit hours in sports management":0,"Credit hours in computer science":0,"Credit hours in data analytics":31,"Degree of Experiental Learning (0-5)":4,"Technical vs Applied (0-5)":4,"Technical Aspects: (Computer Science, Data Engineering, Algorithms, Machine Learning, Other, N/A)":"curriculum includes technical skills like acquiring sports data, statistical modeling, and data visualization","Applied Aspects: (Marketing, Sports Management, Finance, Kinesiology, Human Physology, Other, N/A":"uses a sports lens to teach analytics, emphasizing how to interpret and act on data rather than just building models","Department/College housed in (ex: Business, Education, Economics, etc)":"Mendoza College of Business  Dept. of IT, Analytics & Operations (ITAO)","Sports analytics focus (business, tech, human phys, etc)":"Business, data science, tech","Problem They're solving":"Bringing data to front offices and student athletes to inform decision making","External partners (Athletics, community)":"Notre Dame Athletics (direct data partnership), NBA","Required internship or capstone (if applicable)":"Career planning/coaching built in, no internship required","Student clubs (if applicable)":"Sports Analytics Club, MBA Business Analytics Club"},
+{"University Name":"University of Oklahoma","Sports Analytics or Sports Science":"Analytics","Mission Statement":"We provide vision and leadership demonstrating how technology enables the university, and we seek to transcend traditional boundaries extending beyond technology management to create new capabilities that are central to the university's mission and future.","Vision Statement":"To develop leaders in sports analytics who use data, technology, and analytical thinking to drive innovation and informed decision-making across the global sports industry.","Website link":"University of Oklahoma","Program type (dropdown)":"Masters","Additional program type (if necessary)":null,"Undergrad program":"No","Graduate program":"Yes","City":"Norman","State":"OK","Private/Public":"Private","Undergrad Population":23351,"Grad Population":7522,"# of students in program":null,"In-State Tuition":5932,"Out-of-State Tuition":14150,"Program Name":"Sport Analytics","Year Established":null,"Credit Hours Undergraduate  (or N/A)":null,"Credit Hours Graduate (or N/A)":"36","Credit hours in business":3,"Credit hours in human physiology":6,"Credit hours in kinesiology":6,"Credit hours in sports management":6,"Credit hours in computer science":7,"Credit hours in data analytics":5,"Degree of Experiental Learning (0-5)":2,"Technical vs Applied (0-5)":3,"Technical Aspects: (Computer Science, Data Engineering, Algorithms, Machine Learning, Other, N/A)":"The program develops technical skills through coursework in statistics, data science, and sports analytics that focuses on analyzing and modeling sports data.","Applied Aspects: (Marketing, Sports Management, Finance, Kinesiology, Human Physology, Other, N/A":"The applied side comes from the internship, athlete tracking courses, and research projects that let students use analytics in real-world sports settings.","Department/College housed in (ex: Business, Education, Economics, etc)":"College of Arts & Science","Sports analytics focus (business, tech, human phys, etc)":"Athlete tracking, performance metrics","Problem They're solving":"Analyzing large datasets to optimize athletic performance","External partners (Athletics, community)":"Nike/Jordan brand","Required internship or capstone (if applicable)":null,"Student clubs (if applicable)":null},
+{"University Name":"University of Pennsylvania","Sports Analytics or Sports Science":"Analytics","Mission Statement":"The Wharton Sports Analytics and Business Initiative will give the leading minds involved in sports  from students to owners to Moneyball type data scientists  a ringside seat to better examine the future of sports","Vision Statement":"Aims to be a global leader at the intersection of analytics and the sports industry","Website link":"University of Pennsylvania","Program type (dropdown)":"Institute","Additional program type (if necessary)":"Lab","Undergrad program":"Yes","Graduate program":"Yes","City":"Philadelphia","State":"PA","Private/Public":"Private","Undergrad Population":10000,"Grad Population":14000,"# of students in program":null,"In-State Tuition":95000,"Out-of-State Tuition":95000,"Program Name":"Wharton Sports Analytics and Business Inititative","Year Established":null,"Credit Hours Undergraduate  (or N/A)":null,"Credit Hours Graduate (or N/A)":null,"Credit hours in business":0,"Credit hours in human physiology":0,"Credit hours in kinesiology":0,"Credit hours in sports management":0,"Credit hours in computer science":0,"Credit hours in data analytics":0,"Degree of Experiental Learning (0-5)":3,"Technical vs Applied (0-5)":4,"Technical Aspects: (Computer Science, Data Engineering, Algorithms, Machine Learning, Other, N/A)":null,"Applied Aspects: (Marketing, Sports Management, Finance, Kinesiology, Human Physology, Other, N/A":"Students gain applied experience through research projects and partnerships that use real sports datasets.","Department/College housed in (ex: Business, Education, Economics, etc)":"Business school","Sports analytics focus (business, tech, human phys, etc)":"Data analysis","Problem They're solving":"real-world sports business, performance and operational problems, NIL, fan engagement","External partners (Athletics, community)":"Numerous pro teams across sports","Required internship or capstone (if applicable)":"Internship is in elective courses","Student clubs (if applicable)":"NFL Big Data Bowl Team"},
+{"University Name":"University of Tennessee","Sports Analytics or Sports Science":"Analytics","Mission Statement":"With the increasing reliance on data-driven decisions in the sports industry, this certificate prepares you to leverage analytics to optimize performance, enhance fan engagement, and improve overall team strategy.","Vision Statement":"The Sport Analytics certificate equips you with the skills and knowledge necessary to apply data analytics in the dynamic world of sports.","Website link":"University of Tennessee","Program type (dropdown)":"Concentration","Additional program type (if necessary)":"Certificate","Undergrad program":"Yes","Graduate program":"No","City":"Knoxville","State":"TN","Private/Public":"Public","Undergrad Population":32041,"Grad Population":8380,"# of students in program":null,"In-State Tuition":13484,"Out-of-State Tuition":56170,"Program Name":"Sports Analytics Concentration","Year Established":null,"Credit Hours Undergraduate  (or N/A)":null,"Credit Hours Graduate (or N/A)":null,"Credit hours in business":0,"Credit hours in human physiology":0,"Credit hours in kinesiology":0,"Credit hours in sports management":0,"Credit hours in computer science":0,"Credit hours in data analytics":0,"Degree of Experiental Learning (0-5)":4,"Technical vs Applied (0-5)":5,"Technical Aspects: (Computer Science, Data Engineering, Algorithms, Machine Learning, Other, N/A)":"The certificate introduces basic data science skills such as data collection, programming, statistical analysis, and predictive modeling.","Applied Aspects: (Marketing, Sports Management, Finance, Kinesiology, Human Physology, Other, N/A":"It emphasizes hands-on experience using real sports data to analyze player performance, business strategy, and fan engagement.","Department/College housed in (ex: Business, Education, Economics, etc)":"Emerging and Collaborative Studies","Sports analytics focus (business, tech, human phys, etc)":"Data management","Problem They're solving":"Provides students with foundational skills, utilizing advanced techniques like predictive modeling","External partners (Athletics, community)":"Athletic department","Required internship or capstone (if applicable)":null,"Student clubs (if applicable)":"Sports Analytics Club"},
+{"University Name":"University of Texas","Sports Analytics or Sports Science":"Analytics","Mission Statement":"Through dynamic coursework and real-world insights, youll gain the skills to navigate the evolving sports industry and beyond.","Vision Statement":"With a focus on analytics, leadership, and the science of performance, we empower undergraduates to thrive in sportsand to stand out in any career path.","Website link":"University of Texas","Program type (dropdown)":"Minor","Additional program type (if necessary)":null,"Undergrad program":"Yes","Graduate program":"No","City":"Austin","State":"TX","Private/Public":"Public","Undergrad Population":44314,"Grad Population":10699,"# of students in program":null,"In-State Tuition":11678,"Out-of-State Tuition":42778,"Program Name":"McCombs School of Business","Year Established":2021,"Credit Hours Undergraduate  (or N/A)":"18","Credit Hours Graduate (or N/A)":null,"Credit hours in business":6,"Credit hours in human physiology":0,"Credit hours in kinesiology":0,"Credit hours in sports management":3,"Credit hours in computer science":0,"Credit hours in data analytics":9,"Degree of Experiental Learning (0-5)":3,"Technical vs Applied (0-5)":2,"Technical Aspects: (Computer Science, Data Engineering, Algorithms, Machine Learning, Other, N/A)":"teaches analytical and business skills that help students interpret sports data and evaluate performance and strategy.","Applied Aspects: (Marketing, Sports Management, Finance, Kinesiology, Human Physology, Other, N/A":"mphasizes experiential learning through consulting projects, industry speakers, and student organizations that connect analytics concepts to real sports business decisions.","Department/College housed in (ex: Business, Education, Economics, etc)":"School of Business","Sports analytics focus (business, tech, human phys, etc)":"Business","Problem They're solving":"Analytical and business skillset","External partners (Athletics, community)":"Accenture, Nike","Required internship or capstone (if applicable)":null,"Student clubs (if applicable)":"Business of Sports Student and UT Sports Analytics Reading Group"},
+{"University Name":"Wake Forest University","Sports Analytics or Sports Science":"Analytics","Mission Statement":"Combine the #2 Business Analytics program in the U.S. with advanced sports analytics and applied AI to set yourself up for a career with a major sports organization.","Vision Statement":"Gain invaluable, hands-on experience as you spend two semesters as a sports analytics consultant embedded with a Division I, Power Four football, mens or womens basketball, tennis, or volleyball team.","Website link":"Wake Forest University","Program type (dropdown)":"Masters","Additional program type (if necessary)":"Concentration","Undergrad program":"No","Graduate program":"Yes","City":"Winston-Salem","State":"NC","Private/Public":"Private","Undergrad Population":5490,"Grad Population":3832,"# of students in program":null,"In-State Tuition":63120,"Out-of-State Tuition":63120,"Program Name":"M.S. in Business Analytics (MSBA)  Sports Analytics Concentration","Year Established":null,"Credit Hours Undergraduate  (or N/A)":null,"Credit Hours Graduate (or N/A)":"6","Credit hours in business":0,"Credit hours in human physiology":0,"Credit hours in kinesiology":0,"Credit hours in sports management":0,"Credit hours in computer science":0,"Credit hours in data analytics":0,"Degree of Experiental Learning (0-5)":5,"Technical vs Applied (0-5)":5,"Technical Aspects: (Computer Science, Data Engineering, Algorithms, Machine Learning, Other, N/A)":"The program teaches advanced analytics tools such as Python, machine learning, AI modeling, and sports data engineering to analyze player and team performance data.","Applied Aspects: (Marketing, Sports Management, Finance, Kinesiology, Human Physology, Other, N/A":"Students apply these skills through consulting-style practicums embedded with sports teams, using real data to support coaching and organizational decisions.","Department/College housed in (ex: Business, Education, Economics, etc)":"School of Business","Sports analytics focus (business, tech, human phys, etc)":"Business, data engineering","Problem They're solving":"Prepares data analysts to work inside sports organizations, learn to use analysis to make decisions","External partners (Athletics, community)":"Wake Forest Baseball, consulting with D1 schools","Required internship or capstone (if applicable)":"Capstone with corporate partner","Student clubs (if applicable)":"Consulting club"},
+{"University Name":"New Jersey Institute of Technology","Sports Analytics or Sports Science":"Analytics","Mission Statement":"The program aims to train students to utilize quantitative methods, data management techniques, and business intelligence tools to make informed business decisions.","Vision Statement":"The proposed Business and Sports Analytics concentration under the BS in Business degree at Martin Tuchman School of Management focuses on equipping students with essential skills in data analysis, predictive modeling, and decision-making applicable to business disciplines such as accounting, finance, marketing, and supply chain.","Website link":"NJIT","Program type (dropdown)":"Concentration","Additional program type (if necessary)":"In School of Management","Undergrad program":"Yes","Graduate program":"No","City":"Newark","State":"NJ","Private/Public":"Public","Undergrad Population":9000,"Grad Population":2500,"# of students in program":null,"In-State Tuition":21000,"Out-of-State Tuition":40000,"Program Name":"Business and Sports Analytics Concentration","Year Established":2024,"Credit Hours Undergraduate  (or N/A)":"15","Credit Hours Graduate (or N/A)":null,"Credit hours in business":3,"Credit hours in human physiology":0,"Credit hours in kinesiology":0,"Credit hours in sports management":0,"Credit hours in computer science":0,"Credit hours in data analytics":15,"Degree of Experiental Learning (0-5)":3,"Technical vs Applied (0-5)":3,"Technical Aspects: (Computer Science, Data Engineering, Algorithms, Machine Learning, Other, N/A)":"blends one core Python-based computer science and machine learning course with applied data engineering, quantitative modeling, and business intelligence work across marketing, finance, accounting, and supply chain.","Applied Aspects: (Marketing, Sports Management, Finance, Kinesiology, Human Physology, Other, N/A":null,"Department/College housed in (ex: Business, Education, Economics, etc)":"Martin Tuchman School of Management","Sports analytics focus (business, tech, human phys, etc)":"Python application","Problem They're solving":"They address the gap between traditional business education and the need for data, Python, and quantitative decision-making skills.","External partners (Athletics, community)":null,"Required internship or capstone (if applicable)":"\"Co-op work experience\"","Student clubs (if applicable)":null},
+{"University Name":"University of Memphis","Sports Analytics or Sports Science":"Science","Mission Statement":"To prepare current and aspiring sport commerce leaders with practical management, research, marketing, operations, and revenue strategy skills needed to succeed in the global sport and hospitality industries.","Vision Statement":"To develop industry-ready professionals who understand how sport and hospitality services are produced, promoted, delivered, and consumed in complex, data-informed, and rapidly evolving markets.","Website link":"University of Memphis","Program type (dropdown)":"Online Masters","Additional program type (if necessary)":null,"Undergrad program":"No","Graduate program":"Yes","City":"Memphis","State":"TN","Private/Public":"Public","Undergrad Population":16700,"Grad Population":4500,"# of students in program":null,"In-State Tuition":10344,"Out-of-State Tuition":14784,"Program Name":"Master of Science in Sport and Hospitality Management with a Concentration in Sport Commerce","Year Established":null,"Credit Hours Undergraduate  (or N/A)":"0","Credit Hours Graduate (or N/A)":"33","Credit hours in business":15,"Credit hours in human physiology":0,"Credit hours in kinesiology":0,"Credit hours in sports management":9,"Credit hours in computer science":3,"Credit hours in data analytics":6,"Degree of Experiental Learning (0-5)":4,"Technical vs Applied (0-5)":2,"Technical Aspects: (Computer Science, Data Engineering, Algorithms, Machine Learning, Other, N/A)":null,"Applied Aspects: (Marketing, Sports Management, Finance, Kinesiology, Human Physology, Other, N/A":"the program centers on management, marketing, operations, and revenue strategy in real sport and hospitality settings, with only light exposure to research methods and computer tools rather than deep technical or coding work.","Department/College housed in (ex: Business, Education, Economics, etc)":"College of Health Sciences","Sports analytics focus (business, tech, human phys, etc)":"Science, Commerce","Problem They're solving":"This program is solving the gap between traditional graduate education and the practical skills needed to lead, manage, and market sport and hospitality organizations in a complex, global, and data-informed industry.","External partners (Athletics, community)":"Local collegiate and professional athletic programs","Required internship or capstone (if applicable)":null,"Student clubs (if applicable)":null},
+{"University Name":"University of North Texas","Sports Analytics or Sports Science":"Analytics","Mission Statement":"Equip students with advanced analytics skills to transform complex data into actionable insights for business and sport?industry decision?making.","Vision Statement":"Develop industry-ready professionals who drive innovation and strategic, data-informed solutions across analytics and sport sectors.","Website link":"North Texas","Program type (dropdown)":"Concentration","Additional program type (if necessary)":null,"Undergrad program":"No","Graduate program":"Yes","City":"Denton","State":"TX","Private/Public":"Public","Undergrad Population":34458,"Grad Population":9352,"# of students in program":null,"In-State Tuition":11663,"Out-of-State Tuition":23963,"Program Name":"Advanced Data Analytics with a concentration in Sports, MS","Year Established":null,"Credit Hours Undergraduate  (or N/A)":"0","Credit Hours Graduate (or N/A)":"30","Credit hours in business":0,"Credit hours in human physiology":0,"Credit hours in kinesiology":0,"Credit hours in sports management":12,"Credit hours in computer science":0,"Credit hours in data analytics":18,"Degree of Experiental Learning (0-5)":4,"Technical vs Applied (0-5)":5,"Technical Aspects: (Computer Science, Data Engineering, Algorithms, Machine Learning, Other, N/A)":null,"Applied Aspects: (Marketing, Sports Management, Finance, Kinesiology, Human Physology, Other, N/A":"students use advanced analytics methods and tools in real-world projects, case studies, and a capstone experience that translate technical skills directly into actionable insights for business and sports contexts.","Department/College housed in (ex: Business, Education, Economics, etc)":"Department of Data Analytics & Statistics within the College of Science.","Sports analytics focus (business, tech, human phys, etc)":"Business","Problem They're solving":"Equipping professionals with advanced analytics skills to make data-driven decisions that improve business strategy, operations, and management in the sports and entertainment industry.","External partners (Athletics, community)":"Use external partners for capstone experience but they do not list said partners publically.","Required internship or capstone (if applicable)":"Capstone with real business","Student clubs (if applicable)":null},
+{"University Name":"University of South Florida","Sports Analytics or Sports Science":"Analytics","Mission Statement":"To prepare sport and entertainment business leaders by combining rigorous business fundamentals with real?world industry experience through fellowships, internships, and partnerships in professional sports and entertainment organizations.","Vision Statement":"To be recognized globally as a top sport and entertainment management graduate program that cultivates innovative, industry?ready professionals and strengthens connections between academia and the business of sport.","Website link":"South Florida","Program type (dropdown)":"Concentration","Additional program type (if necessary)":null,"Undergrad program":"No","Graduate program":"Yes","City":"Tampa","State":"FL","Private/Public":"Public","Undergrad Population":36452,"Grad Population":10802,"# of students in program":null,"In-State Tuition":6410,"Out-of-State Tuition":17324,"Program Name":"Vinik Sport & Entertainment Management Program","Year Established":2012,"Credit Hours Undergraduate  (or N/A)":"0","Credit Hours Graduate (or N/A)":"60","Credit hours in business":30,"Credit hours in human physiology":0,"Credit hours in kinesiology":0,"Credit hours in sports management":15,"Credit hours in computer science":0,"Credit hours in data analytics":0,"Degree of Experiental Learning (0-5)":5,"Technical vs Applied (0-5)":2,"Technical Aspects: (Computer Science, Data Engineering, Algorithms, Machine Learning, Other, N/A)":null,"Applied Aspects: (Marketing, Sports Management, Finance, Kinesiology, Human Physology, Other, N/A":"students spend a full year in hands-on, on-the-job experiences through the Sport & Entertainment Fellowship Program and internships with the Tampa Bay Lightning and Lightning Foundation, providing direct exposure to real industry operations.","Department/College housed in (ex: Business, Education, Economics, etc)":"Muma College of Business","Sports analytics focus (business, tech, human phys, etc)":"Business","Problem They're solving":"Preparing graduates to become industry-ready leaders in sports and entertainment by bridging classroom business education with immersive, real-world experience in professional organizations.preparing graduates to become industry-ready leaders in sports and entertainment by bridging classroom business education with immersive, real-world experience in professional organizations.","External partners (Athletics, community)":"Tampa Bay Lightning, Tampa Bay Buccaneers, Tampa Bay Rays, USF Athletics, Seminole Hard Rock & Casino, Fanatics, the WTA, Ironman Triathlon, Lakeland Magic, Minor League Baseball, USL, and other industry groups","Required internship or capstone (if applicable)":"Full year fellowship program.","Student clubs (if applicable)":null},
+{"University Name":"George Washington University","Sports Analytics or Sports Science":"Analytics","Mission Statement":"Learn the business of sports and make your mark as a leader in a rapidly growing field with the Master's in Sport Management (MSSM) at the George Washington University School of Business (GWSB). In addition to innovative academics, take advantage of GWSBs award-winning quarter-century of experience in the discipline, which includes Olympics and World Cup study abroad programs, the annual Travel Events and Management in Sports (TEAMS) and Sports Industry Networking and Career conferences. This award-winning, extraordinary program offers executive careers in events and facility management, sports marketing, athlete representation, sports analytics, sports media and the sporting goods industry.","Vision Statement":"Join the more than 500 graduates placed in influential positions with professional sports franchises, leagues and organizations, sporting goods manufacturers and sports media companies. Gain the insight and skills needed to identify new revenue streams, make ethical business decisions and apply analytic and research skills to solve problems and increase performance.","Website link":"George Washington University","Program type (dropdown)":"Masters","Additional program type (if necessary)":null,"Undergrad program":"No","Graduate program":"Yes","City":"Washington D.C","State":"D.C.","Private/Public":"Private","Undergrad Population":11200,"Grad Population":13600,"# of students in program":null,"In-State Tuition":62430,"Out-of-State Tuition":62430,"Program Name":"MS in Sport Management (MSSM)","Year Established":null,"Credit Hours Undergraduate  (or N/A)":null,"Credit Hours Graduate (or N/A)":"36","Credit hours in business":15,"Credit hours in human physiology":0,"Credit hours in kinesiology":0,"Credit hours in sports management":12,"Credit hours in computer science":0,"Credit hours in data analytics":9,"Degree of Experiental Learning (0-5)":3,"Technical vs Applied (0-5)":2,"Technical Aspects: (Computer Science, Data Engineering, Algorithms, Machine Learning, Other, N/A)":"applied quantitative methods, research methods and application, marker research, AI","Applied Aspects: (Marketing, Sports Management, Finance, Kinesiology, Human Physology, Other, N/A":"practicum includes fieldwork, internship, and/or instructional practice, including conference and/or seminar; study abroad to Olympics and World Cup; Travel Events and Management in Sports (TEAMS) and Sports Industry Networking and Career conferences (sport management mostly, some business- negotiation, event management, media, analytics; Workshops with emphasis on contemporary issues and opportunities; development of advanced professional competencies.","Department/College housed in (ex: Business, Education, Economics, etc)":"School of Business","Sports analytics focus (business, tech, human phys, etc)":"Business","Problem They're solving":"identify new revenue streams, make ethical business decisions and apply analytic and research skills to solve problems and increase performance","External partners (Athletics, community)":"sport teams, leagues, athletes, organizations (youth, collegiate, Olympic), Esports, sport media, venues, and sporting good companies (Nike, Adidas, Under Armour), Olympics and World Cup study abroad programs, the annual Travel Events and Management in Sports (TEAMS) and Sports Industry Networking and Career conferences","Required internship or capstone (if applicable)":"Yes  Practicum/Capstone required to graduate","Student clubs (if applicable)":null},
+{"University Name":"La Salle University","Sports Analytics or Sports Science":"Analytics","Mission Statement":"Data is revolutionizing the sport industry, and those who can harness its power will shape the future of the game.  The split-second decisions can make or break a team's success.  Real-time data analysis and rapid strategic adjustments are no longer luxuries -- they're necessities for staying ahead of the competition. Technological advancements have opened the door to a wealth of data-driven insights, but it takes a skilled analyst to transform those numbers into a winning game plan.","Vision Statement":"La Salle University's broader institutional mission is grounded in its Catholic, Lasallian tradition of providing access to quality education, integrating faith, learning, and service to form graduates of competence and integrity.","Website link":"La Salle","Program type (dropdown)":"Concentration","Additional program type (if necessary)":null,"Undergrad program":"No","Graduate program":"Yes","City":"Philadelphia","State":"PA","Private/Public":"Private","Undergrad Population":1983,"Grad Population":1571,"# of students in program":null,"In-State Tuition":28392,"Out-of-State Tuition":28392,"Program Name":"Master of Science in Applied Sports Science Analytics","Year Established":null,"Credit Hours Undergraduate  (or N/A)":null,"Credit Hours Graduate (or N/A)":"36","Credit hours in business":0,"Credit hours in human physiology":0,"Credit hours in kinesiology":0,"Credit hours in sports management":21,"Credit hours in computer science":0,"Credit hours in data analytics":15,"Degree of Experiental Learning (0-5)":null,"Technical vs Applied (0-5)":null,"Technical Aspects: (Computer Science, Data Engineering, Algorithms, Machine Learning, Other, N/A)":"multiple advanced analytics courses, including quantitative methods, data analytics in sport, big stat and stat analysis in sport, applied data analytics with R coding","Applied Aspects: (Marketing, Sports Management, Finance, Kinesiology, Human Physology, Other, N/A":"writing and reporting research course, required internship- sport management focus as well as ethical/cultural applications to data analytics","Department/College housed in (ex: Business, Education, Economics, etc)":"Graduate and professional studies","Sports analytics focus (business, tech, human phys, etc)":"Sport management, data analytics","Problem They're solving":"uncovering the stories hidden within the data","External partners (Athletics, community)":null,"Required internship or capstone (if applicable)":"Yes  Capstone (DNSC 4289); paid co-op program opportunioty for students to get work experience; Pick 1 of 2 capstone options: Professional Internship or a Writing & Reporting Research in Sport","Student clubs (if applicable)":null},
+{"University Name":"Virginia Tech","Sports Analytics or Sports Science":"Analytics","Mission Statement":"The sports media and analytics major prepares students to produce and deliver sports news, consider ways to promote the sports industry, and analyze data related to sports accomplishments, fan participation, and social media. Faculty have extensive experience in sports journalism, broadcast play-by-play, and public relations. Students find internships with ESPN, Fox Sports, sports teams, and television stations.","Vision Statement":"Program leadership has stated a vision to put Virginia Tech 'on the map' nationally for students who want to enter sports media  building on the university's strong athletics tradition and state-of-the-art production facilities, including a communication studio at the Moss Arts Center.","Website link":"Virginia Tech","Program type (dropdown)":"Major","Additional program type (if necessary)":"Concentration","Undergrad program":"Yes","Graduate program":"No","City":"Blacksburg","State":"VA","Private/Public":"Public","Undergrad Population":31536,"Grad Population":6751,"# of students in program":null,"In-State Tuition":13974,"Out-of-State Tuition":36690,"Program Name":"BA in Sports Media and Analytics","Year Established":null,"Credit Hours Undergraduate  (or N/A)":"120 (46 for major requirements)","Credit Hours Graduate (or N/A)":null,"Credit hours in business":36,"Credit hours in human physiology":0,"Credit hours in kinesiology":0,"Credit hours in sports management":30,"Credit hours in computer science":0,"Credit hours in data analytics":0,"Degree of Experiental Learning (0-5)":3,"Technical vs Applied (0-5)":1,"Technical Aspects: (Computer Science, Data Engineering, Algorithms, Machine Learning, Other, N/A)":null,"Applied Aspects: (Marketing, Sports Management, Finance, Kinesiology, Human Physology, Other, N/A":"Primarily a media/communications program with analytics as a secondary component  very 'applied' in the sense of sports journalism, broadcasting, and production, not quantitative analytics. Program started as concentration in 2016; became a major in 2020.","Department/College housed in (ex: Business, Education, Economics, etc)":null,"Sports analytics focus (business, tech, human phys, etc)":"sport management, communications (media)","Problem They're solving":"strong experiential components, prepare students to engage with sports media with an analytical approach","External partners (Athletics, community)":"Virginia Tech Athletics, ACC Network. ESPN, Fox Sports","Required internship or capstone (if applicable)":"Internships optional (BSA 360 / 365);  Students work with VT Athletics department, ACC Network, and have internship placements at ESPN and Fox Sports.","Student clubs (if applicable)":null},
+{"University Name":"Lipscomb University","Sports Analytics or Sports Science":"Analytics","Mission Statement":"Lipscomb's Master of Science in Sport Analytics trains students for analytical positions in professional and collegiate sport, as well as other entertainment and sport-related careers. The program aims to enhance knowledge, skills, and abilities to manage, analyze, visualize, and interpret data, equipping graduates to excel in careers in sport marketing, sales, finance, contracts, and other competencies in the sport industry.","Vision Statement":"Give graduates the skills, and abilities to manage, analyze, visualize, and interpret data of those who are seeking these careers. Graduates will be equipped with the skills to excel in careers in professional and collegiate sports by working with sport marketing agencies, finance, media, and other sport and e-sport related industries. responding to the rapidly growing $2.5 billion sport analytics industry with 27% projected growth.","Website link":"Lipscomb University","Program type (dropdown)":"Masters","Additional program type (if necessary)":null,"Undergrad program":"No","Graduate program":"Yes","City":"Nashville","State":"TN","Private/Public":"Private","Undergrad Population":2867,"Grad Population":1681,"# of students in program":null,"In-State Tuition":59998,"Out-of-State Tuition":59998,"Program Name":"MS in Sport Analytics","Year Established":2024,"Credit Hours Undergraduate  (or N/A)":null,"Credit Hours Graduate (or N/A)":"30","Credit hours in business":6,"Credit hours in human physiology":0,"Credit hours in kinesiology":0,"Credit hours in sports management":15,"Credit hours in computer science":0,"Credit hours in data analytics":9,"Degree of Experiental Learning (0-5)":4,"Technical vs Applied (0-5)":3,"Technical Aspects: (Computer Science, Data Engineering, Algorithms, Machine Learning, Other, N/A)":"advanced data analytics courses","Applied Aspects: (Marketing, Sports Management, Finance, Kinesiology, Human Physology, Other, N/A":"This programs curriculum is designed to give students a holistic view of the industry to examine how analytics can be utilized in sport marketing, sales, finance, contracts, and other competencies in the sport industry.","Department/College housed in (ex: Business, Education, Economics, etc)":"Health/Sciences","Sports analytics focus (business, tech, human phys, etc)":"Tech, sport management","Problem They're solving":"equipped with the skills to excel in careers in professional and collegiate sports by working with sport marketing agencies, finance, media, and other sport and e-sport related industries.","External partners (Athletics, community)":"Columbus Blue Jackets, expert faculty mentorship, and extensive networking opportunities","Required internship or capstone (if applicable)":"Capstone/Applied Projects (built into curriculum)","Student clubs (if applicable)":null},
+{"University Name":"University of Colorado Boulder","Sports Analytics or Sports Science":"Analytics","Mission Statement":"The Business of Sports Program at the Leeds School of Business is a two-month, intensive nine-credit boot camp for students and recent graduates seriously interested in pursuing careers in the sports and recreation industry. Students learn through a hands-on applied sports business curriculum including economics, law, facility and event management, marketing, and sports analytics, culminating in real-world projects for sports industry clients and organizations.","Vision Statement":"Leeds School of Business positions the program to be CU's premier gateway into the sports industry  leveraging Denver/Boulder's robust professional sports market (Broncos, Nuggets, Rockies, Avalanche, Rapids) to connect students with front-office practitioners and industry partners through site visits, real-world projects, and intensive networking.","Website link":"UC Boulder","Program type (dropdown)":"Concentration","Additional program type (if necessary)":"Certificate","Undergrad program":"No","Graduate program":"Yes","City":"Boulder","State":"CO","Private/Public":"Public","Undergrad Population":32520,"Grad Population":6288,"# of students in program":"50","In-State Tuition":13036,"Out-of-State Tuition":40464,"Program Name":"Business of Sports Certificate Program","Year Established":null,"Credit Hours Undergraduate  (or N/A)":"9","Credit Hours Graduate (or N/A)":null,"Credit hours in business":3,"Credit hours in human physiology":0,"Credit hours in kinesiology":0,"Credit hours in sports management":0,"Credit hours in computer science":0,"Credit hours in data analytics":6,"Degree of Experiental Learning (0-5)":4,"Technical vs Applied (0-5)":2,"Technical Aspects: (Computer Science, Data Engineering, Algorithms, Machine Learning, Other, N/A)":"broader business program has technical aspects, including advanced business analytics courses","Applied Aspects: (Marketing, Sports Management, Finance, Kinesiology, Human Physology, Other, N/A":"site visits to Coors Field and Mile High Stadium, real sport industry partners and frequent practitioner/practicum like assignments","Department/College housed in (ex: Business, Education, Economics, etc)":"School of Business","Sports analytics focus (business, tech, human phys, etc)":"Business","Problem They're solving":"learn about what it is like to work in various divisions of the sports business world. Industry practitioners walk students through day-to-day operations of these departments and explain what it takes to get into these positions","External partners (Athletics, community)":"CU athletics, Denver Broncos, Kroenke Sports Enterprises","Required internship or capstone (if applicable)":"Yes  Experiential Projects (project?based, no standard internship)","Student clubs (if applicable)":null},
+{"University Name":"Kansas State University","Sports Analytics or Sports Science":"Analytics","Mission Statement":"The Business of Sports and Entertainment certificate program provides students with a deep understanding of the role of sports and entertainment in business, enhanced by hands-on, real-time experiential learning opportunities. The certificate allows students to develop marketing, economic, and management skills needed for a successful career in the sports and entertainment industries, and in corporations where sports and entertainment decisions are made.","Vision Statement":"K-State's College of Business Administration positions the certificate as a complementary credential that equips students across any major with practical business-of-sports skills, leveraging Kansas State's strong Big 12 athletics culture and regional sports industry ties.","Website link":"Kansas State","Program type (dropdown)":"Certificate","Additional program type (if necessary)":"Certificate","Undergrad program":"No","Graduate program":"No","City":"Manhattan","State":"KS","Private/Public":"Public","Undergrad Population":20295,"Grad Population":4645,"# of students in program":null,"In-State Tuition":10195,"Out-of-State Tuition":27110,"Program Name":"Business of Sports and Entertainment Certificate","Year Established":null,"Credit Hours Undergraduate  (or N/A)":"No credit requirement: \"weeks\"","Credit Hours Graduate (or N/A)":null,"Credit hours in business":null,"Credit hours in human physiology":null,"Credit hours in kinesiology":null,"Credit hours in sports management":null,"Credit hours in computer science":null,"Credit hours in data analytics":null,"Degree of Experiental Learning (0-5)":1,"Technical vs Applied (0-5)":2,"Technical Aspects: (Computer Science, Data Engineering, Algorithms, Machine Learning, Other, N/A)":"clearly applied/management-focused with no quantitative analytics core. primarily a supplemental credential for business students, not a dedicated analytics program","Applied Aspects: (Marketing, Sports Management, Finance, Kinesiology, Human Physology, Other, N/A":null,"Department/College housed in (ex: Business, Education, Economics, etc)":"school of business","Sports analytics focus (business, tech, human phys, etc)":"Business","Problem They're solving":"applied/management-focused with no quantitative analytics core, focused on leadership development in sports","External partners (Athletics, community)":"kstate athletics, big12","Required internship or capstone (if applicable)":"Yes  Internship required","Student clubs (if applicable)":null},
+{"University Name":"University of Southern California","Sports Analytics or Sports Science":"Science","Mission Statement":"The Master of Science in Biokinesiology with an emphasis in Sports Science at USC provides students with a theoretical and practical understanding of sport performance assessment and interpretation framed around injury, injury risk, and optimal performance. The program develops individuals who combine data-informed tools and sport technologies with both the established and emerging principles of human movement to apply and contribute to technology-enabled evaluation of performance and inform solutions that improve physical performance, support injury recovery, and reduce injury risk for athletes at all levels.","Vision Statement":"USC Sports Science is positioned to leverage unparalleled internship access across professional sport organizations, collegiate performance programs, and sport technology and footwear environments in Los Angeles, giving students a direct pathway into elite teams and industry settings for immersive, hands-on experience.","Website link":"USC","Program type (dropdown)":"Masters","Additional program type (if necessary)":"Certificate","Undergrad program":"No","Graduate program":"Yes","City":"Los Angeles","State":"CA","Private/Public":"Private","Undergrad Population":20630,"Grad Population":26015,"# of students in program":null,"In-State Tuition":68237,"Out-of-State Tuition":68237,"Program Name":"MS in Biokinesiology with Emphasis in Sports Science","Year Established":null,"Credit Hours Undergraduate  (or N/A)":"division/cohort (no courses)","Credit Hours Graduate (or N/A)":null,"Credit hours in business":null,"Credit hours in human physiology":null,"Credit hours in kinesiology":null,"Credit hours in sports management":null,"Credit hours in computer science":null,"Credit hours in data analytics":null,"Degree of Experiental Learning (0-5)":2,"Technical vs Applied (0-5)":2,"Technical Aspects: (Computer Science, Data Engineering, Algorithms, Machine Learning, Other, N/A)":"grounded in biomechanics, physiology, movement science, and performance analytics. Strong experiential component: required internship in a sport science setting and research with a faculty member are both built into the 32-credit curriculum.","Applied Aspects: (Marketing, Sports Management, Finance, Kinesiology, Human Physology, Other, N/A":"some work with athletes/simulation","Department/College housed in (ex: Business, Education, Economics, etc)":"Division of Biokinesiology and Physical Therapy","Sports analytics focus (business, tech, human phys, etc)":"Biokinesiology, Human phys, Physical Therapy","Problem They're solving":"grounded in biomechanics, physiology, movement science, and performance analytic","External partners (Athletics, community)":null,"Required internship or capstone (if applicable)":"Yes  Internship/Fieldwork required as part of the COMM 4204 course","Student clubs (if applicable)":null},
+{"University Name":"University of Illinois Urbana-Champaign","Sports Analytics or Sports Science":"Analytics","Mission Statement":"The Sports Analytics Society engages ina  variety of activities aimed at enhancing our members' understandong and application of sports analytics","Vision Statement":"The Sports Analytics Society organizes insightful workshops, and invites industry experts for guest lectures, and creates","Website link":"Illinois","Program type (dropdown)":"Club","Additional program type (if necessary)":null,"Undergrad program":"Yes","Graduate program":"No","City":"Urbana-Champaign","State":"IL","Private/Public":"Public","Undergrad Population":38500,"Grad Population":20800,"# of students in program":"61","In-State Tuition":18267,"Out-of-State Tuition":40096,"Program Name":"Sports Analytics Society","Year Established":null,"Credit Hours Undergraduate  (or N/A)":null,"Credit Hours Graduate (or N/A)":null,"Credit hours in business":null,"Credit hours in human physiology":null,"Credit hours in kinesiology":null,"Credit hours in sports management":null,"Credit hours in computer science":null,"Credit hours in data analytics":null,"Degree of Experiental Learning (0-5)":2,"Technical vs Applied (0-5)":2,"Technical Aspects: (Computer Science, Data Engineering, Algorithms, Machine Learning, Other, N/A)":null,"Applied Aspects: (Marketing, Sports Management, Finance, Kinesiology, Human Physology, Other, N/A":"Registered Student Organization (RSO): connect with peers, gain hands-on experience, and expanding your networkbeyond the classroom","Department/College housed in (ex: Business, Education, Economics, etc)":"Department of Statistics & Data Science at Illinois","Sports analytics focus (business, tech, human phys, etc)":"Hands-on Experience","Problem They're solving":"The Sports Analytics Society engages ina  variety of activities aimed at enhancing our members' understandong and application of sports analytics","External partners (Athletics, community)":"\"industry experts\"","Required internship or capstone (if applicable)":null,"Student clubs (if applicable)":"This itself is a club"},
+{"University Name":"Jacksonville State University","Sports Analytics or Sports Science":"Analytics","Mission Statement":"Indusrty-focused curriculum prepares students for success in multimodal journalism, public relations, advertising, integrated marketing and communications, or multi-platform media production.","Vision Statement":"Guide student's learning experience according to their \"Six Pillars of Professional Communication\"","Website link":"JSU","Program type (dropdown)":"Major","Additional program type (if necessary)":"Minor","Undergrad program":"Yes","Graduate program":"No","City":"Jacksonville","State":"AL","Private/Public":"Public","Undergrad Population":8663,"Grad Population":1292,"# of students in program":null,"In-State Tuition":12894,"Out-of-State Tuition":23334,"Program Name":"Communication; Sport Media and Analytics (BA)","Year Established":null,"Credit Hours Undergraduate  (or N/A)":"120","Credit Hours Graduate (or N/A)":null,"Credit hours in business":3,"Credit hours in human physiology":0,"Credit hours in kinesiology":0,"Credit hours in sports management":0,"Credit hours in computer science":0,"Credit hours in data analytics":0,"Degree of Experiental Learning (0-5)":4,"Technical vs Applied (0-5)":1,"Technical Aspects: (Computer Science, Data Engineering, Algorithms, Machine Learning, Other, N/A)":null,"Applied Aspects: (Marketing, Sports Management, Finance, Kinesiology, Human Physology, Other, N/A":"Seems more applied strictly based on the curriculum","Department/College housed in (ex: Business, Education, Economics, etc)":"Department of Communication","Sports analytics focus (business, tech, human phys, etc)":"Communication","Problem They're solving":null,"External partners (Athletics, community)":"N/A but distinguished faculty from \"diverse academic and professional backgrounds\"","Required internship or capstone (if applicable)":"Communications internship","Student clubs (if applicable)":null},
+{"University Name":"University at Buffalo","Sports Analytics or Sports Science":"Analytics","Mission Statement":"Provide students with a self-paced micro-credential for people seeking an introduction to data analysis within the business, regulatory, and legal framework of sports","Vision Statement":"Provide students with a self-paced micro-credential for people seeking an introduction to data analysis within the business, regulatory, and legal framework of sports","Website link":"Buffalo","Program type (dropdown)":"Micro-Credential","Additional program type (if necessary)":null,"Undergrad program":"No","Graduate program":"Yes","City":"Buffalo","State":"NY","Private/Public":"Public","Undergrad Population":20359,"Grad Population":11544,"# of students in program":null,"In-State Tuition":7070,"Out-of-State Tuition":28500,"Program Name":"Data Analytics in Sports Law and Management","Year Established":null,"Credit Hours Undergraduate  (or N/A)":null,"Credit Hours Graduate (or N/A)":"9","Credit hours in business":0,"Credit hours in human physiology":0,"Credit hours in kinesiology":0,"Credit hours in sports management":0,"Credit hours in computer science":0,"Credit hours in data analytics":9,"Degree of Experiental Learning (0-5)":2,"Technical vs Applied (0-5)":3,"Technical Aspects: (Computer Science, Data Engineering, Algorithms, Machine Learning, Other, N/A)":"Gain skills in data analytics, player performance/management, sports law, etc","Applied Aspects: (Marketing, Sports Management, Finance, Kinesiology, Human Physology, Other, N/A":null,"Department/College housed in (ex: Business, Education, Economics, etc)":"School of Engineering and Applied Sciences","Sports analytics focus (business, tech, human phys, etc)":"Sports Law and Management","Problem They're solving":"Providing students with an introduction to data analysis","External partners (Athletics, community)":null,"Required internship or capstone (if applicable)":null,"Student clubs (if applicable)":null},
+{"University Name":"Belmont University","Sports Analytics or Sports Science":"Analytics","Mission Statement":"Combining classroom learning with practical experience to ensure that students graduate with hands-on skills required to succeed in their dream sports career","Vision Statement":"Train students to become data-driven decision-makers in the sports industry","Website link":"Belmont","Program type (dropdown)":"Concentration","Additional program type (if necessary)":null,"Undergrad program":"Yes","Graduate program":"No","City":"Nashville","State":"TN","Private/Public":"Private","Undergrad Population":7800,"Grad Population":1700,"# of students in program":"924","In-State Tuition":45200,"Out-of-State Tuition":45200,"Program Name":"Sports Administration Degree with a Sports Analytics Concentration","Year Established":null,"Credit Hours Undergraduate  (or N/A)":"24","Credit Hours Graduate (or N/A)":null,"Credit hours in business":0,"Credit hours in human physiology":0,"Credit hours in kinesiology":0,"Credit hours in sports management":0,"Credit hours in computer science":0,"Credit hours in data analytics":24,"Degree of Experiental Learning (0-5)":4,"Technical vs Applied (0-5)":3,"Technical Aspects: (Computer Science, Data Engineering, Algorithms, Machine Learning, Other, N/A)":"More techinical: applied statistics, Python, SQL, Power BI","Applied Aspects: (Marketing, Sports Management, Finance, Kinesiology, Human Physology, Other, N/A":null,"Department/College housed in (ex: Business, Education, Economics, etc)":"Entertainment and Music Business","Sports analytics focus (business, tech, human phys, etc)":"Data analysis and computer science","Problem They're solving":"Collecting clean data to analyze to support strategic initiatives in professional and collegiate athletics","External partners (Athletics, community)":"Capstone project where students work with real sports organizations | Tennessee Titans, Nashville Predators, Nashville SC, Nashville Sound","Required internship or capstone (if applicable)":"Internship and capstone courses","Student clubs (if applicable)":null},
+{"University Name":"Colorado State","Sports Analytics or Sports Science":"Analytics","Mission Statement":"Apply statistical methods and data analysis to the sports industry. Students will learn how to acquire sports data, generate summary statistics, build probabilistic models, assess hypotheses, and present research findings.","Vision Statement":"Aims to equip students with the skills required to succeed in the sports analytics industry","Website link":"CSU","Program type (dropdown)":"Certificate","Additional program type (if necessary)":null,"Undergrad program":"No","Graduate program":"No","City":"Fort Collins","State":"CO","Private/Public":"Public","Undergrad Population":34218,"Grad Population":7516,"# of students in program":"10","In-State Tuition":12896,"Out-of-State Tuition":33751,"Program Name":"Certificate In Sports Statistics and Analytics","Year Established":null,"Credit Hours Undergraduate  (or N/A)":"12","Credit Hours Graduate (or N/A)":null,"Credit hours in business":0,"Credit hours in human physiology":0,"Credit hours in kinesiology":0,"Credit hours in sports management":0,"Credit hours in computer science":0,"Credit hours in data analytics":12,"Degree of Experiental Learning (0-5)":3,"Technical vs Applied (0-5)":4,"Technical Aspects: (Computer Science, Data Engineering, Algorithms, Machine Learning, Other, N/A)":"Focuses on statistical courses in prerequisities, in core requirements it has two sports statistics and analytic courses, in elective courses has applied data analysis courses and any statistical course. Certificate focuses on sports data and how to generate summary statistics, building probabilistic models and how to assess hypotheses.","Applied Aspects: (Marketing, Sports Management, Finance, Kinesiology, Human Physology, Other, N/A":null,"Department/College housed in (ex: Business, Education, Economics, etc)":"College of Natural Sciences","Sports analytics focus (business, tech, human phys, etc)":"Statistical - data","Problem They're solving":"Students uses predicitive modeling and statisitcs to analyze sports data that bridges the gap between statistical analysis. The reasearch focuses on developing insights for the athletic deparentment which includes player performance and injury prevention.","External partners (Athletics, community)":null,"Required internship or capstone (if applicable)":null,"Student clubs (if applicable)":null},
+{"University Name":"Univerisity of Missouri","Sports Analytics or Sports Science":"Analytics","Mission Statement":"Unique opportunity for students to learn statistical methods and computational tools to perform analyses for sports.","Vision Statement":"Preparing students for industry careers by merging statistical methods with athletic performance technology.","Website link":"University of Missouri","Program type (dropdown)":"Minor","Additional program type (if necessary)":"Certificate","Undergrad program":"Yes","Graduate program":"No","City":"Columbia","State":"MO","Private/Public":"Public","Undergrad Population":24449,"Grad Population":7000,"# of students in program":null,"In-State Tuition":34524,"Out-of-State Tuition":36056,"Program Name":"Undergraduate Certificate in Sports Analytics","Year Established":null,"Credit Hours Undergraduate  (or N/A)":"12","Credit Hours Graduate (or N/A)":null,"Credit hours in business":0,"Credit hours in human physiology":0,"Credit hours in kinesiology":0,"Credit hours in sports management":0,"Credit hours in computer science":0,"Credit hours in data analytics":12,"Degree of Experiental Learning (0-5)":2,"Technical vs Applied (0-5)":4,"Technical Aspects: (Computer Science, Data Engineering, Algorithms, Machine Learning, Other, N/A)":"Focuses on students to learn statistical methods and computational tools to perform analyses for sports. Course focuses method in sports analytics and applied statistical models.","Applied Aspects: (Marketing, Sports Management, Finance, Kinesiology, Human Physology, Other, N/A":null,"Department/College housed in (ex: Business, Education, Economics, etc)":"College of Arts & Science","Sports analytics focus (business, tech, human phys, etc)":"Statistical - data","Problem They're solving":"The goal of the sports analyst is to identify patterns from the data, to inform and optimize player and team strategy and to predict future outcomes in athletic performance.","External partners (Athletics, community)":"Every True Tiger Brands, LLC","Required internship or capstone (if applicable)":null,"Student clubs (if applicable)":null},
+{"University Name":"University of South Carolina","Sports Analytics or Sports Science":"Analytics","Mission Statement":"Degree equips you with the tools, knowledge and connections to thrive in a data-driven sport and entertainment landscape.","Vision Statement":"Focuses on fostering innovation, leadership, and evidence-based decision-making in the sport and entertainment industry","Website link":"University of South Carolina","Program type (dropdown)":"Masters","Additional program type (if necessary)":null,"Undergrad program":"No","Graduate program":"Yes","City":"Columbia","State":"SC","Private/Public":"Public","Undergrad Population":30187,"Grad Population":7727,"# of students in program":null,"In-State Tuition":30544,"Out-of-State Tuition":55232,"Program Name":"Sports Analytics","Year Established":null,"Credit Hours Undergraduate  (or N/A)":null,"Credit Hours Graduate (or N/A)":"120","Credit hours in business":40,"Credit hours in human physiology":0,"Credit hours in kinesiology":0,"Credit hours in sports management":60,"Credit hours in computer science":0,"Credit hours in data analytics":20,"Degree of Experiental Learning (0-5)":3,"Technical vs Applied (0-5)":5,"Technical Aspects: (Computer Science, Data Engineering, Algorithms, Machine Learning, Other, N/A)":"Covers data management, predictive analytics, and statistical programming","Applied Aspects: (Marketing, Sports Management, Finance, Kinesiology, Human Physology, Other, N/A":null,"Department/College housed in (ex: Business, Education, Economics, etc)":"College of Hospitality, Retail and Sport Management","Sports analytics focus (business, tech, human phys, etc)":"Business","Problem They're solving":"Solving industry problems related to data-driven decision-making, player performance optimization, and revenue generation.","External partners (Athletics, community)":null,"Required internship or capstone (if applicable)":null,"Student clubs (if applicable)":null},
+{"University Name":"Mercer University","Sports Analytics or Sports Science":"Analytics","Mission Statement":"Focus on practical applications so you can master the skills and knowledge to succeed in many kinds of jobs in sports marketing and analytics.","Vision Statement":"Focuses on both business revenue generation and analytical application in sports.","Website link":"Mercer University","Program type (dropdown)":"Major","Additional program type (if necessary)":null,"Undergrad program":"Yes","Graduate program":"No","City":"Macon","State":"GA","Private/Public":"Private","Undergrad Population":4724,"Grad Population":4591,"# of students in program":null,"In-State Tuition":41000,"Out-of-State Tuition":52000,"Program Name":"Sport Marketing and Analytics","Year Established":null,"Credit Hours Undergraduate  (or N/A)":"21","Credit Hours Graduate (or N/A)":"0","Credit hours in business":0,"Credit hours in human physiology":0,"Credit hours in kinesiology":0,"Credit hours in sports management":9,"Credit hours in computer science":0,"Credit hours in data analytics":9,"Degree of Experiental Learning (0-5)":4,"Technical vs Applied (0-5)":2,"Technical Aspects: (Computer Science, Data Engineering, Algorithms, Machine Learning, Other, N/A)":"Marketing theories, practical applications and principles","Applied Aspects: (Marketing, Sports Management, Finance, Kinesiology, Human Physology, Other, N/A":null,"Department/College housed in (ex: Business, Education, Economics, etc)":"Business school","Sports analytics focus (business, tech, human phys, etc)":"Marketing","Problem They're solving":"Involve leveraging data for competitive advantage in both on-field performance and business operations.","External partners (Athletics, community)":null,"Required internship or capstone (if applicable)":"Sports Internship","Student clubs (if applicable)":null},
+{"University Name":"University of Denver","Sports Analytics or Sports Science":"Analytics","Mission Statement":"Aims to produce high-quality student research on a quarterly basis","Vision Statement":"Preparing students for careers in the industry by fostering skills in data synthesis, statistical methods, and critical thinking.","Website link":"University of Denver","Program type (dropdown)":"Lab","Additional program type (if necessary)":null,"Undergrad program":"No","Graduate program":"No","City":"Denver","State":"CO","Private/Public":"Private","Undergrad Population":6619,"Grad Population":6200,"# of students in program":null,"In-State Tuition":12573,"Out-of-State Tuition":82839,"Program Name":"Daniels Professors Launch Sports Analytics Lab","Year Established":2024,"Credit Hours Undergraduate  (or N/A)":null,"Credit Hours Graduate (or N/A)":"15","Credit hours in business":0,"Credit hours in human physiology":0,"Credit hours in kinesiology":0,"Credit hours in sports management":0,"Credit hours in computer science":0,"Credit hours in data analytics":15,"Degree of Experiental Learning (0-5)":3,"Technical vs Applied (0-5)":3,"Technical Aspects: (Computer Science, Data Engineering, Algorithms, Machine Learning, Other, N/A)":"Focuses on incorportating data into the way teams play","Applied Aspects: (Marketing, Sports Management, Finance, Kinesiology, Human Physology, Other, N/A":null,"Department/College housed in (ex: Business, Education, Economics, etc)":"Business school","Sports analytics focus (business, tech, human phys, etc)":"Statistical - data","Problem They're solving":"Focus on using data to optimize in-game strategy, player performance, and business decision","External partners (Athletics, community)":null,"Required internship or capstone (if applicable)":null,"Student clubs (if applicable)":null},
+{"University Name":"Old Dominion University","Sports Analytics or Sports Science":"Analytics","Mission Statement":"To provide students with knowledge, skills, and abilities in sport analytics. Expertise in sport analytics is in demand as the sport industry increasingly relies on data-driven decision making to enhance team performance, fan engagement, and business outcomes. This","Vision Statement":"Aims to be an innovative, entrepreneurial, and nationally prominent research university.","Website link":"Old Dominion University","Program type (dropdown)":"Concentration","Additional program type (if necessary)":"Masters","Undergrad program":"No","Graduate program":"Yes","City":"Norfolk","State":"VA","Private/Public":"Public","Undergrad Population":17746,"Grad Population":5997,"# of students in program":null,"In-State Tuition":12262,"Out-of-State Tuition":33885,"Program Name":"Sport Management with a Concentration in Sport Analytics","Year Established":null,"Credit Hours Undergraduate  (or N/A)":"0","Credit Hours Graduate (or N/A)":"33","Credit hours in business":0,"Credit hours in human physiology":0,"Credit hours in kinesiology":0,"Credit hours in sports management":12,"Credit hours in computer science":0,"Credit hours in data analytics":6,"Degree of Experiental Learning (0-5)":4,"Technical vs Applied (0-5)":3,"Technical Aspects: (Computer Science, Data Engineering, Algorithms, Machine Learning, Other, N/A)":"Focuses on research and data","Applied Aspects: (Marketing, Sports Management, Finance, Kinesiology, Human Physology, Other, N/A":null,"Department/College housed in (ex: Business, Education, Economics, etc)":"Education","Sports analytics focus (business, tech, human phys, etc)":"Statistical - data","Problem They're solving":"The focus is on using, at times, non-traditional data to improve player performance and identify a better path from a development standpoint","External partners (Athletics, community)":null,"Required internship or capstone (if applicable)":null,"Student clubs (if applicable)":null},
+{"University Name":"California Baptist University","Sports Analytics or Sports Science":"Analytics","Mission Statement":"Training our students analytically and theoretically in the field of statistics, all framed within a biblical worldview, to properly equip them with the quantitative tools needed to positively impact society.","Vision Statement":"The program aligns with CBU's overarching goal to offer a Christ-centered educational experience that integrates academic proficiency with spiritual and social development. It seeks to train students to use quantitative skills to serve, aligning with the \"Great Commission\".","Website link":"California Baptist University","Program type (dropdown)":"Major","Additional program type (if necessary)":null,"Undergrad program":"Yes","Graduate program":"No","City":"Riverside","State":"CA","Private/Public":"Private","Undergrad Population":8417,"Grad Population":3500,"# of students in program":null,"In-State Tuition":43098,"Out-of-State Tuition":55898,"Program Name":"Sports Analytics","Year Established":null,"Credit Hours Undergraduate  (or N/A)":"51","Credit Hours Graduate (or N/A)":"0","Credit hours in business":0,"Credit hours in human physiology":0,"Credit hours in kinesiology":0,"Credit hours in sports management":3,"Credit hours in computer science":3,"Credit hours in data analytics":12,"Degree of Experiental Learning (0-5)":4,"Technical vs Applied (0-5)":4,"Technical Aspects: (Computer Science, Data Engineering, Algorithms, Machine Learning, Other, N/A)":"Focuses on data and computer programming","Applied Aspects: (Marketing, Sports Management, Finance, Kinesiology, Human Physology, Other, N/A":null,"Department/College housed in (ex: Business, Education, Economics, etc)":"Arts and Science","Sports analytics focus (business, tech, human phys, etc)":"Data analysis and computer science","Problem They're solving":"Prepares students to solve real-world athletic performance and business problems using data science.","External partners (Athletics, community)":null,"Required internship or capstone (if applicable)":"Sports Analytics Internship","Student clubs (if applicable)":null}];
+const CH_COLS = [
+  'Credit hours in business','Credit hours in human physiology','Credit hours in kinesiology',
+  'Credit hours in sports management','Credit hours in computer science','Credit hours in data analytics'
+];
+const CH_LABELS = {
+  'Credit hours in business':'Business',
+  'Credit hours in human physiology':'Human Physiology',
+  'Credit hours in kinesiology':'Kinesiology',
+  'Credit hours in sports management':'Sports Management',
+  'Credit hours in computer science':'Computer Science',
+  'Credit hours in data analytics':'Data Analytics'
+};
+const SUBJ_COLORS = ['#3b82f6','#8b5cf6','#10b981','#f59e0b','#ef4444','#06b6d4'];
+const TYPE_COLORS = {
+  'Major':'#3b82f6','Masters':'#ef4444','Certificate':'#10b981',
+  'Concentration':'#f59e0b','Minor':'#ec4899','Lab':'#06b6d4','Institute':'#84cc16',
+  'Online Masters':'#a855f7','Club':'#f97316','Micro-Credential':'#14b8a6'
+};
+const PAC12_SCHOOLS = [
+  'texas state','boise state','colorado state',
+  'fresno state','san diego state','utah state',
+  'oregon state','washington state','gonzaga'
+];
+function isPac12(name) {
+  if (!name) return false;
+  const n = name.toLowerCase();
+  return PAC12_SCHOOLS.some(s => n.includes(s));
+}
+function togglePac12() {
+  showPac12 = !showPac12;
+  const btn = document.getElementById('pac12Toggle');
+  btn.style.background = showPac12 ? '#d97706' : 'white';
+  btn.style.color = showPac12 ? 'white' : '#475569';
+  btn.style.borderColor = showPac12 ? '#d97706' : '#cbd5e1';
+  renderMap();
+  renderTable();
+}
+
+const filters = { focus:'all', inst:'all', level:'all', type:'all', state:'all' };
+let sortCol = 'University Name', sortDir = 1;
+let chLevel = 'all';
+let chSubjects = new Set();
+let showPac12 = false;
+
+// City coords (approximate, for bubble map)
+const STATE_COORDS = {
+  'AL':[32.8,-86.9],'AK':[64.2,-153.4],'AZ':[34.3,-111.1],'AR':[34.8,-92.2],
+  'CA':[36.8,-119.4],'CO':[39.0,-105.5],'CT':[41.6,-72.7],'DE':[39.0,-75.5],
+  'FL':[27.8,-81.6],'GA':[32.2,-83.4],'HI':[20.1,-156.3],'ID':[44.0,-114.3],
+  'IL':[40.0,-89.2],'IN':[40.3,-86.1],'IA':[42.0,-93.2],'KS':[38.5,-98.4],
+  'KY':[37.5,-85.3],'LA':[30.5,-92.4],'ME':[45.3,-69.0],'MD':[39.1,-76.8],
+  'MA':[42.1,-71.5],'MI':[44.3,-85.4],'MN':[46.4,-93.1],'MS':[32.7,-89.7],
+  'MO':[38.5,-92.5],'MT':[47.0,-109.6],'NE':[41.5,-99.9],'NV':[39.3,-117.1],
+  'NH':[43.5,-71.6],'NJ':[40.1,-74.7],'NM':[34.5,-106.2],'NY':[42.9,-75.5],
+  'NC':[35.5,-79.8],'ND':[47.5,-100.5],'OH':[40.4,-82.8],'OK':[35.6,-97.5],
+  'OR':[44.6,-122.1],'PA':[40.9,-77.8],'RI':[41.7,-71.5],'SC':[33.8,-81.2],
+  'SD':[44.3,-100.2],'TN':[35.9,-86.7],'TX':[31.5,-99.3],'UT':[39.3,-111.1],
+  'VT':[44.1,-72.7],'VA':[37.8,-78.2],'WA':[47.4,-120.4],'WV':[38.6,-80.5],
+  'WI':[44.3,-89.8],'WY':[43.0,-107.6],'DC':[38.9,-77.0]
+};
+
+// ── Helpers ───────────────────────────────────────────────────────────────
+function getFiltered() {
+  return RAW_DATA.filter(d => {
+    if (!d['University Name']) return false;
+    if (filters.focus !== 'all' && d['Sports Analytics or Sports Science'] !== filters.focus) return false;
+    if (filters.inst !== 'all' && (d['Private/Public']||'').trim() !== filters.inst) return false;
+    if (filters.level === 'ug' && d['Undergrad program'] !== 'Yes') return false;
+    if (filters.level === 'grad' && d['Graduate program'] !== 'Yes') return false;
+    if (filters.type !== 'all' && (d['Program type (dropdown)']||'').trim() !== filters.type) return false;
+    if (filters.state !== 'all' && (d['State']||'').trim() !== filters.state) return false;
+    return true;
+  });
+}
+
+function badgeClass(pt) {
+  if (!pt) return 'badge-other';
+  const k = pt.toLowerCase().replace(/[^a-z]/g,'');
+  return ['major','masters','certificate','concentration','minor','lab','institute'].includes(k) ? 'badge-'+k : 'badge-other';
+}
+
+function fmtMoney(v) { return v != null && !isNaN(v) ? '$'+Number(v).toLocaleString() : '—'; }
+function fmtScale(v) { return v != null && !isNaN(v) ? v+'/5' : '—'; }
+
+// ── Filter setup ──────────────────────────────────────────────────────────
+function populateFilterDropdowns() {
+  const types = [...new Set(RAW_DATA.map(d=>d['Program type (dropdown)']).filter(Boolean))].sort();
+  const states = [...new Set(RAW_DATA.map(d=>d['State']).filter(Boolean))].sort();
+  const tSel = document.getElementById('typeFilter');
+  types.forEach(t => { const o=document.createElement('option'); o.value=t; o.textContent=t; tSel.appendChild(o); });
+  const sSel = document.getElementById('stateFilter');
+  states.forEach(s => { const o=document.createElement('option'); o.value=s; o.textContent=s; sSel.appendChild(o); });
+}
+
+function setToggle(group, val) {
+  filters[group] = val;
+  document.querySelectorAll('[data-filter="'+group+'"]').forEach(b => b.classList.toggle('active', b.dataset.val===val));
+  applyFilters();
+}
+
+function applyFilters() {
+  filters.type = document.getElementById('typeFilter').value;
+  filters.state = document.getElementById('stateFilter').value;
+  const active = [filters.focus,filters.inst,filters.level,filters.type,filters.state].filter(v=>v!=='all').length;
+  document.getElementById('filterCount').innerHTML = active > 0
+    ? `<strong>${getFiltered().length}</strong> of ${RAW_DATA.length} programs shown`
+    : `Showing all <strong>${RAW_DATA.length}</strong> programs`;
+  renderAll();
+}
+
+function resetFilters() {
+  filters.focus=filters.inst=filters.level='all'; filters.type=filters.state='all';
+  document.getElementById('typeFilter').value='all';
+  document.getElementById('stateFilter').value='all';
+  document.querySelectorAll('[data-filter]').forEach(b => b.classList.toggle('active', b.dataset.val==='all'));
+  applyFilters();
+}
+
+// ── Tabs ──────────────────────────────────────────────────────────────────
+const TABS = ['overview','directory','map','scatter','credits','profile'];
+function switchTab(name) {
+  TABS.forEach((t,i) => {
+    document.getElementById('tab-'+t).classList.toggle('active',t===name);
+    document.querySelectorAll('.tab-btn')[i].classList.toggle('active',t===name);
+  });
+  if (name==='map') renderMap();
+  if (name==='directory') renderTable();
+  if (name==='scatter') { const d=getFiltered(); renderScatter(d); }
+  if (name==='credits') renderCredits();
+}
+
+// ── Render all ────────────────────────────────────────────────────────────
+function renderAll() {
+  const data = getFiltered();
+  renderStats(data);
+  renderScatter(data);
+  renderOverviewCharts(data);
+  renderTuition(data);
+  renderYear(data);
+  renderMap();
+  renderTable();
+  renderCredits();
+  populateProfileSelect(data);
+}
+
+// ── Stats ─────────────────────────────────────────────────────────────────
+function renderStats(data) {
+  const ug = data.filter(d=>d['Undergrad program']==='Yes').length;
+  const grad = data.filter(d=>d['Graduate program']==='Yes').length;
+  const withPartners = data.filter(d=>d['External partners (Athletics, community)'] && d['External partners (Athletics, community)'] !== 'N/A').length;
+  const withInternship = data.filter(d=>d['Required internship or capstone (if applicable)'] && d['Required internship or capstone (if applicable)'] !== 'N/A').length;
+  document.getElementById('statRow').innerHTML = [
+    [data.length, 'Total Programs'],
+    [new Set(data.map(d=>d['State']).filter(Boolean)).size, 'States'],
+    [ug, 'Undergrad Programs'],
+    [grad, 'Graduate Programs'],
+    [withInternship, 'Require Internship / Capstone'],
+  ].map(([v,l])=>`<div class="stat-card"><div class="val">${v}</div><div class="lbl">${l}</div></div>`).join('');
+}
+
+// ── Scatter ───────────────────────────────────────────────────────────────
+function renderScatter(data) {
+  const plotData = data.filter(d=>d['Technical vs Applied (0-5)']!=null && d['Degree of Experiental Learning (0-5)']!=null);
+  if (!plotData.length) return;
+
+  // Cluster overlapping points using golden-angle spiral for organic spread
+  const groups = {};
+  plotData.forEach(d => {
+    const key = `${d['Technical vs Applied (0-5)']},${d['Degree of Experiental Learning (0-5)']}`;
+    if (!groups[key]) groups[key] = [];
+    groups[key].push(d['University Name']);
+  });
+  const ox = {}, oy = {};
+  const GOLDEN = 2.399963; // golden angle in radians
+  Object.values(groups).forEach(names => {
+    const n = names.length;
+    if (n === 1) { ox[names[0]] = 0; oy[names[0]] = 0; return; }
+    const R = Math.min(0.38, 0.1 * Math.sqrt(n));
+    names.forEach((name, i) => {
+      const r = R * Math.sqrt((i + 0.5) / n);
+      const theta = i * GOLDEN;
+      ox[name] = r * Math.cos(theta);
+      oy[name] = r * Math.sin(theta);
+    });
+  });
+
+  const progTypes = [...new Set(plotData.map(d=>(d['Program type (dropdown)']||'Other')))].sort();
+
+  const traces = progTypes.map(pt => {
+    const sub = plotData.filter(d=>(d['Program type (dropdown)']||'Other')===pt);
+    return {
+      type:'scatter', mode:'markers', name:pt,
+      x: sub.map(d=>d['Technical vs Applied (0-5)'] + (ox[d['University Name']]||0)),
+      y: sub.map(d=>d['Degree of Experiental Learning (0-5)'] + (oy[d['University Name']]||0)),
+      text: sub.map(d=>d['University Name']),
+      customdata: sub.map(d=>[
+        d['Program type (dropdown)']||'—',
+        d['State']||'—',
+        d['Sports Analytics or Sports Science']||'—',
+        d['Technical vs Applied (0-5)'],
+        d['Degree of Experiental Learning (0-5)'],
+        d['University Name']
+      ]),
+      hovertemplate:'<b>%{customdata[5]}</b><br>%{customdata[2]} | %{customdata[0]} | %{customdata[1]}<br>Technical: <b>%{customdata[3]}/5</b><br>Experiential: <b>%{customdata[4]}/5</b><extra></extra>',
+      marker:{size:13, color:TYPE_COLORS[pt]||'#94a3b8', opacity:1, line:{width:2,color:'white'}}
+    };
+  });
+
+  const layout = {
+    xaxis:{title:'Degree of Technical Learning', range:[0.5,5.5], tick0:1, dtick:1, zeroline:false, gridcolor:'#000000', tickfont:{size:11}},
+    yaxis:{title:'Degree of Experiential Learning', range:[0.5,5.5], tick0:1, dtick:1, zeroline:false, gridcolor:'#000000'},
+    plot_bgcolor:'#f8fafc', paper_bgcolor:'white',
+    margin:{l:60,r:30,t:20,b:60},
+    showlegend:false,
+    shapes:[], annotations:[]
+  };
+
+  Plotly.newPlot('chartScatter', traces, layout, {responsive:true,displayModeBar:false}).then(gd => {
+    gd.on('plotly_click', evt => {
+      const name = evt.points[0].customdata[5];
+      if (name) openProfile(name);
+    });
+  });
+}
+
+// ── Overview charts ───────────────────────────────────────────────────────
+function renderOverviewCharts(data) {
+  const typeCounts = {};
+  data.forEach(d=>{ const t=d['Program type (dropdown)']||'Other'; typeCounts[t]=(typeCounts[t]||0)+1; });
+  const te = Object.entries(typeCounts).sort((a,b)=>b[1]-a[1]);
+  Plotly.newPlot('chartByType',[{
+    type:'bar', orientation:'h',
+    y:te.map(e=>e[0]), x:te.map(e=>e[1]),
+    marker:{color:te.map(e=>TYPE_COLORS[e[0]]||'#94a3b8')},
+    text:te.map(e=>e[1]), textposition:'outside',
+    hovertemplate:'%{y}: %{x} programs<extra></extra>'
+  }],{
+    margin:{l:130,r:40,t:10,b:30}, xaxis:{showgrid:false,range:[0,Math.max(...te.map(e=>e[1]))*1.25]},
+    yaxis:{automargin:true,categoryorder:'total ascending'},
+    plot_bgcolor:'white',paper_bgcolor:'white',height:280
+  },{responsive:true,displayModeBar:false});
+
+  const instCounts = {};
+  data.forEach(d=>{ const i=d['Private/Public']||'Unknown'; instCounts[i]=(instCounts[i]||0)+1; });
+  Plotly.newPlot('chartPubPriv',[{
+    type:'pie', hole:0.55,
+    labels:Object.keys(instCounts), values:Object.values(instCounts),
+    marker:{colors:['#10b981','#3b82f6','#94a3b8']},
+    textinfo:'label+value+percent',
+    textposition:'inside',
+    insidetextorientation:'horizontal',
+    hovertemplate:'%{label}: %{value} programs (%{percent})<extra></extra>'
+  }],{
+    margin:{l:20,r:20,t:10,b:10},
+    plot_bgcolor:'white',paper_bgcolor:'white',height:280,
+    legend:{orientation:'h',y:-0.1}
+  },{responsive:true,displayModeBar:false});
+}
+
+// ── Tuition ───────────────────────────────────────────────────────────────
+function renderTuition(data) {
+  const tuit = data
+    .filter(d=>d['In-State Tuition']!=null||d['Out-of-State Tuition']!=null)
+    .map(d=>({
+      name:d['University Name'],
+      inst: d['In-State Tuition'],
+      oos: d['Out-of-State Tuition'],
+      type: d['Program type (dropdown)']||'Other',
+      pub: d['Private/Public']||'Unknown'
+    }))
+    .sort((a,b)=>(a.inst||a.oos||0)-(b.inst||b.oos||0));
+
+  document.getElementById('tuitionNote').textContent = `${tuit.length} of ${data.length} programs with tuition data.`;
+
+  if (!tuit.length) return;
+  const traces = [];
+  traces.push({
+    type:'bar', name:'In-State', orientation:'h',
+    y:tuit.map(d=>d.name), x:tuit.map(d=>d.inst),
+    marker:{color:'#3b82f6'},
+    hovertemplate:'<b>%{y}</b><br>In-State: $%{x:,.0f}<extra></extra>'
+  });
+  traces.push({
+    type:'bar', name:'Out-of-State', orientation:'h',
+    y:tuit.map(d=>d.name), x:tuit.map(d=>d.oos),
+    marker:{color:'#bfdbfe'},
+    hovertemplate:'<b>%{y}</b><br>Out-of-State: $%{x:,.0f}<extra></extra>'
+  });
+  Plotly.newPlot('chartTuition', traces, {
+    barmode:'overlay',
+    xaxis:{title:'Annual Tuition', tickprefix:'$', tickformat:',.0f', gridcolor:'#f1f5f9'},
+    yaxis:{automargin:true, tickfont:{size:10.5}},
+    plot_bgcolor:'#f8fafc', paper_bgcolor:'white', height:380,
+    margin:{l:220,r:30,t:10,b:50},
+    legend:{orientation:'h',y:1.04},
+    hovermode:'y unified'
+  },{responsive:true,displayModeBar:false});
+}
+
+// ── Year chart ────────────────────────────────────────────────────────────
+function renderYear(data) {
+  const yd = data.filter(d=>d['Year Established']!=null&&!isNaN(d['Year Established']));
+  document.getElementById('yearNote').textContent = `${yd.length} of ${data.length} programs have year data.`;
+  if (!yd.length) return;
+  const typeGroups = [...new Set(yd.map(d=>d['Program type (dropdown)']||'Other'))];
+  const traces = typeGroups.map(t=>({
+    type:'histogram', name:t,
+    x:yd.filter(d=>(d['Program type (dropdown)']||'Other')===t).map(d=>d['Year Established']),
+    marker:{color:TYPE_COLORS[t]||'#94a3b8'},
+    xbins:{size:1}, opacity:.85,
+    hovertemplate:t+' — %{x}: %{y}<extra></extra>'
+  }));
+  Plotly.newPlot('chartYear', traces, {
+    barmode:'stack',
+    xaxis:{title:'Year',dtick:2,tickangle:-30},
+    yaxis:{title:'Programs',dtick:1},
+    plot_bgcolor:'#f8fafc',paper_bgcolor:'white',height:240,
+    margin:{l:40,r:20,t:10,b:60},
+    bargap:0.15,
+    legend:{orientation:'h',y:1.04}
+  },{responsive:true,displayModeBar:false});
+}
+
+// ── Bubble map ────────────────────────────────────────────────────────────
+function renderMap() {
+  const data = getFiltered();
+  // Jitter programs in same state so bubbles don't overlap
+  const stateOffset = {};
+  const traces = [];
+  const typeGroups = [...new Set(data.map(d=>d['Program type (dropdown)']||'Other'))];
+
+  typeGroups.forEach(type => {
+    const sub = data.filter(d=>(d['Program type (dropdown)']||'Other')===type);
+    const lats=[], lons=[], texts=[], customs=[];
+    sub.forEach(d => {
+      const st = d['State'];
+      if (!st || !STATE_COORDS[st]) return;
+      stateOffset[st] = (stateOffset[st]||0);
+      const offset = stateOffset[st];
+      stateOffset[st]++;
+      const jitterLat = (Math.floor(offset/3)-1)*1.4;
+      const jitterLon = ((offset%3)-1)*1.8;
+      lats.push(STATE_COORDS[st][0]+jitterLat);
+      lons.push(STATE_COORDS[st][1]+jitterLon);
+      texts.push(d['University Name']);
+      customs.push([
+        d['Program type (dropdown)']||'—',
+        d['Private/Public']||'—',
+        d['Sports Analytics or Sports Science']||'—',
+        d['University Name']
+      ]);
+    });
+    if (!lats.length) return;
+    traces.push({
+      type:'scattergeo', mode:'markers', name:type,
+      lat:lats, lon:lons, text:texts,
+      customdata:customs,
+      marker:{size:13, color:TYPE_COLORS[type]||'#94a3b8', opacity:.85, line:{width:1.5,color:'white'}},
+      hovertemplate:'<b>%{text}</b><br>%{customdata[0]} | %{customdata[1]}<br>Focus: %{customdata[2]}<extra></extra>'
+    });
+  });
+
+  if (showPac12) {
+    const pac12Lats=[], pac12Lons=[], pac12Texts=[], pac12Customs=[];
+    data.forEach(d => {
+      if (!isPac12(d['University Name'])) return;
+      const st = d['State'];
+      if (!st || !STATE_COORDS[st]) return;
+      pac12Lats.push(STATE_COORDS[st][0]);
+      pac12Lons.push(STATE_COORDS[st][1]);
+      pac12Texts.push(d['University Name']);
+      pac12Customs.push([d['Program type (dropdown)']||'—', d['Private/Public']||'—', d['Sports Analytics or Sports Science']||'—', d['University Name']]);
+    });
+    if (pac12Lats.length) {
+      traces.push({
+        type:'scattergeo', mode:'markers', name:'Pac-12',
+        lat:pac12Lats, lon:pac12Lons, text:pac12Texts, customdata:pac12Customs,
+        marker:{size:22, color:'#d97706', symbol:'star', opacity:1, line:{width:2.5, color:'white'}},
+        hovertemplate:'<b>%{text}</b> ⭐ Pac-12<br>%{customdata[0]} | %{customdata[1]}<br>Focus: %{customdata[2]}<extra></extra>'
+      });
+    }
+  }
+
+  if (!traces.length) { document.getElementById('chartMap').innerHTML='<div class="empty-state">No programs with location data.</div>'; return; }
+
+  Plotly.newPlot('chartMap', traces, {
+    geo:{scope:'usa', projection:{type:'albers usa'}, showland:true, landcolor:'#f1f5f9', showlakes:true, lakecolor:'#e0f2fe', showcountries:false, subunitcolor:'#cbd5e1'},
+    margin:{l:0,r:0,t:10,b:0}, height:460, paper_bgcolor:'white',
+    legend:{orientation:'h',y:1.02,title:{text:'Program Type:'}},
+    hovermode:'closest',
+    hoverlabel:{bgcolor:'#000000', font:{color:'white', size:12}, bordercolor:'#000000'}
+  },{responsive:true,displayModeBar:false}).then(gd=>{
+    gd.on('plotly_click',evt=>{
+      const name=evt.points[0].customdata[3];
+      if (name) openProfile(name);
+    });
+  });
+}
+
+// ── Directory table ───────────────────────────────────────────────────────
+function renderTable() {
+  const data = getFiltered();
+  const q = (document.getElementById('tableSearch')||{}).value||'';
+  let filtered = q ? data.filter(d=>(d['University Name']||'').toLowerCase().includes(q.toLowerCase())) : data;
+  filtered = [...filtered].sort((a,b)=>String(a[sortCol]||'').localeCompare(String(b[sortCol]||''),undefined,{numeric:true})*sortDir);
+  document.getElementById('tableCount').textContent = `${filtered.length} program${filtered.length!==1?'s':''}`;
+  document.getElementById('dirTableBody').innerHTML = filtered.map(d=>{
+    const pt=d['Program type (dropdown)']||'Other';
+    const focus=d['Sports Analytics or Sports Science']||'—';
+    return `<tr data-uni="${d['University Name'].replace(/"/g,'&quot;')}" style="cursor:pointer" title="Click to view profile">
+      <td><strong>${d['University Name']}</strong>${showPac12 && isPac12(d['University Name']) ? ' <span style="display:inline-block;padding:1px 7px;border-radius:10px;background:#d97706;color:white;font-size:.6rem;font-weight:700;vertical-align:middle;letter-spacing:.3px">PAC-12</span>' : ''}</td>
+      <td><span class="badge ${badgeClass(pt)}">${pt}</span></td>
+      <td style="color:#475569">${d['Program Name']||'—'}</td>
+      <td>${d['State']||'—'}</td>
+      <td>${focus}</td>
+      <td style="text-align:center">${d['Undergrad program']==='Yes'?'✓':'—'}</td>
+      <td style="text-align:center">${d['Graduate program']==='Yes'?'✓':'—'}</td>
+      <td>${d['Year Established']!=null?Math.round(d['Year Established']):'—'}</td>
+      <td>${d['Technical vs Applied (0-5)']!=null?d['Technical vs Applied (0-5)']+'/5':'—'}</td>
+      <td>${d['Degree of Experiental Learning (0-5)']!=null?d['Degree of Experiental Learning (0-5)']+'/5':'—'}</td>
+      <td><button data-profile="${d['University Name'].replace(/"/g,'&quot;')}" style="padding:3px 10px;border-radius:6px;border:1.5px solid #cbd5e1;background:white;font-size:.72rem;color:#475569;cursor:pointer;white-space:nowrap">Profile →</button></td>
+    </tr>`;
+  }).join('');
+}
+
+function sortTable(col) {
+  sortDir = sortCol===col ? sortDir*-1 : 1;
+  sortCol = col;
+  renderTable();
+}
+
+// ── Credits ───────────────────────────────────────────────────────────────
+function setCHLevel(val) {
+  chLevel = val;
+  document.querySelectorAll('.section-toggle .toggle-btn').forEach(b=>b.classList.toggle('active',b.dataset.val===val));
+  renderCredits();
+}
+
+function toggleChSubject(col) {
+  if (chSubjects.has(col)) { chSubjects.delete(col); } else { chSubjects.add(col); }
+  renderCredits();
+}
+
+function resetChSubjects() {
+  chSubjects.clear();
+  renderCredits();
+}
+
+function buildChSubjectKey() {
+  const container = document.getElementById('chSubjectKey');
+  if (!container) return;
+  container.innerHTML = CH_COLS.map((col,i) => {
+    const color = SUBJ_COLORS[i];
+    const label = CH_LABELS[col];
+    return `<button onclick="toggleChSubject('${col}')" id="chChip-${i}" style="
+      display:inline-flex;align-items:center;gap:7px;padding:6px 14px;border-radius:999px;
+      border:2px solid ${color};background:white;color:#475569;font-size:.8rem;font-weight:600;
+      cursor:pointer;transition:all .15s;user-select:none;" title="Click to filter by ${label}">
+      <span style="width:10px;height:10px;border-radius:50%;background:${color};flex-shrink:0"></span>${label}
+    </button>`;
+  }).join('');
+}
+
+function updateChSubjectKey() {
+  CH_COLS.forEach((col,i) => {
+    const btn = document.getElementById('chChip-'+i);
+    if (!btn) return;
+    const color = SUBJ_COLORS[i];
+    const active = chSubjects.has(col);
+    btn.style.background = active ? color : 'white';
+    btn.style.color = active ? 'white' : '#475569';
+    btn.style.boxShadow = active ? `0 0 0 3px ${color}55` : 'none';
+  });
+}
+
+function renderCredits() {
+  updateChSubjectKey();
+  let data = getFiltered();
+  if (chLevel==='ug') data=data.filter(d=>d['Undergrad program']==='Yes');
+  if (chLevel==='grad') data=data.filter(d=>d['Graduate program']==='Yes');
+  const activeCols = chSubjects.size > 0 ? CH_COLS.filter(c=>chSubjects.has(c)) : CH_COLS;
+  const withCH = data.filter(d=>activeCols.some(c=>d[c]!=null&&d[c]>0));
+  document.getElementById('chNote').textContent = `Credit hour data available for ${withCH.length} of ${data.length} programs shown. Programs without reported hours are not included in the chart below.`;
+
+  if (!withCH.length) return;
+  const sorted = [...withCH].sort((a,b)=>
+    a['University Name'].localeCompare(b['University Name'])
+  );
+
+  const chartHeight = Math.max(400, sorted.length * 28 + 100);
+
+  const traces = CH_COLS.map((col,i)=>({
+    type:'bar', name:CH_LABELS[col], orientation:'h',
+    y:sorted.map(d=>d['University Name']),
+    x:sorted.map(d=>activeCols.includes(col) ? (d[col]||0) : 0),
+    marker:{color:SUBJ_COLORS[i]},
+    hovertemplate:'<b>%{y}</b><br>'+CH_LABELS[col]+': %{x} hrs<extra></extra>'
+  }));
+
+  // Dummy trace to activate the top x-axis
+  traces.push({
+    type:'scatter', mode:'markers',
+    x:[null], y:[sorted[0]['University Name']],
+    xaxis:'x2', yaxis:'y',
+    marker:{opacity:0}, showlegend:false, hoverinfo:'skip'
+  });
+
+  Plotly.newPlot('chartCH', traces, {
+    barmode:'stack',
+    yaxis:{automargin:true,tickfont:{size:10.5},categoryorder:'category descending',showline:true,linecolor:'#94a3b8',linewidth:2,showgrid:true,gridcolor:'#e2e8f0',range:[-0.5,sorted.length-0.5]},
+    xaxis:{title:{text:'Credit Hours',standoff:8}, gridcolor:'#f1f5f9', showline:true, linecolor:'#94a3b8', linewidth:1},
+    xaxis2:{overlaying:'x', side:'top', matches:'x', title:{text:'Credit Hours',standoff:8}, showgrid:false, zeroline:false, showline:true, linecolor:'#94a3b8', linewidth:1},
+    plot_bgcolor:'#f8fafc',paper_bgcolor:'white',height:chartHeight,
+    margin:{l:220,r:30,t:42,b:52},
+    showlegend:false
+  },{responsive:true,displayModeBar:false});
+
+  // Averages donut — only count programs that have >0 for that subject
+  const avgSlices=[];
+  CH_COLS.forEach((col,i)=>{
+    const vals=withCH.map(d=>d[col]||0).filter(v=>v>0);
+    if (vals.length) avgSlices.push({label:CH_LABELS[col], val:+(vals.reduce((a,b)=>a+b,0)/vals.length).toFixed(1), color:SUBJ_COLORS[i]});
+  });
+  Plotly.newPlot('chartCHDonut',[{
+    type:'pie',hole:0.5,
+    labels:avgSlices.map(s=>s.label),values:avgSlices.map(s=>s.val),
+    marker:{colors:avgSlices.map(s=>s.color)},
+    textinfo:'label+percent',
+    textposition:'outside',
+    hovertemplate:'%{label}<br>Avg: %{value:.1f} hrs<extra></extra>'
+  }],{
+    margin:{l:60,r:60,t:40,b:40},paper_bgcolor:'white',height:340,
+    showlegend:false
+  },{responsive:true,displayModeBar:false});
+
+  // Subject by inst type (grouped bar)
+  const instTypes=[...new Set(withCH.map(d=>d['Private/Public']||'Unknown'))];
+  const instTraces = CH_COLS.map((col,i)=>({
+    type:'bar', name:CH_LABELS[col],
+    x:instTypes,
+    y:instTypes.map(inst=>{
+      const vals=withCH.filter(d=>(d['Private/Public']||'Unknown')===inst).map(d=>d[col]||0);
+      return vals.length ? +(vals.reduce((a,b)=>a+b,0)/vals.length).toFixed(1) : 0;
+    }),
+    marker:{color:SUBJ_COLORS[i]},
+    hovertemplate:'%{x} — '+CH_LABELS[col]+': avg %{y:.1f} hrs<extra></extra>'
+  }));
+  Plotly.newPlot('chartCHInst',instTraces,{
+    barmode:'group',
+    xaxis:{title:'Institution Type'},
+    yaxis:{title:'Avg Credit Hours',gridcolor:'#f1f5f9'},
+    plot_bgcolor:'#f8fafc',paper_bgcolor:'white',height:300,
+    margin:{l:50,r:20,t:10,b:50},
+    legend:{orientation:'h',y:1.04,font:{size:10}}
+  },{responsive:true,displayModeBar:false});
+}
+
+// ── Profile select ────────────────────────────────────────────────────────
+function populateProfileSelect(data) {
+  const pSel=document.getElementById('profileSelect');
+  const pCur=pSel.value;
+  pSel.innerHTML='<option value="">— Choose a program to explore —</option>';
+  [...data].sort((a,b)=>a['University Name'].localeCompare(b['University Name'])).forEach(d=>{
+    const o=document.createElement('option');
+    o.value=d['University Name']; o.textContent=d['University Name'];
+    pSel.appendChild(o);
+  });
+  if (pCur && [...pSel.options].some(o=>o.value===pCur)) pSel.value=pCur;
+}
+
+// ── Profile ───────────────────────────────────────────────────────────────
+function openProfile(name) {
+  switchTab('profile');
+  document.getElementById('profileSelect').value = name;
+  renderProfile();
+  window.scrollTo(0,0);
+}
+
+function renderProfile() {
+  const name = document.getElementById('profileSelect').value;
+  const container = document.getElementById('profileContent');
+  if (!name) {
+    container.innerHTML = '<div class="profile-empty"><svg width="52" height="52" viewBox="0 0 24 24" fill="none" stroke="#cbd5e1" stroke-width="1.25" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg><p>Select a program above to generate its full profile.</p></div>';
+    return;
+  }
+  const d = RAW_DATA.find(r => r['University Name'] === name);
+  if (!d) return;
+
+  const pt   = d['Program type (dropdown)'] || '—';
+  const focus = (d['Sports Analytics or Sports Science'] || '').trim();
+  const ta   = d['Technical vs Applied (0-5)'];
+  const el   = d['Degree of Experiental Learning (0-5)'];
+  const hasUG  = d['Undergrad program'] === 'Yes';
+  const hasGrad = d['Graduate program'] === 'Yes';
+  const level  = hasUG && hasGrad ? 'UG + Graduate' : hasUG ? 'Undergraduate' : hasGrad ? 'Graduate' : '—';
+  const website = d['Website link '] || d['Website link'] || '';
+
+  // Quick facts
+  const facts = [
+    ['Program Type',   pt],
+    ['Level',          level],
+    ['Institution',    d['Private/Public'] || '—'],
+    ['Location',       [d['City'], d['State']].filter(Boolean).join(', ') || '—'],
+    ['Year Est.',      d['Year Established'] ? Math.round(d['Year Established']) : '—'],
+    ['Department',     d['Department/College housed in (ex: Business, Education, Economics, etc)'] || '—'],
+    ['Analytics Focus', d['Sports analytics focus (business, tech, human phys, etc)'] || '—'],
+    ['In-State Tuition',  d['In-State Tuition']  != null ? '$' + Number(d['In-State Tuition']).toLocaleString()  : '—'],
+    ['Out-of-State Tuition', d['Out-of-State Tuition'] != null ? '$' + Number(d['Out-of-State Tuition']).toLocaleString() : '—'],
+  ];
+
+  const techAspects   = d['Technical Aspects: (Computer Science, Data Engineering, Algorithms, Machine Learning, Other, N/A)'] || '';
+  const appliedAspects = d['Applied Aspects: (Marketing, Sports Management, Finance, Kinesiology, Human Physology, Other, N/A'] || '';
+  const partners       = d['External partners (Athletics, community)'] || '';
+  const internship     = d['Required internship or capstone (if applicable)'] || '';
+  const clubs          = d['Student clubs (if applicable)'] || '';
+  const mission        = d['Mission Statement'] || '';
+  const vision         = d['Vision Statement'] || '';
+  const problem        = d["Problem They're solving"] || '';
+  const ugHours        = d['Credit Hours Undergraduate  (or N/A)'] || '';
+  const gradHours      = d['Credit Hours Graduate (or N/A)'] || '';
+
+  const chData = CH_COLS.map(c => ({ label: CH_LABELS[c], val: d[c] || 0 })).filter(r => r.val > 0);
+
+  // Scale bar helper
+  const scaleBar = function(val, label, leftLabel, rightLabel, gradient) {
+    if (val == null) return `<div class="profile-scale-block"><div class="lbl">${label}</div><span style="color:#94a3b8;font-size:.85rem">Not rated</span></div>`;
+    const pct = (val / 5) * 100;
+    return `<div class="profile-scale-block">
+      <div style="display:flex;justify-content:space-between;align-items:baseline;margin-bottom:8px">
+        <div class="lbl">${label}</div>
+        <div class="profile-scale-val">${val}<span style="font-size:.9rem;color:#94a3b8">/5</span></div>
+      </div>
+      <div class="profile-scale-bar-bg"><div class="profile-scale-bar-fill" style="width:${pct}%;background:${gradient}"></div></div>
+      <div class="profile-scale-meta"><span>${leftLabel}</span><span>${rightLabel}</span></div>
+    </div>`;
+  }
+
+  // Optional section helper
+  const optSection = function(label, content) {
+    if (!content || content.trim() === 'N/A') return '';
+    return `<div class="profile-text-block"><div class="profile-section-title">${label}</div><p>${content}</p></div>`;
+  }
+
+  container.innerHTML = `
+    <div class="profile-page" id="printable-profile">
+
+      <div class="profile-hero">
+        <div class="profile-hero-top">
+          <div>
+            <div class="profile-uni">${d['University Name']}</div>
+            <div class="profile-prog-name">${d['Program Name'] || ''}</div>
+            ${website && website.startsWith('http') ? `<div class="profile-website"><a href="${website}" target="_blank" rel="noopener">🔗 ${website}</a></div>` : ''}
+          </div>
+          <div style="text-align:right;white-space:nowrap">
+            <div style="font-size:.75rem;color:#64748b;margin-bottom:4px">Generated ${new Date().toLocaleDateString('en-US',{month:'long',day:'numeric',year:'numeric'})}</div>
+            <div style="font-size:.75rem;color:#64748b">Sports Analytics Programs Research</div>
+          </div>
+        </div>
+        <div class="profile-hero-badges">
+          <span class="profile-badge accent">${pt}</span>
+          <span class="profile-badge">${level}</span>
+          <span class="profile-badge">${d['Private/Public'] || '—'}</span>
+          ${[d['City'], d['State']].filter(Boolean).length ? `<span class="profile-badge">${[d['City'],d['State']].filter(Boolean).join(', ')}</span>` : ''}
+          ${d['Year Established'] ? `<span class="profile-badge">Est. ${Math.round(d['Year Established'])}</span>` : ''}
+          ${['Analytics','Science'].includes(focus) ? `<span class="profile-badge accent">${focus}</span>` : ''}
+        </div>
+      </div>
+
+      <div class="profile-body">
+
+        <!-- Quick facts + scales -->
+        <div class="profile-grid-2" style="margin-bottom:20px">
+          <div>
+            <div class="profile-section-title">Program Details</div>
+            <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px">
+              ${facts.map(([k,v]) => `<div class="profile-fact-block"><div class="lbl">${k}</div><div class="val">${v}</div></div>`).join('')}
+            </div>
+          </div>
+          <div>
+            <div class="profile-section-title">Orientation Ratings</div>
+            <div style="display:flex;flex-direction:column;gap:12px">
+              ${scaleBar(ta, 'Technical', '← Low', 'High →', 'linear-gradient(90deg,#3b82f6,#8b5cf6)')}
+              ${scaleBar(el, 'Experiential Learning', '← Low intensity', 'High intensity →', 'linear-gradient(90deg,#10b981,#3b82f6)')}
+              ${(ugHours && ugHours !== 'N/A') || (gradHours && gradHours !== 'N/A') ? `
+              <div class="profile-fact-block">
+                <div class="lbl">Credit Hours</div>
+                <div class="val">${ugHours && ugHours !== 'N/A' ? 'UG: '+ugHours : ''}${ugHours && gradHours && ugHours !== 'N/A' && gradHours !== 'N/A' ? ' · ' : ''}${gradHours && gradHours !== 'N/A' ? 'Grad: '+gradHours : ''}</div>
+              </div>` : ''}
+            </div>
+          </div>
+        </div>
+
+        <hr class="profile-divider">
+
+        <!-- Curriculum emphasis -->
+        ${(techAspects || appliedAspects) ? `
+        <div class="profile-section-title">Curriculum Emphasis</div>
+        <div class="${techAspects && appliedAspects ? 'profile-grid-2' : ''}" style="margin-bottom:20px">
+          ${techAspects ? `<div class="profile-text-block" style="margin-bottom:0"><div class="lbl" style="font-size:.68rem;font-weight:600;color:#94a3b8;text-transform:uppercase;letter-spacing:.5px;margin-bottom:6px">Technical Components</div><p>${techAspects}</p></div>` : ''}
+          ${appliedAspects ? `<div class="profile-text-block" style="margin-bottom:0"><div class="lbl" style="font-size:.68rem;font-weight:600;color:#94a3b8;text-transform:uppercase;letter-spacing:.5px;margin-bottom:6px">Experiential Components</div><p>${appliedAspects}</p></div>` : ''}
+        </div>
+        <hr class="profile-divider">` : ''}
+
+        <!-- Credit hours charts -->
+        ${chData.length ? `
+        <div class="profile-section-title">Credit Hours by Subject</div>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:20px;align-items:start">
+          <div>
+            <div style="font-size:.7rem;color:#94a3b8;font-weight:600;text-transform:uppercase;letter-spacing:.5px;margin-bottom:8px">Hours per Discipline</div>
+            <div id="profileCHChart" style="height:${Math.max(160, chData.length * 42)}px"></div>
+          </div>
+          <div>
+            <div style="font-size:.7rem;color:#94a3b8;font-weight:600;text-transform:uppercase;letter-spacing:.5px;margin-bottom:8px">Share of Tracked Hours</div>
+            <div id="profileCHPie" style="height:${Math.max(220, chData.length * 42)}px"></div>
+          </div>
+        </div>
+        <hr class="profile-divider">` : ''}
+
+        <!-- Partnerships & experiential -->
+        ${(partners || internship || clubs) ? `
+        <div class="profile-section-title">Experiential &amp; Industry Engagement</div>
+        <div class="profile-grid-3" style="margin-bottom:20px">
+          ${partners ? `<div class="profile-fact-block"><div class="lbl">External Partners</div><div class="val">${partners}</div></div>` : ''}
+          ${internship && internship !== 'N/A' ? `<div class="profile-fact-block"><div class="lbl">Internship / Capstone</div><div class="val">${internship}</div></div>` : ''}
+          ${clubs && clubs !== 'N/A' ? `<div class="profile-fact-block"><div class="lbl">Student Clubs</div><div class="val">${clubs}</div></div>` : ''}
+        </div>
+        <hr class="profile-divider">` : ''}
+
+        <!-- Mission & problem -->
+        ${mission ? `
+        <div class="profile-section-title">Mission Statement</div>
+        <div class="profile-text-block"><p>${mission}</p></div>` : ''}
+
+        ${problem ? `
+        <div class="profile-section-title">Problem They're Solving</div>
+        <div class="profile-text-block"><p>${problem}</p></div>` : ''}
+
+        ${vision ? `
+        <div class="profile-section-title">Vision Statement</div>
+        <div class="profile-text-block"><p>${vision}</p></div>` : ''}
+
+      </div>
+    </div>
+  `;
+
+  // Render credit hours charts
+  if (chData.length) {
+    const chHeight = Math.max(220, chData.length * 42);
+    setTimeout(() => {
+      Plotly.newPlot('profileCHChart', [{
+        type: 'bar', orientation: 'h',
+        y: chData.map(r => r.label),
+        x: chData.map(r => r.val),
+        text: chData.map(r => r.val + ' hrs'),
+        textposition: 'outside',
+        marker: { color: chData.map((_, i) => SUBJ_COLORS[i % SUBJ_COLORS.length]) },
+        hovertemplate: '%{y}: %{x} hrs<extra></extra>'
+      }], {
+        margin: { l: 150, r: 60, t: 10, b: 30 },
+        xaxis: { title: 'Credit Hours', gridcolor: '#f1f5f9', range: [0, Math.max(...chData.map(r=>r.val)) * 1.25] },
+        yaxis: { automargin: true, tickfont: { size: 12 } },
+        plot_bgcolor: '#f8fafc', paper_bgcolor: '#f8fafc',
+        height: chHeight
+      }, { responsive: true, displayModeBar: false });
+
+      Plotly.newPlot('profileCHPie', [{
+        type: 'pie', hole: 0.45,
+        labels: chData.map(r => r.label),
+        values: chData.map(r => r.val),
+        marker: { colors: chData.map((_, i) => SUBJ_COLORS[i % SUBJ_COLORS.length]) },
+        textinfo: 'percent',
+        hovertemplate: '<b>%{label}</b><br>%{value} hrs (%{percent})<extra></extra>',
+        sort: false
+      }], {
+        margin: { l: 10, r: 10, t: 10, b: 10 },
+        paper_bgcolor: '#f8fafc',
+        height: chHeight,
+        legend: { orientation: 'v', font: { size: 11 }, x: 1, y: 0.5, xanchor: 'left' },
+        showlegend: true
+      }, { responsive: true, displayModeBar: false });
+    }, 80);
+  }
+}
+
+// ── Export CSV ────────────────────────────────────────────────────────────
+function exportCSV() {
+  const data = getFiltered();
+  if (!data.length) return;
+  const keys = Object.keys(data[0]);
+  const rows = [keys.join(','), ...data.map(d=>keys.map(k=>{
+    const v = d[k]==null?'':String(d[k]);
+    return v.includes(',') || v.includes('"') || v.includes('\n') ? '"' + v.replace(/"/g, '""') + '"' : v;
+  }).join(','))];
+  const blob = new Blob([rows.join('\n')],{type:'text/csv'});
+  const a = document.createElement('a');
+  a.href=URL.createObjectURL(blob); a.download='sports_analytics_programs_filtered.csv'; a.click();
+}
+
+// ── Init ──────────────────────────────────────────────────────────────────
+document.addEventListener('DOMContentLoaded', function() {
+
+  // Tab buttons
+  document.querySelectorAll('.tab-btn[data-tab]').forEach(function(btn) {
+    btn.addEventListener('click', function() { switchTab(btn.dataset.tab); });
+  });
+
+  // Filter toggle buttons
+  document.querySelectorAll('.toggle-btn[data-filter]').forEach(function(btn) {
+    btn.addEventListener('click', function() { setToggle(btn.dataset.filter, btn.dataset.val); });
+  });
+
+  // Filter dropdowns
+  document.getElementById('typeFilter').addEventListener('change', applyFilters);
+  document.getElementById('stateFilter').addEventListener('change', applyFilters);
+
+  // Reset button
+  document.getElementById('resetBtn').addEventListener('click', resetFilters);
+
+  // Export button
+  document.getElementById('exportBtn').addEventListener('click', exportCSV);
+
+  // Print button
+  document.getElementById('printBtn').addEventListener('click', function() { window.print(); });
+
+  // CH level toggles
+  ['chAll','chUG','chGrad'].forEach(function(id) {
+    var el = document.getElementById(id);
+    if (el) el.addEventListener('click', function() { setCHLevel(el.dataset.level); });
+  });
+
+  // Table search
+  document.getElementById('tableSearch').addEventListener('input', renderTable);
+
+  // Profile select
+  document.getElementById('profileSelect').addEventListener('change', renderProfile);
+
+
+  // Event delegation for dynamic table rows
+  document.getElementById('dirTableBody').addEventListener('click', function(e) {
+    var tr = e.target.closest('tr[data-uni]');
+    if (tr) openProfile(tr.dataset.uni);
+    var btn = e.target.closest('button[data-profile]');
+    if (btn) { e.stopPropagation(); openProfile(btn.dataset.profile); }
+  });
+
+  // Run
+  populateFilterDropdowns();
+  buildChSubjectKey();
+  applyFilters();
+});
+</script>
+</body>
+</html>
