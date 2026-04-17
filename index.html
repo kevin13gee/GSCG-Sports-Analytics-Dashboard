@@ -36,15 +36,15 @@
   .export-btn:hover { border-color:var(--gu-wheat); color:var(--gu-wheat); background:rgba(222,203,153,.08); }
 
   /* Filter bar */
-  .filter-bar { background:white; border-bottom:1px solid #e2e8f0; padding:10px 32px; display:flex; align-items:center; gap:16px; flex-wrap:wrap; position:sticky; top:0; z-index:100; box-shadow:0 1px 8px rgba(0,0,0,.07); }
-  .filter-group { display:flex; align-items:center; gap:5px; }
-  .filter-label { font-size:.7rem; font-weight:600; color:#64748b; text-transform:uppercase; letter-spacing:.5px; white-space:nowrap; }
-  .toggle-btn { padding:4px 11px; border-radius:99px; border:1.5px solid #cbd5e1; background:white; font-size:.78rem; cursor:pointer; color:#475569; transition:all .15s; }
+  .filter-bar { background:white; border-bottom:1px solid #e2e8f0; padding:8px 16px; display:flex; align-items:center; gap:8px; flex-wrap:nowrap; position:sticky; top:0; z-index:100; box-shadow:0 1px 8px rgba(0,0,0,.07); overflow-x:auto; }
+  .filter-group { display:flex; align-items:center; gap:4px; }
+  .filter-label { font-size:.67rem; font-weight:600; color:#64748b; text-transform:uppercase; letter-spacing:.4px; white-space:nowrap; }
+  .toggle-btn { padding:3px 8px; border-radius:99px; border:1.5px solid #cbd5e1; background:white; font-size:.73rem; cursor:pointer; color:#475569; transition:all .15s; white-space:nowrap; }
   .toggle-btn.active { background:var(--gu-river-blue); border-color:var(--gu-river-blue); color:white; font-weight:600; }
   .toggle-btn:hover:not(.active) { border-color:var(--gu-river-blue); color:var(--gu-river-blue); }
-  .filter-select { padding:4px 8px; border-radius:6px; border:1.5px solid #cbd5e1; font-size:.78rem; color:#475569; background:white; cursor:pointer; max-width:140px; }
-  .filter-divider { width:1px; height:24px; background:#e2e8f0; }
-  .filter-reset { padding:4px 12px; border-radius:6px; border:1.5px solid #e2e8f0; background:white; font-size:.78rem; color:#64748b; cursor:pointer; margin-left:auto; }
+  .filter-select { padding:3px 6px; border-radius:6px; border:1.5px solid #cbd5e1; font-size:.73rem; color:#475569; background:white; cursor:pointer; max-width:90px; }
+  .filter-divider { width:1px; height:22px; background:#e2e8f0; }
+  .filter-reset { padding:4px 12px; border-radius:6px; border:1.5px solid #e2e8f0; background:white; font-size:.78rem; color:#64748b; cursor:pointer; }
   .filter-reset:hover { border-color:#ef4444; color:#ef4444; }
   .filter-count { font-size:.75rem; color:#64748b; white-space:nowrap; }
   .filter-count strong { color:#0f172a; }
@@ -56,11 +56,11 @@
   .tab-btn:hover:not(.active) { color:var(--gu-blue); background:#f8fafc; }
 
   /* Content */
-  .tab-panel { display:none; padding:24px 32px; }
+  .tab-panel { display:none; padding:16px 32px 24px; }
   .tab-panel.active { display:block; }
 
   /* Stat cards */
-  .stat-row { display:grid; grid-template-columns:repeat(5,1fr); gap:14px; margin-bottom:22px; }
+  .stat-row { display:grid; grid-template-columns:repeat(5,1fr); gap:14px; margin-bottom:0; }
   .stat-card { background:white; border-radius:12px; padding:18px 16px; box-shadow:0 1px 3px rgba(0,0,0,.07); border:1px solid #f1f5f9; text-align:center; transition:box-shadow .2s, transform .2s; cursor:default; }
   .stat-card:hover { box-shadow:0 4px 14px rgba(0,0,0,.1); transform:translateY(-1px); }
   .stat-card .val { font-size:1.9rem; font-weight:700; color:#0f172a; line-height:1; }
@@ -186,7 +186,7 @@
     .header, .filter-bar, .tabs, .profile-select-wrap, .profile-print-btn { display:none !important; }
     body { background:white; }
     .tab-panel { display:block !important; padding:0; }
-    #tab-overview, #tab-map, #tab-directory, #tab-scatter, #tab-credits { display:none !important; }
+    #tab-overview, #tab-map, #tab-directory, #tab-scatter, #tab-credits, #tab-tuition { display:none !important; }
     #tab-profile { display:block !important; }
     .profile-page { box-shadow:none; border-radius:0; max-width:100%; }
     .profile-hero { -webkit-print-color-adjust:exact; print-color-adjust:exact; }
@@ -211,23 +211,29 @@
 <div class="filter-bar">
   <div class="filter-group">
     <span class="filter-label">Focus</span>
-    <button class="toggle-btn active" data-filter="focus" data-val="all">All</button>
-    <button class="toggle-btn" data-filter="focus" data-val="Analytics">Analytics</button>
-    <button class="toggle-btn" data-filter="focus" data-val="Science">Science</button>
+    <select class="filter-select" id="focusFilter">
+      <option value="all">All</option>
+      <option value="Analytics">Analytics</option>
+      <option value="Science">Science</option>
+    </select>
   </div>
   <div class="filter-divider"></div>
   <div class="filter-group">
-    <span class="filter-label">Institution</span>
-    <button class="toggle-btn active" data-filter="inst" data-val="all">All</button>
-    <button class="toggle-btn" data-filter="inst" data-val="Public">Public</button>
-    <button class="toggle-btn" data-filter="inst" data-val="Private">Private</button>
+    <span class="filter-label">Inst.</span>
+    <select class="filter-select" id="instFilter">
+      <option value="all">All</option>
+      <option value="Public">Public</option>
+      <option value="Private">Private</option>
+    </select>
   </div>
   <div class="filter-divider"></div>
   <div class="filter-group">
     <span class="filter-label">Level</span>
-    <button class="toggle-btn active" data-filter="level" data-val="all">All</button>
-    <button class="toggle-btn" data-filter="level" data-val="ug">Undergrad</button>
-    <button class="toggle-btn" data-filter="level" data-val="grad">Graduate</button>
+    <select class="filter-select" id="levelFilter">
+      <option value="all">All</option>
+      <option value="ug">Undergrad</option>
+      <option value="grad">Graduate</option>
+    </select>
   </div>
   <div class="filter-divider"></div>
   <div class="filter-group">
@@ -242,8 +248,21 @@
       <option value="all">All States</option>
     </select>
   </div>
-  <span class="filter-count" id="filterCount"></span>
-  <button class="filter-reset" id="resetBtn">Reset</button>
+  <div class="filter-divider"></div>
+  <div class="filter-group" style="gap:4px;">
+    <span class="filter-label">Tech.</span>
+    <span style="font-size:.68rem;color:#94a3b8;min-width:22px;text-align:center;" id="techRangeLabel">1–5</span>
+    <input type="range" id="techMin" min="1" max="5" value="1" step="1" style="width:46px;accent-color:var(--gu-river-blue);cursor:pointer;">
+    <input type="range" id="techMax" min="1" max="5" value="5" step="1" style="width:46px;accent-color:var(--gu-river-blue);cursor:pointer;">
+  </div>
+  <div class="filter-divider"></div>
+  <div class="filter-group" style="gap:4px;">
+    <span class="filter-label">Exp.</span>
+    <span style="font-size:.68rem;color:#94a3b8;min-width:22px;text-align:center;" id="expRangeLabel">1–5</span>
+    <input type="range" id="expMin" min="1" max="5" value="1" step="1" style="width:46px;accent-color:var(--gu-river-blue);cursor:pointer;">
+    <input type="range" id="expMax" min="1" max="5" value="5" step="1" style="width:46px;accent-color:var(--gu-river-blue);cursor:pointer;">
+    <button class="filter-reset" id="resetBtn" style="margin-left:4px;">Reset</button>
+  </div>
 </div>
 
 <div class="tabs">
@@ -259,13 +278,17 @@
     <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polygon points="3 6 9 3 15 6 21 3 21 18 15 21 9 18 3 21"/><line x1="9" y1="3" x2="9" y2="18"/><line x1="15" y1="6" x2="15" y2="21"/></svg>
     Map
   </button>
-  <button class="tab-btn" data-tab="scatter">
-    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="7" cy="17" r="2"/><circle cx="17" cy="7" r="2"/><circle cx="12" cy="12" r="2"/><circle cx="4" cy="9" r="2"/><circle cx="20" cy="17" r="2"/></svg>
-    Analytics Plot
-  </button>
   <button class="tab-btn" data-tab="credits">
     <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg>
     Curriculum
+  </button>
+  <button class="tab-btn" data-tab="tuition">
+    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>
+    Tuition
+  </button>
+  <button class="tab-btn" data-tab="scatter">
+    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="7" cy="17" r="2"/><circle cx="17" cy="7" r="2"/><circle cx="12" cy="12" r="2"/><circle cx="4" cy="9" r="2"/><circle cx="20" cy="17" r="2"/></svg>
+    Analytics Plot
   </button>
   <button class="tab-btn" data-tab="profile">
     <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
@@ -273,19 +296,15 @@
   </button>
 </div>
 
+<!-- Stat row — always visible, outside tab panels -->
+<div style="padding:16px 32px 0;"><div class="stat-row" id="statRow"></div></div>
+
 <!-- OVERVIEW -->
 <div class="tab-panel active" id="tab-overview">
-  <div class="stat-row" id="statRow"></div>
 
   <div class="chart-row">
     <div class="card"><h3>Programs by Type</h3><div id="chartByType" style="height:280px"></div></div>
-    <div class="card"><h3>Public vs. Private</h3><div id="chartPubPriv" style="height:280px"></div></div>
-  </div>
-
-  <div class="card">
-    <h3>Tuition Comparison</h3>
-    <p class="card-note">Sorted by in-state tuition. <span id="tuitionNote"></span></p>
-    <div id="chartTuition" style="height:380px"></div>
+    <div class="card"><h3>Public vs. Private</h3><div id="chartPubPriv" style="height:300px"></div></div>
   </div>
 
   <div class="card">
@@ -338,27 +357,6 @@
   </div>
 </div>
 
-<!-- ANALYTICS PLOT -->
-<div class="tab-panel" id="tab-scatter">
-  <div class="card">
-    <h3>Technical &amp; Experiential Learning</h3>
-    <p class="card-note">Hover any dot for full details. X-axis: technical depth (1 = low, 5 = high). Y-axis: depth of experiential learning. Click a dot to open that program. Multiple programs sharing the same scores are spread within their intersection.</p>
-    <div style="display:flex;flex-wrap:wrap;gap:10px 18px;margin-bottom:14px;">
-      <span style="display:flex;align-items:center;gap:6px;font-size:.8rem;color:#475569"><span style="width:12px;height:12px;border-radius:50%;background:#3b82f6;display:inline-block"></span>Major</span>
-      <span style="display:flex;align-items:center;gap:6px;font-size:.8rem;color:#475569"><span style="width:12px;height:12px;border-radius:50%;background:#ef4444;display:inline-block"></span>Masters</span>
-      <span style="display:flex;align-items:center;gap:6px;font-size:.8rem;color:#475569"><span style="width:12px;height:12px;border-radius:50%;background:#a855f7;display:inline-block"></span>Online Masters</span>
-      <span style="display:flex;align-items:center;gap:6px;font-size:.8rem;color:#475569"><span style="width:12px;height:12px;border-radius:50%;background:#10b981;display:inline-block"></span>Certificate</span>
-      <span style="display:flex;align-items:center;gap:6px;font-size:.8rem;color:#475569"><span style="width:12px;height:12px;border-radius:50%;background:#f59e0b;display:inline-block"></span>Concentration</span>
-      <span style="display:flex;align-items:center;gap:6px;font-size:.8rem;color:#475569"><span style="width:12px;height:12px;border-radius:50%;background:#ec4899;display:inline-block"></span>Minor</span>
-      <span style="display:flex;align-items:center;gap:6px;font-size:.8rem;color:#475569"><span style="width:12px;height:12px;border-radius:50%;background:#06b6d4;display:inline-block"></span>Lab</span>
-      <span style="display:flex;align-items:center;gap:6px;font-size:.8rem;color:#475569"><span style="width:12px;height:12px;border-radius:50%;background:#84cc16;display:inline-block"></span>Institute</span>
-      <span style="display:flex;align-items:center;gap:6px;font-size:.8rem;color:#475569"><span style="width:12px;height:12px;border-radius:50%;background:#f97316;display:inline-block"></span>Club</span>
-      <span style="display:flex;align-items:center;gap:6px;font-size:.8rem;color:#475569"><span style="width:12px;height:12px;border-radius:50%;background:#14b8a6;display:inline-block"></span>Micro-Credential</span>
-    </div>
-    <div id="chartScatter" style="width:100%;max-width:620px;aspect-ratio:1;margin:0 auto"></div>
-  </div>
-</div>
-
 <!-- CURRICULUM -->
 <div class="tab-panel" id="tab-credits">
   <div class="card">
@@ -379,7 +377,7 @@
       <div style="display:flex;flex-wrap:wrap;gap:8px;" id="chSubjectKey"></div>
     </div>
     <p class="data-note" id="chNote"></p>
-    <div id="chartCH"></div>
+    <div id="chartCH" style="cursor:pointer;"></div>
   </div>
   <div class="card">
     <h3>Average Credit Hours per Subject</h3>
@@ -393,7 +391,193 @@
   </div>
 </div>
 
-<!-- PROGRAM EXPLORER -->
+<!-- TUITION -->
+<div class="tab-panel" id="tab-tuition">
+  <div class="card">
+    <h3>Tuition Comparison</h3>
+    <p class="card-note">Sorted alphabetically. <span id="tuitionNote"></span></p>
+    <div style="display:flex;flex-wrap:wrap;gap:10px;align-items:center;margin-bottom:8px;">
+      <div style="display:flex;gap:6px;align-items:center;">
+        <span style="font-size:.72rem;color:#64748b;font-weight:600;text-transform:uppercase;letter-spacing:.04em;">Institution</span>
+        <button id="tuitToggleAll" style="padding:4px 12px;border-radius:20px;border:1.5px solid #3b82f6;background:#3b82f6;color:#fff;font-size:.78rem;cursor:pointer;font-weight:600;">All</button>
+        <button id="tuitTogglePublic" style="padding:4px 12px;border-radius:20px;border:1.5px solid #10b981;background:white;color:#10b981;font-size:.78rem;cursor:pointer;font-weight:600;">Public</button>
+        <button id="tuitTogglePrivate" style="padding:4px 12px;border-radius:20px;border:1.5px solid #f59e0b;background:white;color:#f59e0b;font-size:.78rem;cursor:pointer;font-weight:600;">Private</button>
+      </div>
+      <div style="width:1px;height:20px;background:#e2e8f0;"></div>
+      <div style="display:flex;gap:6px;align-items:center;">
+        <span style="font-size:.72rem;color:#64748b;font-weight:600;text-transform:uppercase;letter-spacing:.04em;">Rate</span>
+        <button id="tuitToggleBoth" style="padding:4px 12px;border-radius:20px;border:1.5px solid #6366f1;background:#6366f1;color:#fff;font-size:.78rem;cursor:pointer;font-weight:600;">Both</button>
+        <button id="tuitToggleInState" style="padding:4px 12px;border-radius:20px;border:1.5px solid #6366f1;background:white;color:#6366f1;font-size:.78rem;cursor:pointer;font-weight:600;">In-State</button>
+        <button id="tuitToggleOutState" style="padding:4px 12px;border-radius:20px;border:1.5px solid #6366f1;background:white;color:#6366f1;font-size:.78rem;cursor:pointer;font-weight:600;">Out-of-State</button>
+      </div>
+    </div>
+    <div id="chartTuition" style="cursor:pointer;"></div>
+  </div>
+</div>
+
+<!-- ANALYTICS PLOT -->
+<div class="tab-panel" id="tab-scatter">
+  <div style="display:grid;grid-template-columns:minmax(0,2fr) minmax(0,1fr) minmax(0,1fr);gap:14px;height:calc(100vh - 170px);align-items:stretch;">
+
+    <!-- Col 1: chart -->
+    <div class="card" style="min-width:0;margin-bottom:0;display:flex;flex-direction:column;overflow:hidden;">
+      <h3>Technical &amp; Experiential Learning</h3>
+      <p class="card-note" style="margin-bottom:8px;">Hover a dot for details. X = technical depth, Y = experiential depth. Click to open program.</p>
+      <div style="display:flex;flex-wrap:wrap;gap:5px 10px;margin-bottom:8px;">
+        <span style="display:flex;align-items:center;gap:5px;font-size:.72rem;color:#475569"><span style="width:10px;height:10px;border-radius:50%;background:#3b82f6;display:inline-block"></span>Major</span>
+        <span style="display:flex;align-items:center;gap:5px;font-size:.72rem;color:#475569"><span style="width:10px;height:10px;border-radius:50%;background:#ef4444;display:inline-block"></span>Masters</span>
+        <span style="display:flex;align-items:center;gap:5px;font-size:.72rem;color:#475569"><span style="width:10px;height:10px;border-radius:50%;background:#a855f7;display:inline-block"></span>Online Masters</span>
+        <span style="display:flex;align-items:center;gap:5px;font-size:.72rem;color:#475569"><span style="width:10px;height:10px;border-radius:50%;background:#10b981;display:inline-block"></span>Certificate</span>
+        <span style="display:flex;align-items:center;gap:5px;font-size:.72rem;color:#475569"><span style="width:10px;height:10px;border-radius:50%;background:#f59e0b;display:inline-block"></span>Concentration</span>
+        <span style="display:flex;align-items:center;gap:5px;font-size:.72rem;color:#475569"><span style="width:10px;height:10px;border-radius:50%;background:#ec4899;display:inline-block"></span>Minor</span>
+        <span style="display:flex;align-items:center;gap:5px;font-size:.72rem;color:#475569"><span style="width:10px;height:10px;border-radius:50%;background:#06b6d4;display:inline-block"></span>Lab</span>
+        <span style="display:flex;align-items:center;gap:5px;font-size:.72rem;color:#475569"><span style="width:10px;height:10px;border-radius:50%;background:#84cc16;display:inline-block"></span>Institute</span>
+        <span style="display:flex;align-items:center;gap:5px;font-size:.72rem;color:#475569"><span style="width:10px;height:10px;border-radius:50%;background:#f97316;display:inline-block"></span>Club</span>
+        <span style="display:flex;align-items:center;gap:5px;font-size:.72rem;color:#475569"><span style="width:10px;height:10px;border-radius:50%;background:#14b8a6;display:inline-block"></span>Micro-Credential</span>
+      </div>
+      <div id="chartScatter" style="flex:1;min-height:0;"></div>
+    </div>
+
+    <!-- Col 2: Experiential Learning rubric -->
+    <div class="card" style="min-width:0;margin-bottom:0;overflow-y:auto;">
+      <h3 style="margin-bottom:10px;">Degree of Experiential Learning</h3>
+      <div style="display:flex;flex-direction:column;gap:7px;">
+
+        <div style="display:flex;gap:9px;align-items:flex-start;">
+          <span style="min-width:22px;height:22px;border-radius:50%;background:#0f172a;color:white;font-weight:700;font-size:.72rem;display:flex;align-items:center;justify-content:center;flex-shrink:0;">5</span>
+          <div>
+            <div style="font-weight:600;font-size:.75rem;color:#0f172a;margin-bottom:2px;">Extensive &amp; Required</div>
+            <ul style="margin:0;padding-left:14px;font-size:.7rem;color:#475569;line-height:1.45;">
+              <li>Required internship or capstone</li>
+              <li>Direct work with external partner, real deliverable</li>
+              <li>Strong industry connections (pro teams, business, health)</li>
+              <li>Strong faculty support and sports-world leadership</li>
+            </ul>
+          </div>
+        </div>
+
+        <div style="display:flex;gap:9px;align-items:flex-start;">
+          <span style="min-width:22px;height:22px;border-radius:50%;background:#334155;color:white;font-weight:700;font-size:.72rem;display:flex;align-items:center;justify-content:center;flex-shrink:0;">4</span>
+          <div>
+            <div style="font-weight:600;font-size:.75rem;color:#0f172a;margin-bottom:2px;">Required with Real-World Application</div>
+            <ul style="margin:0;padding-left:14px;font-size:.7rem;color:#475569;line-height:1.45;">
+              <li>Required internship or capstone</li>
+              <li>Work with real-world data and application</li>
+              <li>Strong external partners, non-recurring</li>
+            </ul>
+          </div>
+        </div>
+
+        <div style="display:flex;gap:9px;align-items:flex-start;">
+          <span style="min-width:22px;height:22px;border-radius:50%;background:#64748b;color:white;font-weight:700;font-size:.72rem;display:flex;align-items:center;justify-content:center;flex-shrink:0;">3</span>
+          <div>
+            <div style="font-weight:600;font-size:.75rem;color:#0f172a;margin-bottom:2px;">Present but Limited</div>
+            <ul style="margin:0;padding-left:14px;font-size:.7rem;color:#475569;line-height:1.45;">
+              <li>Non-required or loosely embedded internship/capstone</li>
+              <li>Class projects, simulations, or case studies</li>
+              <li>Only one weak external partner</li>
+            </ul>
+          </div>
+        </div>
+
+        <div style="display:flex;gap:9px;align-items:flex-start;">
+          <span style="min-width:22px;height:22px;border-radius:50%;background:#94a3b8;color:white;font-weight:700;font-size:.72rem;display:flex;align-items:center;justify-content:center;flex-shrink:0;">2</span>
+          <div>
+            <div style="font-weight:600;font-size:.75rem;color:#0f172a;margin-bottom:2px;">Surface-Level Exposure</div>
+            <ul style="margin:0;padding-left:14px;font-size:.7rem;color:#475569;line-height:1.45;">
+              <li>No required internship or capstone</li>
+              <li>Sports examples in class, no real application</li>
+              <li>Credits toward degree without sport focus</li>
+            </ul>
+          </div>
+        </div>
+
+        <div style="display:flex;gap:9px;align-items:flex-start;">
+          <span style="min-width:22px;height:22px;border-radius:50%;background:#e2e8f0;color:#475569;font-weight:700;font-size:.72rem;display:flex;align-items:center;justify-content:center;flex-shrink:0;">1</span>
+          <div>
+            <div style="font-weight:600;font-size:.75rem;color:#0f172a;margin-bottom:2px;">No Experiential Component</div>
+            <ul style="margin:0;padding-left:14px;font-size:.7rem;color:#475569;line-height:1.45;">
+              <li>No internship, capstone, or external partners</li>
+              <li>In-class or online learning only</li>
+              <li>Student club at most</li>
+            </ul>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- Col 3: Technical Learning rubric -->
+    <div class="card" style="min-width:0;margin-bottom:0;overflow-y:auto;">
+      <h3 style="margin-bottom:10px;">Degree of Technical Learning</h3>
+      <div style="display:flex;flex-direction:column;gap:7px;">
+
+        <div style="display:flex;gap:9px;align-items:flex-start;">
+          <span style="min-width:22px;height:22px;border-radius:50%;background:#1e40af;color:white;font-weight:700;font-size:.72rem;display:flex;align-items:center;justify-content:center;flex-shrink:0;">5</span>
+          <div>
+            <div style="font-weight:600;font-size:.75rem;color:#0f172a;margin-bottom:2px;">Highly Technical</div>
+            <ul style="margin:0;padding-left:14px;font-size:.7rem;color:#475569;line-height:1.45;">
+              <li>Strong foundation: Python, SQL, R, data viz, AI modeling</li>
+              <li>Heavy statistical coursework</li>
+              <li>Analytics-driven curriculum throughout</li>
+            </ul>
+          </div>
+        </div>
+
+        <div style="display:flex;gap:9px;align-items:flex-start;">
+          <span style="min-width:22px;height:22px;border-radius:50%;background:#2563eb;color:white;font-weight:700;font-size:.72rem;display:flex;align-items:center;justify-content:center;flex-shrink:0;">4</span>
+          <div>
+            <div style="font-weight:600;font-size:.75rem;color:#0f172a;margin-bottom:2px;">Technical-Leaning</div>
+            <ul style="margin:0;padding-left:14px;font-size:.7rem;color:#475569;line-height:1.45;">
+              <li>Emphasizes technical skill over stakeholder work</li>
+              <li>Focused on gathering and processing data</li>
+              <li>Applied context present but secondary</li>
+            </ul>
+          </div>
+        </div>
+
+        <div style="display:flex;gap:9px;align-items:flex-start;">
+          <span style="min-width:22px;height:22px;border-radius:50%;background:#7c3aed;color:white;font-weight:700;font-size:.72rem;display:flex;align-items:center;justify-content:center;flex-shrink:0;">3</span>
+          <div>
+            <div style="font-weight:600;font-size:.75rem;color:#0f172a;margin-bottom:2px;">Balanced</div>
+            <ul style="margin:0;padding-left:14px;font-size:.7rem;color:#475569;line-height:1.45;">
+              <li>Multiple technical and quantitative courses</li>
+              <li>Meaningful sports-specific application</li>
+              <li>Emphasis on internship or external client work</li>
+            </ul>
+          </div>
+        </div>
+
+        <div style="display:flex;gap:9px;align-items:flex-start;">
+          <span style="min-width:22px;height:22px;border-radius:50%;background:#db2777;color:white;font-weight:700;font-size:.72rem;display:flex;align-items:center;justify-content:center;flex-shrink:0;">2</span>
+          <div>
+            <div style="font-weight:600;font-size:.75rem;color:#0f172a;margin-bottom:2px;">Applied-Leaning</div>
+            <ul style="margin:0;padding-left:14px;font-size:.7rem;color:#475569;line-height:1.45;">
+              <li>Uses data but technical depth is limited</li>
+              <li>Analytics support decisions, don't drive curriculum</li>
+              <li>Research projects with real clients</li>
+            </ul>
+          </div>
+        </div>
+
+        <div style="display:flex;gap:9px;align-items:flex-start;">
+          <span style="min-width:22px;height:22px;border-radius:50%;background:#f59e0b;color:white;font-weight:700;font-size:.72rem;display:flex;align-items:center;justify-content:center;flex-shrink:0;">1</span>
+          <div>
+            <div style="font-weight:600;font-size:.75rem;color:#0f172a;margin-bottom:2px;">Strongly Applied</div>
+            <ul style="margin:0;padding-left:14px;font-size:.7rem;color:#475569;line-height:1.45;">
+              <li>Heavily focused on applied contexts and communication</li>
+              <li>Little to no technical rigor</li>
+              <li>Consistent work with external partners</li>
+            </ul>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+  </div><!-- end 3-col grid -->
+</div><!-- end tab-scatter -->
+
 <div class="tab-panel" id="tab-profile">
   <div class="profile-select-wrap">
     <select id="profileSelect">
@@ -507,27 +691,70 @@ function togglePac12() {
   renderTable();
 }
 
-const filters = { focus:'all', inst:'all', level:'all', type:'all', state:'all' };
+const filters = { focus:'all', inst:'all', level:'all', type:'all', state:'all', techMin:1, techMax:5, expMin:1, expMax:5 };
 let sortCol = 'University Name', sortDir = 1;
 let chLevel = 'all';
 let chSubjects = new Set();
 let showPac12 = false;
 
-// City coords (approximate, for bubble map)
-const STATE_COORDS = {
-  'AL':[32.8,-86.9],'AK':[64.2,-153.4],'AZ':[34.3,-111.1],'AR':[34.8,-92.2],
-  'CA':[36.8,-119.4],'CO':[39.0,-105.5],'CT':[41.6,-72.7],'DE':[39.0,-75.5],
-  'FL':[27.8,-81.6],'GA':[32.2,-83.4],'HI':[20.1,-156.3],'ID':[44.0,-114.3],
-  'IL':[40.0,-89.2],'IN':[40.3,-86.1],'IA':[42.0,-93.2],'KS':[38.5,-98.4],
-  'KY':[37.5,-85.3],'LA':[30.5,-92.4],'ME':[45.3,-69.0],'MD':[39.1,-76.8],
-  'MA':[42.1,-71.5],'MI':[44.3,-85.4],'MN':[46.4,-93.1],'MS':[32.7,-89.7],
-  'MO':[38.5,-92.5],'MT':[47.0,-109.6],'NE':[41.5,-99.9],'NV':[39.3,-117.1],
-  'NH':[43.5,-71.6],'NJ':[40.1,-74.7],'NM':[34.5,-106.2],'NY':[42.9,-75.5],
-  'NC':[35.5,-79.8],'ND':[47.5,-100.5],'OH':[40.4,-82.8],'OK':[35.6,-97.5],
-  'OR':[44.6,-122.1],'PA':[40.9,-77.8],'RI':[41.7,-71.5],'SC':[33.8,-81.2],
-  'SD':[44.3,-100.2],'TN':[35.9,-86.7],'TX':[31.5,-99.3],'UT':[39.3,-111.1],
-  'VT':[44.1,-72.7],'VA':[37.8,-78.2],'WA':[47.4,-120.4],'WV':[38.6,-80.5],
-  'WI':[44.3,-89.8],'WY':[43.0,-107.6],'DC':[38.9,-77.0]
+// Accurate campus coordinates per university
+const UNI_COORDS = {
+  'Abilene Christian University':        [32.4549, -99.7331],
+  'American University':                 [38.9396, -77.0855],
+  'Appalachain State University':        [36.2168, -81.6746],
+  'Arizona State University':            [33.4255, -111.9400],
+  'Baylor University':                   [31.5489, -97.1131],
+  'Belmont University':                  [36.1329, -86.7989],
+  'Boston College':                      [42.3355, -71.1685],
+  'California Baptist University':       [33.9285, -117.4097],
+  'Canisius University':                 [42.9245, -78.8729],
+  'Clemson University':                  [34.6834, -82.8374],
+  'Colorado State':                      [40.5753, -105.0847],
+  'George Mason University':             [38.8308, -77.3081],
+  'George Washington University':        [38.8997, -77.0494],
+  'Indiana University Indianapolis':     [39.7767, -86.1764],
+  'Jacksonville State University':       [33.8254, -85.7614],
+  'Kansas State University':             [39.1836, -96.5717],
+  'La Salle University':                 [40.0334, -75.1557],
+  'Lipscomb University':                 [36.1059, -86.8050],
+  'Marquette University':                [43.0387, -87.9302],
+  'Mercer University':                   [32.8413, -83.6497],
+  'Miami University of Ohio':            [39.5078, -84.7338],
+  'New Jersey Institute of Technology':  [40.7427, -74.1789],
+  'Northern Illinois University':        [41.9283, -88.7737],
+  'Northwestern University':             [42.0565, -87.6753],
+  'Ohio University':                     [39.3228, -82.1015],
+  'Old Dominion University':             [36.8856, -76.3068],
+  'Rice University':                     [29.7174, -95.4018],
+  'Samford University':                  [33.4617, -86.8017],
+  'Syracuse University':                 [43.0351, -76.1356],
+  'Temple University':                   [39.9817, -75.1500],
+  'University at Buffalo':               [43.0016, -78.7890],
+  'University of Akron':                 [41.0814, -81.5185],
+  'University of Charleston':            [32.7837, -79.9378],
+  'University of Colorado Boulder':      [40.0076, -105.2659],
+  'University of Delaware':              [39.6797, -75.7497],
+  'University of Denver':                [39.6780, -104.9614],
+  'University of Florida':               [29.6436, -82.3549],
+  'University of Illinois Urbana-Champaign': [40.1020, -88.2272],
+  'University of Memphis':               [35.1185, -89.9378],
+  'University of Michigan':              [42.2780, -83.7382],
+  'University of Mississippi':           [34.3657, -89.5377],
+  'University of Nevada Las Vegas':      [36.1074, -115.1392],
+  'University of New Hampshire':         [43.1360, -70.9342],
+  'University of North Carolina at Charlotte': [35.3071, -80.7346],
+  'University of North Texas':           [33.2148, -97.1526],
+  'University of Notre Dame':            [41.7028, -86.2380],
+  'University of Oklahoma':              [35.2058, -97.4449],
+  'University of Pennsylvania':          [39.9522, -75.1932],
+  'University of South Carolina':        [33.9963, -81.0280],
+  'University of South Florida':         [28.0620, -82.4131],
+  'University of Southern California':   [34.0224, -118.2851],
+  'University of Tennessee':             [35.9551, -83.9284],
+  'University of Texas':                 [30.2849, -97.7341],
+  'Univerisity of Missouri':             [38.9404, -92.3277],
+  'Virginia Tech':                       [37.2296, -80.4139],
+  'Wake Forest University':              [36.1341, -80.2764],
 };
 
 // ── Helpers ───────────────────────────────────────────────────────────────
@@ -540,6 +767,10 @@ function getFiltered() {
     if (filters.level === 'grad' && d['Graduate program'] !== 'Yes') return false;
     if (filters.type !== 'all' && (d['Program type (dropdown)']||'').trim() !== filters.type) return false;
     if (filters.state !== 'all' && (d['State']||'').trim() !== filters.state) return false;
+    const tech = d['Technical vs Applied (0-5)'];
+    if (tech != null && (tech < filters.techMin || tech > filters.techMax)) return false;
+    const exp = d['Degree of Experiental Learning (0-5)'];
+    if (exp != null && (exp < filters.expMin || exp > filters.expMax)) return false;
     return true;
   });
 }
@@ -556,9 +787,9 @@ function fmtScale(v) { return v != null && !isNaN(v) ? v+'/5' : '—'; }
 // ── Filter setup ──────────────────────────────────────────────────────────
 function populateFilterDropdowns() {
   const types = [...new Set(RAW_DATA.map(d=>d['Program type (dropdown)']).filter(Boolean))].sort();
-  const states = [...new Set(RAW_DATA.map(d=>d['State']).filter(Boolean))].sort();
   const tSel = document.getElementById('typeFilter');
   types.forEach(t => { const o=document.createElement('option'); o.value=t; o.textContent=t; tSel.appendChild(o); });
+  const states = [...new Set(RAW_DATA.map(d=>d['State']).filter(Boolean))].sort();
   const sSel = document.getElementById('stateFilter');
   states.forEach(s => { const o=document.createElement('option'); o.value=s; o.textContent=s; sSel.appendChild(o); });
 }
@@ -570,25 +801,40 @@ function setToggle(group, val) {
 }
 
 function applyFilters() {
-  filters.type = document.getElementById('typeFilter').value;
+  filters.focus = document.getElementById('focusFilter').value;
+  filters.inst  = document.getElementById('instFilter').value;
+  filters.level = document.getElementById('levelFilter').value;
+  filters.type  = document.getElementById('typeFilter').value;
   filters.state = document.getElementById('stateFilter').value;
-  const active = [filters.focus,filters.inst,filters.level,filters.type,filters.state].filter(v=>v!=='all').length;
-  document.getElementById('filterCount').innerHTML = active > 0
-    ? `<strong>${getFiltered().length}</strong> of ${RAW_DATA.length} programs shown`
-    : `Showing all <strong>${RAW_DATA.length}</strong> programs`;
+  filters.techMin = parseInt(document.getElementById('techMin').value);
+  filters.techMax = parseInt(document.getElementById('techMax').value);
+  filters.expMin  = parseInt(document.getElementById('expMin').value);
+  filters.expMax  = parseInt(document.getElementById('expMax').value);
+  if (filters.techMin > filters.techMax) { filters.techMax = filters.techMin; document.getElementById('techMax').value = filters.techMin; }
+  if (filters.expMin  > filters.expMax)  { filters.expMax  = filters.expMin;  document.getElementById('expMax').value  = filters.expMin;  }
+  document.getElementById('techRangeLabel').textContent = filters.techMin + '–' + filters.techMax;
+  document.getElementById('expRangeLabel').textContent  = filters.expMin  + '–' + filters.expMax;
   renderAll();
 }
 
 function resetFilters() {
-  filters.focus=filters.inst=filters.level='all'; filters.type=filters.state='all';
+  filters.focus=filters.inst=filters.level='all'; filters.type='all'; filters.state='all';
+  filters.techMin=1; filters.techMax=5; filters.expMin=1; filters.expMax=5;
+  document.getElementById('focusFilter').value='all';
+  document.getElementById('instFilter').value='all';
+  document.getElementById('levelFilter').value='all';
   document.getElementById('typeFilter').value='all';
   document.getElementById('stateFilter').value='all';
+  document.getElementById('techMin').value=1; document.getElementById('techMax').value=5;
+  document.getElementById('expMin').value=1;  document.getElementById('expMax').value=5;
+  document.getElementById('techRangeLabel').textContent='1–5';
+  document.getElementById('expRangeLabel').textContent='1–5';
   document.querySelectorAll('[data-filter]').forEach(b => b.classList.toggle('active', b.dataset.val==='all'));
   applyFilters();
 }
 
 // ── Tabs ──────────────────────────────────────────────────────────────────
-const TABS = ['overview','directory','map','scatter','credits','profile'];
+const TABS = ['overview','directory','map','credits','tuition','scatter','profile'];
 function switchTab(name) {
   TABS.forEach((t,i) => {
     document.getElementById('tab-'+t).classList.toggle('active',t===name);
@@ -598,6 +844,7 @@ function switchTab(name) {
   if (name==='directory') renderTable();
   if (name==='scatter') { const d=getFiltered(); renderScatter(d); }
   if (name==='credits') renderCredits();
+  if (name==='tuition') renderTuition(getFiltered());
 }
 
 // ── Render all ────────────────────────────────────────────────────────────
@@ -606,11 +853,11 @@ function renderAll() {
   renderStats(data);
   renderScatter(data);
   renderOverviewCharts(data);
-  renderTuition(data);
   renderYear(data);
   renderMap();
   renderTable();
   renderCredits();
+  renderTuition(data);
   populateProfileSelect(data);
 }
 
@@ -626,7 +873,15 @@ function renderStats(data) {
     [ug, 'Undergrad Programs'],
     [grad, 'Graduate Programs'],
     [withInternship, 'Require Internship / Capstone'],
-  ].map(([v,l])=>`<div class="stat-card"><div class="val">${v}</div><div class="lbl">${l}</div></div>`).join('');
+  ].map(([v,l],i)=>{
+    if (i===0) return `<div class="stat-card" id="statTotalPrograms" style="cursor:pointer;" title="View directory"><div class="val">${v}</div><div class="lbl">${l}</div></div>`;
+    if (i===1) return `<div class="stat-card" id="statStates" style="cursor:pointer;" title="View map"><div class="val">${v}</div><div class="lbl">${l}</div></div>`;
+    return `<div class="stat-card"><div class="val">${v}</div><div class="lbl">${l}</div></div>`;
+  }).join('');
+  const tp = document.getElementById('statTotalPrograms');
+  if (tp) tp.addEventListener('click', function(){ switchTab('directory'); });
+  const st = document.getElementById('statStates');
+  if (st) st.addEventListener('click', function(){ switchTab('map'); });
 }
 
 // ── Scatter ───────────────────────────────────────────────────────────────
@@ -681,8 +936,9 @@ function renderScatter(data) {
     xaxis:{title:'Degree of Technical Learning', range:[0.5,5.5], tick0:1, dtick:1, zeroline:false, gridcolor:'#000000', tickfont:{size:11}},
     yaxis:{title:'Degree of Experiential Learning', range:[0.5,5.5], tick0:1, dtick:1, zeroline:false, gridcolor:'#000000'},
     plot_bgcolor:'#f8fafc', paper_bgcolor:'white',
-    margin:{l:60,r:30,t:20,b:60},
+    margin:{l:55,r:15,t:15,b:50},
     showlegend:false,
+    autosize:true,
     shapes:[], annotations:[]
   };
 
@@ -706,7 +962,7 @@ function renderOverviewCharts(data) {
     text:te.map(e=>e[1]), textposition:'outside',
     hovertemplate:'%{y}: %{x} programs<extra></extra>'
   }],{
-    margin:{l:130,r:40,t:10,b:30}, xaxis:{showgrid:false,range:[0,Math.max(...te.map(e=>e[1]))*1.25]},
+    margin:{l:130,r:40,t:10,b:30}, xaxis:{showgrid:false,range:[0,Math.max(...te.map(e=>e[1]))*1.25],showline:true,linecolor:'#94a3b8',linewidth:1},
     yaxis:{automargin:true,categoryorder:'total ascending'},
     plot_bgcolor:'white',paper_bgcolor:'white',height:280
   },{responsive:true,displayModeBar:false});
@@ -718,54 +974,114 @@ function renderOverviewCharts(data) {
     labels:Object.keys(instCounts), values:Object.values(instCounts),
     marker:{colors:['#10b981','#3b82f6','#94a3b8']},
     textinfo:'label+value+percent',
-    textposition:'inside',
-    insidetextorientation:'horizontal',
+    textposition:'outside',
     hovertemplate:'%{label}: %{value} programs (%{percent})<extra></extra>'
   }],{
-    margin:{l:20,r:20,t:10,b:10},
-    plot_bgcolor:'white',paper_bgcolor:'white',height:280,
-    legend:{orientation:'h',y:-0.1}
+    margin:{l:60,r:60,t:30,b:30},
+    plot_bgcolor:'white',paper_bgcolor:'white',height:300,
+    showlegend:false
   },{responsive:true,displayModeBar:false});
+
 }
 
 // ── Tuition ───────────────────────────────────────────────────────────────
+const TUIT_PUB_COLOR  = { inst:'#10b981', oos:'#a7f3d0' }; // green = public
+const TUIT_PRIV_COLOR = { inst:'#f59e0b', oos:'#fde68a' }; // amber = private
+let tuitionFilter = 'all';
+let tuitionRateFilter = 'both';
+let tuitionAllData = [];
+
+function setTuitionFilter(val) {
+  tuitionFilter = val;
+  ['All','Public','Private'].forEach(v => {
+    const btn = document.getElementById('tuitToggle'+v);
+    if (!btn) return;
+    const isActive = (v.toLowerCase() === val.toLowerCase()) || (v==='All' && val==='all');
+    const color = v==='Public' ? '#10b981' : v==='Private' ? '#f59e0b' : '#3b82f6';
+    btn.style.background = isActive ? color : 'white';
+    btn.style.color = isActive ? '#fff' : color;
+  });
+  renderTuition(tuitionAllData);
+}
+
+function setTuitionRateFilter(val) {
+  tuitionRateFilter = val;
+  [['Both','both'],['InState','in-state'],['OutState','out-of-state']].forEach(function(pair) {
+    const btn = document.getElementById('tuitToggle'+pair[0]);
+    if (!btn) return;
+    const isActive = tuitionRateFilter === pair[1];
+    btn.style.background = isActive ? '#6366f1' : 'white';
+    btn.style.color = isActive ? '#fff' : '#6366f1';
+  });
+  renderTuition(tuitionAllData);
+}
+
 function renderTuition(data) {
-  const tuit = data
+  tuitionAllData = data;
+  let all = data
     .filter(d=>d['In-State Tuition']!=null||d['Out-of-State Tuition']!=null)
     .map(d=>({
-      name:d['University Name'],
+      name: d['University Name'],
       inst: d['In-State Tuition'],
-      oos: d['Out-of-State Tuition'],
-      type: d['Program type (dropdown)']||'Other',
-      pub: d['Private/Public']||'Unknown'
+      oos:  d['Out-of-State Tuition'],
+      pub:  (d['Private/Public']||'').trim()
     }))
-    .sort((a,b)=>(a.inst||a.oos||0)-(b.inst||b.oos||0));
+    .sort((a,b)=>b.name.localeCompare(a.name));
 
-  document.getElementById('tuitionNote').textContent = `${tuit.length} of ${data.length} programs with tuition data.`;
+  const tuit = tuitionFilter==='all' ? all : all.filter(d=>d.pub===tuitionFilter);
 
-  if (!tuit.length) return;
+  document.getElementById('tuitionNote').textContent =
+    `${tuit.length} of ${data.length} programs with tuition data.`;
+
+  if (!tuit.length) { Plotly.purge('chartTuition'); return; }
+
+  // Per-bar colors based on pub/private, preserving alphabetical order
+  const instColors = tuit.map(d => d.pub==='Public' ? TUIT_PUB_COLOR.inst : d.pub==='Private' ? TUIT_PRIV_COLOR.inst : '#94a3b8');
+  const oosColors  = tuit.map(d => d.pub==='Public' ? TUIT_PUB_COLOR.oos  : d.pub==='Private' ? TUIT_PRIV_COLOR.oos  : '#cbd5e1');
+
   const traces = [];
+  if (tuitionRateFilter === 'both' || tuitionRateFilter === 'in-state') {
+    traces.push({
+      type:'bar', name:'In-State', orientation:'h',
+      y:tuit.map(d=>d.name), x:tuit.map(d=>d.inst),
+      marker:{color:instColors},
+      hovertemplate:'<b>%{y}</b><br>In-State: $%{x:,.0f}<extra></extra>'
+    });
+  }
+  if (tuitionRateFilter === 'both' || tuitionRateFilter === 'out-of-state') {
+    traces.push({
+      type:'bar', name:'Out-of-State', orientation:'h',
+      y:tuit.map(d=>d.name), x:tuit.map(d=>d.oos),
+      marker:{color:oosColors},
+      hovertemplate:'<b>%{y}</b><br>Out-of-State: $%{x:,.0f}<extra></extra>'
+    });
+  }
+
+  // Dummy trace to activate top x-axis
   traces.push({
-    type:'bar', name:'In-State', orientation:'h',
-    y:tuit.map(d=>d.name), x:tuit.map(d=>d.inst),
-    marker:{color:'#3b82f6'},
-    hovertemplate:'<b>%{y}</b><br>In-State: $%{x:,.0f}<extra></extra>'
+    type:'scatter', mode:'markers',
+    x:[null], y:[tuit[0].name],
+    xaxis:'x2', yaxis:'y',
+    marker:{opacity:0}, showlegend:false, hoverinfo:'skip'
   });
-  traces.push({
-    type:'bar', name:'Out-of-State', orientation:'h',
-    y:tuit.map(d=>d.name), x:tuit.map(d=>d.oos),
-    marker:{color:'#bfdbfe'},
-    hovertemplate:'<b>%{y}</b><br>Out-of-State: $%{x:,.0f}<extra></extra>'
-  });
+
+  const rowH = tuitionRateFilter === 'both' ? 48 : 28;
+  const tuitionHeight = Math.max(400, tuit.length * rowH + 100);
   Plotly.newPlot('chartTuition', traces, {
-    barmode:'overlay',
-    xaxis:{title:'Annual Tuition', tickprefix:'$', tickformat:',.0f', gridcolor:'#f1f5f9'},
-    yaxis:{automargin:true, tickfont:{size:10.5}},
-    plot_bgcolor:'#f8fafc', paper_bgcolor:'white', height:380,
-    margin:{l:220,r:30,t:10,b:50},
-    legend:{orientation:'h',y:1.04},
+    barmode:'group',
+    xaxis:{title:'Annual Tuition', tickprefix:'$', tickformat:',.0f', gridcolor:'#f1f5f9', showline:true, linecolor:'#94a3b8', linewidth:1},
+    xaxis2:{overlaying:'x', side:'top', matches:'x', title:{text:'Annual Tuition',standoff:8}, tickprefix:'$', tickformat:',.0f', showgrid:false, zeroline:false, showline:true, linecolor:'#94a3b8', linewidth:1},
+    yaxis:{automargin:true, tickfont:{size:10.5}, range:[-0.5, tuit.length - 0.5]},
+    plot_bgcolor:'#f8fafc', paper_bgcolor:'white', height:tuitionHeight,
+    margin:{l:220,r:30,t:55,b:52},
+    showlegend:false,
     hovermode:'y unified'
-  },{responsive:true,displayModeBar:false});
+  },{responsive:true,displayModeBar:false}).then(function(gd) {
+    gd.on('plotly_click', function(evt) {
+      const name = evt.points[0].y;
+      if (name) openProfile(name);
+    });
+  });
 }
 
 // ── Year chart ────────────────────────────────────────────────────────────
@@ -795,8 +1111,6 @@ function renderYear(data) {
 // ── Bubble map ────────────────────────────────────────────────────────────
 function renderMap() {
   const data = getFiltered();
-  // Jitter programs in same state so bubbles don't overlap
-  const stateOffset = {};
   const traces = [];
   const typeGroups = [...new Set(data.map(d=>d['Program type (dropdown)']||'Other'))];
 
@@ -804,15 +1118,10 @@ function renderMap() {
     const sub = data.filter(d=>(d['Program type (dropdown)']||'Other')===type);
     const lats=[], lons=[], texts=[], customs=[];
     sub.forEach(d => {
-      const st = d['State'];
-      if (!st || !STATE_COORDS[st]) return;
-      stateOffset[st] = (stateOffset[st]||0);
-      const offset = stateOffset[st];
-      stateOffset[st]++;
-      const jitterLat = (Math.floor(offset/3)-1)*1.4;
-      const jitterLon = ((offset%3)-1)*1.8;
-      lats.push(STATE_COORDS[st][0]+jitterLat);
-      lons.push(STATE_COORDS[st][1]+jitterLon);
+      const coords = UNI_COORDS[d['University Name']];
+      if (!coords) return;
+      lats.push(coords[0]);
+      lons.push(coords[1]);
       texts.push(d['University Name']);
       customs.push([
         d['Program type (dropdown)']||'—',
@@ -835,10 +1144,10 @@ function renderMap() {
     const pac12Lats=[], pac12Lons=[], pac12Texts=[], pac12Customs=[];
     data.forEach(d => {
       if (!isPac12(d['University Name'])) return;
-      const st = d['State'];
-      if (!st || !STATE_COORDS[st]) return;
-      pac12Lats.push(STATE_COORDS[st][0]);
-      pac12Lons.push(STATE_COORDS[st][1]);
+      const coords = UNI_COORDS[d['University Name']];
+      if (!coords) return;
+      pac12Lats.push(coords[0]);
+      pac12Lons.push(coords[1]);
       pac12Texts.push(d['University Name']);
       pac12Customs.push([d['Program type (dropdown)']||'—', d['Private/Public']||'—', d['Sports Analytics or Sports Science']||'—', d['University Name']]);
     });
@@ -953,7 +1262,17 @@ function renderCredits() {
   const withCH = data.filter(d=>activeCols.some(c=>d[c]!=null&&d[c]>0));
   document.getElementById('chNote').textContent = `Credit hour data available for ${withCH.length} of ${data.length} programs shown. Programs without reported hours are not included in the chart below.`;
 
-  if (!withCH.length) return;
+  if (!withCH.length) {
+    const hasClubs = data.some(d=>(d['Program type (dropdown)']||'').toLowerCase()==='club');
+    document.getElementById('chartCH').innerHTML =
+      '<div class="empty-state" style="padding:60px 20px;">'
+      + '<svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="#cbd5e1" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" style="margin-bottom:12px;"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>'
+      + (hasClubs
+        ? '<p style="font-weight:600;color:#64748b;margin-bottom:6px;">No curriculum data available</p><p style="font-size:.82rem;color:#94a3b8;max-width:340px;margin:0 auto;">Club-based programs do not have a formal curriculum or required credit hours — they operate as student organizations rather than academic programs.</p>'
+        : '<p style="font-weight:600;color:#64748b;margin-bottom:6px;">No credit hour data for the current selection</p><p style="font-size:.82rem;color:#94a3b8;">Try adjusting the filters or subject selection.</p>')
+      + '</div>';
+    return;
+  }
   const sorted = [...withCH].sort((a,b)=>
     a['University Name'].localeCompare(b['University Name'])
   );
@@ -984,7 +1303,12 @@ function renderCredits() {
     plot_bgcolor:'#f8fafc',paper_bgcolor:'white',height:chartHeight,
     margin:{l:220,r:30,t:42,b:52},
     showlegend:false
-  },{responsive:true,displayModeBar:false});
+  },{responsive:true,displayModeBar:false}).then(function(gd) {
+    gd.on('plotly_click', function(evt) {
+      const name = evt.points[0].y;
+      if (name) openProfile(name);
+    });
+  });
 
   // Averages donut — only count programs that have >0 for that subject
   const avgSlices=[];
@@ -1275,14 +1599,15 @@ document.addEventListener('DOMContentLoaded', function() {
     btn.addEventListener('click', function() { switchTab(btn.dataset.tab); });
   });
 
-  // Filter toggle buttons
-  document.querySelectorAll('.toggle-btn[data-filter]').forEach(function(btn) {
-    btn.addEventListener('click', function() { setToggle(btn.dataset.filter, btn.dataset.val); });
+  // Filter dropdowns
+  ['focusFilter','instFilter','levelFilter','typeFilter','stateFilter'].forEach(function(id) {
+    document.getElementById(id).addEventListener('change', applyFilters);
   });
 
-  // Filter dropdowns
-  document.getElementById('typeFilter').addEventListener('change', applyFilters);
-  document.getElementById('stateFilter').addEventListener('change', applyFilters);
+  // Rating range sliders
+  ['techMin','techMax','expMin','expMax'].forEach(function(id) {
+    document.getElementById(id).addEventListener('input', applyFilters);
+  });
 
   // Reset button
   document.getElementById('resetBtn').addEventListener('click', resetFilters);
@@ -1292,6 +1617,14 @@ document.addEventListener('DOMContentLoaded', function() {
 
   // Print button
   document.getElementById('printBtn').addEventListener('click', function() { window.print(); });
+
+  // Tuition public/private toggles
+  document.getElementById('tuitToggleAll').addEventListener('click', function() { setTuitionFilter('all'); });
+  document.getElementById('tuitTogglePublic').addEventListener('click', function() { setTuitionFilter('Public'); });
+  document.getElementById('tuitTogglePrivate').addEventListener('click', function() { setTuitionFilter('Private'); });
+  document.getElementById('tuitToggleBoth').addEventListener('click', function() { setTuitionRateFilter('both'); });
+  document.getElementById('tuitToggleInState').addEventListener('click', function() { setTuitionRateFilter('in-state'); });
+  document.getElementById('tuitToggleOutState').addEventListener('click', function() { setTuitionRateFilter('out-of-state'); });
 
   // CH level toggles
   ['chAll','chUG','chGrad'].forEach(function(id) {
