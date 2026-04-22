@@ -1331,12 +1331,13 @@ function switchTab(name) {
   document.getElementById('filterBar').style.display = isTitle ? 'none' : '';
   document.getElementById('statRowWrap').style.display = isTitle ? 'none' : '';
   if (name==='title') renderTitle();
-  if (name==='map') renderMap();
-  if (name==='directory') renderTable();
-  if (name==='scatter') { const d=getFiltered(); renderScatter(d); }
+  if (name==='map') { renderMap(); renderStats(getFiltered()); }
+  if (name==='directory') { renderTable(); renderStats(getFiltered()); }
+  if (name==='scatter') { const d=getFiltered(); renderScatter(d); renderStats(d); }
   if (name==='credits') renderCredits();
-  if (name==='tuition') renderTuition(getFiltered());
-  if (name==='partners') renderPartners();
+  if (name==='tuition') { renderTuition(getFiltered()); renderStats(getFiltered()); }
+  if (name==='partners') { renderPartners(); renderStats(getFiltered()); }
+  if (name==='overview') renderStats(getFiltered());
 }
 
 // ── Render all ────────────────────────────────────────────────────────────
@@ -1888,8 +1889,12 @@ function renderCredits() {
   if (chLevel==='ug') data=data.filter(d=>d['Undergrad program']==='Yes');
   if (chLevel==='grad') data=data.filter(d=>d['Graduate program']==='Yes');
   const activeCols = chSubjects.size > 0 ? CH_COLS.filter(c=>chSubjects.has(c)) : CH_COLS;
-  const withCH = data.filter(d=>activeCols.some(c=>d[c]!=null&&d[c]>0) && d['University Name'] !== 'University of Akron' && d['University Name'] !== 'University of South Carolina');
+  const chTest = chSubjects.size > 0
+    ? d => activeCols.every(c=>d[c]!=null&&d[c]>0)
+    : d => activeCols.some(c=>d[c]!=null&&d[c]>0);
+  const withCH = data.filter(d=>chTest(d) && d['University Name'] !== 'University of Akron' && d['University Name'] !== 'University of South Carolina');
   document.getElementById('chNote').textContent = `Credit hour data available for ${withCH.length} of ${data.length} programs shown. Programs without reported hours are not included in the chart below.`;
+  renderStats(withCH);
 
   if (!withCH.length) {
     const hasClubs = data.some(d=>(d['Program type (dropdown)']||'').toLowerCase()==='club');
