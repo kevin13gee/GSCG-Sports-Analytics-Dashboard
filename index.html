@@ -474,10 +474,6 @@
     <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="7" cy="17" r="2"/><circle cx="17" cy="7" r="2"/><circle cx="12" cy="12" r="2"/><circle cx="4" cy="9" r="2"/><circle cx="20" cy="17" r="2"/></svg>
     Analytics Plot
   </button>
-  <button class="tab-btn" data-tab="partners">
-    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="9" cy="7" r="4"/><path d="M3 21v-2a4 4 0 0 1 4-4h4a4 4 0 0 1 4 4v2"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/><path d="M21 21v-2a4 4 0 0 0-3-3.85"/></svg>
-    Partners
-  </button>
   <button class="tab-btn" data-tab="credits">
     <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg>
     Curriculum
@@ -485,6 +481,10 @@
   <button class="tab-btn" data-tab="depts">
     <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="2" y="7" width="20" height="14" rx="2"/><path d="M16 7V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v2"/><line x1="12" y1="12" x2="12" y2="16"/><line x1="10" y1="14" x2="14" y2="14"/></svg>
     Departments
+  </button>
+  <button class="tab-btn" data-tab="partners">
+    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="9" cy="7" r="4"/><path d="M3 21v-2a4 4 0 0 1 4-4h4a4 4 0 0 1 4 4v2"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/><path d="M21 21v-2a4 4 0 0 0-3-3.85"/></svg>
+    Partners
   </button>
   <button class="tab-btn" data-tab="profile">
     <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
@@ -636,20 +636,6 @@
         <div class="title-feature-name">Map</div>
         <div class="title-feature-desc">Geographic distribution of programs across the U.S.</div>
       </div>
-      <div class="title-feature-card" onclick="switchTab('credits')">
-        <div class="title-feature-icon" style="background:rgba(139,92,246,.15)">
-          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#a78bfa" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg>
-        </div>
-        <div class="title-feature-name">Curriculum</div>
-        <div class="title-feature-desc">Credit hour comparisons across subject areas by school.</div>
-      </div>
-      <div class="title-feature-card" onclick="switchTab('others')">
-        <div class="title-feature-icon" style="background:rgba(236,72,153,.15)">
-          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#f472b6" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>
-        </div>
-        <div class="title-feature-name">Tuition</div>
-        <div class="title-feature-desc">In-state and out-of-state tuition comparisons.</div>
-      </div>
       <div class="title-feature-card" onclick="switchTab('scatter')">
         <div class="title-feature-icon" style="background:rgba(6,182,212,.15)">
           <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#22d3ee" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="7" cy="17" r="2"/><circle cx="17" cy="7" r="2"/><circle cx="12" cy="12" r="2"/><circle cx="4" cy="9" r="2"/><circle cx="20" cy="17" r="2"/></svg>
@@ -657,12 +643,12 @@
         <div class="title-feature-name">Analytics Plot</div>
         <div class="title-feature-desc">Technical vs. applied and experiential learning scatter.</div>
       </div>
-      <div class="title-feature-card" onclick="switchTab('partners')">
-        <div class="title-feature-icon" style="background:rgba(251,146,60,.15)">
-          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#fb923c" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="7" r="4"/><path d="M3 21v-2a4 4 0 0 1 4-4h4a4 4 0 0 1 4 4v2"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/><path d="M21 21v-2a4 4 0 0 0-3-3.85"/></svg>
+      <div class="title-feature-card" onclick="switchTab('credits')">
+        <div class="title-feature-icon" style="background:rgba(139,92,246,.15)">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#a78bfa" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg>
         </div>
-        <div class="title-feature-name">Partners</div>
-        <div class="title-feature-desc">Industry and team partnerships by program and category.</div>
+        <div class="title-feature-name">Curriculum</div>
+        <div class="title-feature-desc">Credit hour comparisons across subject areas by school.</div>
       </div>
       <div class="title-feature-card" onclick="switchTab('depts')">
         <div class="title-feature-icon" style="background:rgba(16,185,129,.15)">
@@ -671,12 +657,26 @@
         <div class="title-feature-name">Departments</div>
         <div class="title-feature-desc">Which college or department houses each sports analytics program.</div>
       </div>
+      <div class="title-feature-card" onclick="switchTab('partners')">
+        <div class="title-feature-icon" style="background:rgba(251,146,60,.15)">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#fb923c" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="7" r="4"/><path d="M3 21v-2a4 4 0 0 1 4-4h4a4 4 0 0 1 4 4v2"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/><path d="M21 21v-2a4 4 0 0 0-3-3.85"/></svg>
+        </div>
+        <div class="title-feature-name">Partners</div>
+        <div class="title-feature-desc">Industry and team partnerships by program and category.</div>
+      </div>
       <div class="title-feature-card" onclick="switchTab('profile')">
         <div class="title-feature-icon" style="background:rgba(99,102,241,.15)">
           <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#818cf8" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
         </div>
         <div class="title-feature-name">Program Explorer</div>
         <div class="title-feature-desc">Deep-dive profiles for each program including mission and links.</div>
+      </div>
+      <div class="title-feature-card" onclick="switchTab('others')">
+        <div class="title-feature-icon" style="background:rgba(236,72,153,.15)">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#f472b6" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>
+        </div>
+        <div class="title-feature-name">Tuition</div>
+        <div class="title-feature-desc">In-state and out-of-state tuition comparisons.</div>
       </div>
     </div>
 
@@ -913,7 +913,7 @@
   <div style="display:flex;gap:20px;align-items:flex-start;padding-bottom:8px;">
 
     <!-- Experiential Scale Slide -->
-    <div style="flex:1;min-width:0;background:white;border-radius:16px;border:1.5px solid #e2e8f0;box-shadow:0 4px 24px rgba(0,0,0,.08);overflow:hidden;aspect-ratio:4/3;display:flex;flex-direction:column;padding:28px 30px;">
+    <div style="flex:1;min-width:0;background:white;border-radius:16px;border:1.5px solid #e2e8f0;box-shadow:0 4px 24px rgba(0,0,0,.08);display:flex;flex-direction:column;padding:28px 30px;">
       <div style="display:flex;align-items:center;gap:14px;margin-bottom:14px;flex-shrink:0">
         <div>
           <div style="font-size:1.2rem;font-weight:800;color:#0f172a;letter-spacing:-.01em">Degree of Experiential Learning</div>
@@ -1002,7 +1002,7 @@
     </div>
 
     <!-- Technical Scale Slide -->
-    <div style="flex:1;min-width:0;background:white;border-radius:16px;border:1.5px solid #e2e8f0;box-shadow:0 4px 24px rgba(0,0,0,.08);overflow:hidden;aspect-ratio:4/3;display:flex;flex-direction:column;padding:28px 30px;">
+    <div style="flex:1;min-width:0;background:white;border-radius:16px;border:1.5px solid #e2e8f0;box-shadow:0 4px 24px rgba(0,0,0,.08);display:flex;flex-direction:column;padding:28px 30px;">
       <div style="display:flex;align-items:center;gap:14px;margin-bottom:14px;flex-shrink:0">
         <div>
           <div style="font-size:1.2rem;font-weight:800;color:#0f172a;letter-spacing:-.01em">Degree of Technical Learning</div>
@@ -1095,203 +1095,46 @@
 
 <!-- ANALYTICS PLOT -->
 <div class="tab-panel" id="tab-scatter">
-  <div style="display:grid;grid-template-columns:minmax(0,2fr) minmax(0,1fr) minmax(0,1fr);gap:14px;height:calc(100vh - 170px);align-items:stretch;">
-
-    <!-- Col 1: chart -->
-    <div class="card" style="min-width:0;margin-bottom:0;display:flex;flex-direction:column;overflow:hidden;">
-      <h3>Technical &amp; Experiential Learning</h3>
-      <p class="card-note" style="margin-bottom:8px;">Hover a dot for details. X = technical depth, Y = experiential depth. Click to open program.</p>
-      <div style="display:flex;flex-wrap:wrap;gap:5px 10px;margin-bottom:8px;">
-        <span style="display:flex;align-items:center;gap:5px;font-size:.72rem;color:#475569"><span style="width:10px;height:10px;border-radius:50%;background:#3b82f6;display:inline-block"></span>Major</span>
-        <span style="display:flex;align-items:center;gap:5px;font-size:.72rem;color:#475569"><span style="width:10px;height:10px;border-radius:50%;background:#ef4444;display:inline-block"></span>Masters</span>
-        <span style="display:flex;align-items:center;gap:5px;font-size:.72rem;color:#475569"><span style="width:10px;height:10px;border-radius:50%;background:#a855f7;display:inline-block"></span>Online Masters</span>
-        <span style="display:flex;align-items:center;gap:5px;font-size:.72rem;color:#475569"><span style="width:10px;height:10px;border-radius:50%;background:#10b981;display:inline-block"></span>Certificate</span>
-        <span style="display:flex;align-items:center;gap:5px;font-size:.72rem;color:#475569"><span style="width:10px;height:10px;border-radius:50%;background:#f59e0b;display:inline-block"></span>Concentration</span>
-        <span style="display:flex;align-items:center;gap:5px;font-size:.72rem;color:#475569"><span style="width:10px;height:10px;border-radius:50%;background:#ec4899;display:inline-block"></span>Minor</span>
-        <span style="display:flex;align-items:center;gap:5px;font-size:.72rem;color:#475569"><span style="width:10px;height:10px;border-radius:50%;background:#06b6d4;display:inline-block"></span>Lab</span>
-        <span style="display:flex;align-items:center;gap:5px;font-size:.72rem;color:#475569"><span style="width:10px;height:10px;border-radius:50%;background:#84cc16;display:inline-block"></span>Institute</span>
-        <span style="display:flex;align-items:center;gap:5px;font-size:.72rem;color:#475569"><span style="width:10px;height:10px;border-radius:50%;background:#f97316;display:inline-block"></span>Club</span>
-        <span style="display:flex;align-items:center;gap:5px;font-size:.72rem;color:#475569"><span style="width:10px;height:10px;border-radius:50%;background:#14b8a6;display:inline-block"></span>Micro-Credential</span>
+  <div class="card" style="margin-bottom:14px;display:flex;flex-direction:column;height:calc(100vh - 200px);">
+    <div style="display:flex;align-items:flex-start;justify-content:space-between;flex-wrap:wrap;gap:8px;margin-bottom:8px;">
+      <div>
+        <h3 style="margin:0 0 2px;">Technical &amp; Experiential Learning</h3>
+        <p class="card-note" style="margin:0;">Hover a dot for details. X = technical depth, Y = experiential depth. Click to open program.</p>
       </div>
-      <div id="chartScatter" style="flex:1;min-height:0;"></div>
-    </div>
-
-    <!-- Col 2: Experiential Learning rubric -->
-    <div class="card" style="min-width:0;margin-bottom:0;overflow:hidden;display:flex;flex-direction:column;">
-      <h3 style="margin-bottom:8px;">Degree of Experiential Learning</h3>
-      <div style="margin-bottom:10px;height:6px;border-radius:99px;background:linear-gradient(to right,#fef9c3,#fcd34d,#f59e0b,#b45309,#431407);flex-shrink:0"></div>
-      <div style="display:flex;flex-direction:column;flex:1;justify-content:space-between;gap:5px;">
-
-        <div style="display:flex;border-radius:9px;overflow:hidden;border:1px solid #43140722;flex:1">
-          <div style="width:5px;background:#431407;flex-shrink:0"></div>
-          <div style="padding:8px 11px;flex:1;background:#43140708;display:flex;flex-direction:column;justify-content:center;">
-            <div style="display:flex;align-items:center;gap:8px;margin-bottom:4px;">
-              <span style="min-width:24px;height:24px;border-radius:50%;background:#431407;color:white;font-weight:800;font-size:.78rem;display:flex;align-items:center;justify-content:center;flex-shrink:0;box-shadow:0 1px 4px #43140740">5</span>
-              <span style="font-weight:700;font-size:.78rem;color:#431407;letter-spacing:.01em">Fully Immersive</span>
-            </div>
-            <ul style="margin:0;padding-left:16px;font-size:.67rem;color:#57534e;line-height:1.4;">
-              <li>Multiple required components; direct work with real sports organizations</li>
-              <li>Structured multi-semester experiences; deliverables used in the field</li>
-              <li>Dedicated labs, strong partnerships, consistent industry engagement</li>
-            </ul>
-          </div>
-        </div>
-
-        <div style="display:flex;border-radius:9px;overflow:hidden;border:1px solid #b4530922;flex:1">
-          <div style="width:5px;background:#b45309;flex-shrink:0"></div>
-          <div style="padding:8px 11px;flex:1;background:#b4530908;display:flex;flex-direction:column;justify-content:center;">
-            <div style="display:flex;align-items:center;gap:8px;margin-bottom:4px;">
-              <span style="min-width:24px;height:24px;border-radius:50%;background:#b45309;color:white;font-weight:800;font-size:.78rem;display:flex;align-items:center;justify-content:center;flex-shrink:0;box-shadow:0 1px 4px #b4530940">4</span>
-              <span style="font-weight:700;font-size:.78rem;color:#b45309;letter-spacing:.01em">Required Real-World Component</span>
-            </div>
-            <ul style="margin:0;padding-left:16px;font-size:.67rem;color:#57534e;line-height:1.4;">
-              <li>At least one required internship, capstone, or practicum in sports analytics</li>
-              <li>Students work with real data and applied problems</li>
-              <li>Substantial recurring projects; some external partner connection</li>
-            </ul>
-          </div>
-        </div>
-
-        <div style="display:flex;border-radius:9px;overflow:hidden;border:1px solid #f59e0b22;flex:1">
-          <div style="width:5px;background:#f59e0b;flex-shrink:0"></div>
-          <div style="padding:8px 11px;flex:1;background:#f59e0b08;display:flex;flex-direction:column;justify-content:center;">
-            <div style="display:flex;align-items:center;gap:8px;margin-bottom:4px;">
-              <span style="min-width:24px;height:24px;border-radius:50%;background:#f59e0b;color:white;font-weight:800;font-size:.78rem;display:flex;align-items:center;justify-content:center;flex-shrink:0;box-shadow:0 1px 4px #f59e0b40">3</span>
-              <span style="font-weight:700;font-size:.78rem;color:#b45309;letter-spacing:.01em">Optional or Inconsistent</span>
-            </div>
-            <ul style="margin:0;padding-left:16px;font-size:.67rem;color:#57534e;line-height:1.4;">
-              <li>Class projects, simulations, and sports datasets in coursework</li>
-              <li>Optional internships or research opportunities available</li>
-              <li>Limited or one-off external exposure; no sustained engagement</li>
-            </ul>
-          </div>
-        </div>
-
-        <div style="display:flex;border-radius:9px;overflow:hidden;border:1px solid #fcd34d55;flex:1">
-          <div style="width:5px;background:#fcd34d;flex-shrink:0"></div>
-          <div style="padding:8px 11px;flex:1;background:#fcd34d10;display:flex;flex-direction:column;justify-content:center;">
-            <div style="display:flex;align-items:center;gap:8px;margin-bottom:4px;">
-              <span style="min-width:24px;height:24px;border-radius:50%;background:#fcd34d;color:#92400e;font-weight:800;font-size:.78rem;display:flex;align-items:center;justify-content:center;flex-shrink:0;box-shadow:0 1px 4px #fcd34d60">2</span>
-              <span style="font-weight:700;font-size:.78rem;color:#92400e;letter-spacing:.01em">Surface-Level Exposure</span>
-            </div>
-            <ul style="margin:0;padding-left:16px;font-size:.67rem;color:#57534e;line-height:1.4;">
-              <li>Guest speakers, panels, or networking events only</li>
-              <li>Sports examples discussed but not applied in practice</li>
-              <li>Projects are short, low-stakes, or not tied to real analytics work</li>
-            </ul>
-          </div>
-        </div>
-
-        <div style="display:flex;border-radius:9px;overflow:hidden;border:1px solid #fcd34d55;flex:1">
-          <div style="width:5px;background:#fef9c3;border-right:1px solid #fcd34d;flex-shrink:0"></div>
-          <div style="padding:8px 11px;flex:1;background:#fef9c350;display:flex;flex-direction:column;justify-content:center;">
-            <div style="display:flex;align-items:center;gap:8px;margin-bottom:4px;">
-              <span style="min-width:24px;height:24px;border-radius:50%;background:#fef9c3;color:#92400e;font-weight:800;font-size:.78rem;display:flex;align-items:center;justify-content:center;flex-shrink:0;border:1.5px solid #fcd34d">1</span>
-              <span style="font-weight:700;font-size:.78rem;color:#92400e;letter-spacing:.01em">No Meaningful Learning</span>
-            </div>
-            <ul style="margin:0;padding-left:16px;font-size:.67rem;color:#57534e;line-height:1.4;">
-              <li>Fully classroom-based: lectures, readings, exams only</li>
-              <li>No internship, capstone, practicum, or client work</li>
-              <li>No projects tied to real sports analytics problems</li>
-            </ul>
-          </div>
-        </div>
-
+      <div style="display:flex;gap:6px;align-items:center;flex-shrink:0">
+        <span style="font-size:.68rem;font-weight:700;color:#94a3b8;text-transform:uppercase;letter-spacing:.08em;">Plot View</span>
+        <button id="scatterViewBtn-types" onclick="setScatterView('types')" style="padding:5px 14px;border-radius:99px;border:1.5px solid #3b82f6;background:#3b82f6;color:white;font-size:.75rem;font-weight:600;cursor:pointer;transition:all .15s">Program Types</button>
+        <button id="scatterViewBtn-technical" onclick="setScatterView('technical')" style="padding:5px 14px;border-radius:99px;border:1.5px solid #6366f1;background:white;color:#6366f1;font-size:.75rem;font-weight:600;cursor:pointer;transition:all .15s">Technical Depth</button>
+        <button id="scatterViewBtn-experiential" onclick="setScatterView('experiential')" style="padding:5px 14px;border-radius:99px;border:1.5px solid #f59e0b;background:white;color:#f59e0b;font-size:.75rem;font-weight:600;cursor:pointer;transition:all .15s">Experiential Depth</button>
       </div>
     </div>
-
-    <!-- Col 3: Technical Learning rubric -->
-    <div class="card" style="min-width:0;margin-bottom:0;overflow:hidden;display:flex;flex-direction:column;">
-      <h3 style="margin-bottom:8px;">Degree of Technical Learning</h3>
-      <div style="margin-bottom:10px;height:6px;border-radius:99px;background:linear-gradient(to right,#dbeafe,#93c5fd,#3b82f6,#1d4ed8,#0f172a);flex-shrink:0"></div>
-      <div style="display:flex;flex-direction:column;flex:1;justify-content:space-between;gap:5px;">
-
-        <div style="display:flex;border-radius:9px;overflow:hidden;border:1px solid #0f172a22;flex:1">
-          <div style="width:5px;background:#0f172a;flex-shrink:0"></div>
-          <div style="padding:8px 11px;flex:1;background:#0f172a08;display:flex;flex-direction:column;justify-content:center;">
-            <div style="display:flex;align-items:center;gap:8px;margin-bottom:4px;">
-              <span style="min-width:24px;height:24px;border-radius:50%;background:#0f172a;color:white;font-weight:800;font-size:.78rem;display:flex;align-items:center;justify-content:center;flex-shrink:0;box-shadow:0 1px 4px #0f172a40">5</span>
-              <span style="font-weight:700;font-size:.78rem;color:#0f172a;letter-spacing:.01em">Highly Technical</span>
-            </div>
-            <ul style="margin:0;padding-left:16px;font-size:.67rem;color:#334155;line-height:1.4;">
-              <li>Deep focus on data science, modeling, and computation</li>
-              <li>Advanced statistics, machine learning, predictive modeling, optimization</li>
-              <li>Heavily technical curriculum; sports as a domain, not a limitation</li>
-            </ul>
-          </div>
-        </div>
-
-        <div style="display:flex;border-radius:9px;overflow:hidden;border:1px solid #1d4ed822;flex:1">
-          <div style="width:5px;background:#1d4ed8;flex-shrink:0"></div>
-          <div style="padding:8px 11px;flex:1;background:#1d4ed808;display:flex;flex-direction:column;justify-content:center;">
-            <div style="display:flex;align-items:center;gap:8px;margin-bottom:4px;">
-              <span style="min-width:24px;height:24px;border-radius:50%;background:#1d4ed8;color:white;font-weight:800;font-size:.78rem;display:flex;align-items:center;justify-content:center;flex-shrink:0;box-shadow:0 1px 4px #1d4ed840">4</span>
-              <span style="font-weight:700;font-size:.78rem;color:#1d4ed8;letter-spacing:.01em">Technical-Leaning</span>
-            </div>
-            <ul style="margin:0;padding-left:16px;font-size:.67rem;color:#334155;line-height:1.4;">
-              <li>Strong emphasis on coding, statistics, and data analysis</li>
-              <li>Multiple advanced technical courses; sports as main application domain</li>
-              <li>Limited emphasis on communication or stakeholder interaction</li>
-            </ul>
-          </div>
-        </div>
-
-        <div style="display:flex;border-radius:9px;overflow:hidden;border:1px solid #3b82f622;flex:1">
-          <div style="width:5px;background:#3b82f6;flex-shrink:0"></div>
-          <div style="padding:8px 11px;flex:1;background:#3b82f608;display:flex;flex-direction:column;justify-content:center;">
-            <div style="display:flex;align-items:center;gap:8px;margin-bottom:4px;">
-              <span style="min-width:24px;height:24px;border-radius:50%;background:#3b82f6;color:white;font-weight:800;font-size:.78rem;display:flex;align-items:center;justify-content:center;flex-shrink:0;box-shadow:0 1px 4px #3b82f640">3</span>
-              <span style="font-weight:700;font-size:.78rem;color:#2563eb;letter-spacing:.01em">Balanced</span>
-            </div>
-            <ul style="margin:0;padding-left:16px;font-size:.67rem;color:#334155;line-height:1.4;">
-              <li>Multiple technical courses; R, Python, SQL, Tableau in use</li>
-              <li>Students analyze data and connect it to sports strategy or performance</li>
-              <li>Equal emphasis on analysis and communication</li>
-            </ul>
-          </div>
-        </div>
-
-        <div style="display:flex;border-radius:9px;overflow:hidden;border:1px solid #93c5fd55;flex:1">
-          <div style="width:5px;background:#93c5fd;flex-shrink:0"></div>
-          <div style="padding:8px 11px;flex:1;background:#93c5fd10;display:flex;flex-direction:column;justify-content:center;">
-            <div style="display:flex;align-items:center;gap:8px;margin-bottom:4px;">
-              <span style="min-width:24px;height:24px;border-radius:50%;background:#93c5fd;color:#1e3a8a;font-weight:800;font-size:.78rem;display:flex;align-items:center;justify-content:center;flex-shrink:0;box-shadow:0 1px 4px #93c5fd60">2</span>
-              <span style="font-weight:700;font-size:.78rem;color:#1e40af;letter-spacing:.01em">Applied-Leaning</span>
-            </div>
-            <ul style="margin:0;padding-left:16px;font-size:.67rem;color:#334155;line-height:1.4;">
-              <li>Introductory stats; basic tools like Excel or Tableau</li>
-              <li>Students perform basic reporting or analysis</li>
-              <li>Limited programming; no advanced quantitative progression</li>
-            </ul>
-          </div>
-        </div>
-
-        <div style="display:flex;border-radius:9px;overflow:hidden;border:1px solid #bfdbfe;flex:1">
-          <div style="width:5px;background:#dbeafe;border-right:1px solid #bfdbfe;flex-shrink:0"></div>
-          <div style="padding:8px 11px;flex:1;background:#dbeafe40;display:flex;flex-direction:column;justify-content:center;">
-            <div style="display:flex;align-items:center;gap:8px;margin-bottom:4px;">
-              <span style="min-width:24px;height:24px;border-radius:50%;background:#dbeafe;color:#1e3a8a;font-weight:800;font-size:.78rem;display:flex;align-items:center;justify-content:center;flex-shrink:0;border:1.5px solid #93c5fd">1</span>
-              <span style="font-weight:700;font-size:.78rem;color:#1e40af;letter-spacing:.01em">Strongly Applied</span>
-            </div>
-            <ul style="margin:0;padding-left:16px;font-size:.67rem;color:#334155;line-height:1.4;">
-              <li>Sport management, communication, and decision-making focus</li>
-              <li>Analytics used conceptually; little to no programming</li>
-              <li>Emphasis on how analytics informs decisions, not building them</li>
-            </ul>
-          </div>
-        </div>
-
-      </div>
+    <div id="scatterLegend" style="display:flex;flex-wrap:nowrap;gap:14px;margin-bottom:8px;overflow-x:auto;padding-bottom:2px;align-items:center;">
+      <span style="display:flex;align-items:center;gap:5px;font-size:.72rem;color:#475569;white-space:nowrap"><span style="width:10px;height:10px;border-radius:50%;background:#3b82f6;flex-shrink:0;display:inline-block"></span>Major</span>
+      <span style="display:flex;align-items:center;gap:5px;font-size:.72rem;color:#475569;white-space:nowrap"><span style="width:10px;height:10px;border-radius:50%;background:#ef4444;flex-shrink:0;display:inline-block"></span>Masters</span>
+      <span style="display:flex;align-items:center;gap:5px;font-size:.72rem;color:#475569;white-space:nowrap"><span style="width:10px;height:10px;border-radius:50%;background:#a855f7;flex-shrink:0;display:inline-block"></span>Online Masters</span>
+      <span style="display:flex;align-items:center;gap:5px;font-size:.72rem;color:#475569;white-space:nowrap"><span style="width:10px;height:10px;border-radius:50%;background:#10b981;flex-shrink:0;display:inline-block"></span>Certificate</span>
+      <span style="display:flex;align-items:center;gap:5px;font-size:.72rem;color:#475569;white-space:nowrap"><span style="width:10px;height:10px;border-radius:50%;background:#f59e0b;flex-shrink:0;display:inline-block"></span>Concentration</span>
+      <span style="display:flex;align-items:center;gap:5px;font-size:.72rem;color:#475569;white-space:nowrap"><span style="width:10px;height:10px;border-radius:50%;background:#ec4899;flex-shrink:0;display:inline-block"></span>Minor</span>
+      <span style="display:flex;align-items:center;gap:5px;font-size:.72rem;color:#475569;white-space:nowrap"><span style="width:10px;height:10px;border-radius:50%;background:#06b6d4;flex-shrink:0;display:inline-block"></span>Lab</span>
+      <span style="display:flex;align-items:center;gap:5px;font-size:.72rem;color:#475569;white-space:nowrap"><span style="width:10px;height:10px;border-radius:50%;background:#84cc16;flex-shrink:0;display:inline-block"></span>Institute</span>
+      <span style="display:flex;align-items:center;gap:5px;font-size:.72rem;color:#475569;white-space:nowrap"><span style="width:10px;height:10px;border-radius:50%;background:#f97316;flex-shrink:0;display:inline-block"></span>Club</span>
+      <span style="display:flex;align-items:center;gap:5px;font-size:.72rem;color:#475569;white-space:nowrap"><span style="width:10px;height:10px;border-radius:50%;background:#14b8a6;flex-shrink:0;display:inline-block"></span>Micro-Credential</span>
     </div>
+    <div id="scatterGradLegend" style="display:none;margin-bottom:8px;align-items:center;gap:10px;">
+      <span id="scatterGradLow" style="font-size:.72rem;color:#64748b;font-weight:600"></span>
+      <div id="scatterGradBar" style="flex:1;height:8px;border-radius:99px;border:1px solid #e2e8f0"></div>
+      <span id="scatterGradHigh" style="font-size:.72rem;color:#64748b;font-weight:600"></span>
+    </div>
+    <div id="chartScatter" style="flex:1;min-height:0;"></div>
+  </div>
 
-  </div><!-- end 3-col grid -->
 
-  <!-- Expandable slide-format scales -->
+  <!-- Rating Scales toggle -->
   <div style="margin-top:14px">
     <button id="scalesToggleBtn" onclick="toggleScalesPanel()" style="display:flex;align-items:center;gap:8px;width:100%;padding:10px 18px;border-radius:10px;border:1.5px solid #e2e8f0;background:white;color:#475569;font-size:.82rem;font-weight:600;cursor:pointer;transition:all .15s;justify-content:space-between">
       <span style="display:flex;align-items:center;gap:8px">
         <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2"/><line x1="3" y1="9" x2="21" y2="9"/><line x1="9" y1="21" x2="9" y2="9"/></svg>
-        View Slide-Format Scales
+        View Rating Scales
       </span>
       <svg id="scalesToggleChevron" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="transition:transform .2s"><polyline points="6 9 12 15 18 9"/></svg>
     </button>
@@ -1299,34 +1142,34 @@
       <div style="display:flex;gap:20px;align-items:flex-start;">
 
         <!-- Experiential Scale Slide -->
-        <div style="flex:1;min-width:0;background:white;border-radius:16px;border:1.5px solid #e2e8f0;box-shadow:0 4px 24px rgba(0,0,0,.08);overflow:hidden;aspect-ratio:4/3;display:flex;flex-direction:column;padding:28px 30px;">
+        <div style="flex:1;min-width:0;background:white;border-radius:16px;border:1.5px solid #e2e8f0;box-shadow:0 4px 24px rgba(0,0,0,.08);display:flex;flex-direction:column;padding:28px 30px;">
           <div style="margin-bottom:14px;flex-shrink:0">
             <div style="font-size:1.2rem;font-weight:800;color:#0f172a;letter-spacing:-.01em">Degree of Experiential Learning</div>
             <div style="font-size:.78rem;color:#64748b;margin-top:2px;">How much real-world application is embedded in the program</div>
           </div>
           <div style="height:10px;border-radius:99px;background:linear-gradient(to right,#fef9c3,#fcd34d,#f59e0b,#b45309,#431407);margin-bottom:14px;flex-shrink:0;border:1px solid #e2e8f0"></div>
-          <div style="display:flex;flex-direction:column;flex:1;justify-content:space-between;gap:6px;">
-            <div style="display:flex;border-radius:10px;overflow:hidden;border:1px solid #43140722;flex:1"><div style="width:6px;background:#431407;flex-shrink:0"></div><div style="padding:10px 14px;flex:1;background:#43140708;display:flex;flex-direction:column;justify-content:center;"><div style="display:flex;align-items:center;gap:10px;margin-bottom:5px;"><span style="min-width:30px;height:30px;border-radius:50%;background:#431407;color:white;font-weight:800;font-size:.9rem;display:flex;align-items:center;justify-content:center;flex-shrink:0;box-shadow:0 2px 6px #43140750">5</span><span style="font-weight:700;font-size:.88rem;color:#431407;">Fully Immersive</span></div><ul style="margin:0;padding-left:18px;font-size:.74rem;color:#57534e;line-height:1.45;"><li>Multiple required components; direct work with real sports organizations</li><li>Structured multi-semester experiences; deliverables used in the field</li><li>Dedicated labs, strong partnerships, consistent industry engagement</li></ul></div></div>
-            <div style="display:flex;border-radius:10px;overflow:hidden;border:1px solid #b4530922;flex:1"><div style="width:6px;background:#b45309;flex-shrink:0"></div><div style="padding:10px 14px;flex:1;background:#b4530908;display:flex;flex-direction:column;justify-content:center;"><div style="display:flex;align-items:center;gap:10px;margin-bottom:5px;"><span style="min-width:30px;height:30px;border-radius:50%;background:#b45309;color:white;font-weight:800;font-size:.9rem;display:flex;align-items:center;justify-content:center;flex-shrink:0;box-shadow:0 2px 6px #b4530950">4</span><span style="font-weight:700;font-size:.88rem;color:#b45309;">Required Real-World Component</span></div><ul style="margin:0;padding-left:18px;font-size:.74rem;color:#57534e;line-height:1.45;"><li>At least one required internship, capstone, or practicum in sports analytics</li><li>Students work with real data and applied problems</li><li>Substantial recurring projects; some external partner connection</li></ul></div></div>
-            <div style="display:flex;border-radius:10px;overflow:hidden;border:1px solid #f59e0b22;flex:1"><div style="width:6px;background:#f59e0b;flex-shrink:0"></div><div style="padding:10px 14px;flex:1;background:#f59e0b08;display:flex;flex-direction:column;justify-content:center;"><div style="display:flex;align-items:center;gap:10px;margin-bottom:5px;"><span style="min-width:30px;height:30px;border-radius:50%;background:#f59e0b;color:white;font-weight:800;font-size:.9rem;display:flex;align-items:center;justify-content:center;flex-shrink:0;box-shadow:0 2px 6px #f59e0b50">3</span><span style="font-weight:700;font-size:.88rem;color:#b45309;">Optional or Inconsistent</span></div><ul style="margin:0;padding-left:18px;font-size:.74rem;color:#57534e;line-height:1.45;"><li>Class projects, simulations, and sports datasets in coursework</li><li>Optional internships or research opportunities available</li><li>Limited or one-off external exposure; no sustained engagement</li></ul></div></div>
-            <div style="display:flex;border-radius:10px;overflow:hidden;border:1px solid #fcd34d55;flex:1"><div style="width:6px;background:#fcd34d;flex-shrink:0"></div><div style="padding:10px 14px;flex:1;background:#fcd34d10;display:flex;flex-direction:column;justify-content:center;"><div style="display:flex;align-items:center;gap:10px;margin-bottom:5px;"><span style="min-width:30px;height:30px;border-radius:50%;background:#fcd34d;color:#92400e;font-weight:800;font-size:.9rem;display:flex;align-items:center;justify-content:center;flex-shrink:0;box-shadow:0 2px 6px #fcd34d60">2</span><span style="font-weight:700;font-size:.88rem;color:#92400e;">Surface-Level Exposure</span></div><ul style="margin:0;padding-left:18px;font-size:.74rem;color:#57534e;line-height:1.45;"><li>Guest speakers, panels, or networking events only</li><li>Sports examples discussed but not applied in practice</li><li>Projects are short, low-stakes, or not tied to real analytics work</li></ul></div></div>
-            <div style="display:flex;border-radius:10px;overflow:hidden;border:1px solid #fcd34d55;flex:1"><div style="width:6px;background:#fef9c3;border-right:1px solid #fcd34d;flex-shrink:0"></div><div style="padding:10px 14px;flex:1;background:#fef9c350;display:flex;flex-direction:column;justify-content:center;"><div style="display:flex;align-items:center;gap:10px;margin-bottom:5px;"><span style="min-width:30px;height:30px;border-radius:50%;background:#fef9c3;color:#92400e;font-weight:800;font-size:.9rem;display:flex;align-items:center;justify-content:center;flex-shrink:0;border:1.5px solid #fcd34d">1</span><span style="font-weight:700;font-size:.88rem;color:#92400e;">No Meaningful Learning</span></div><ul style="margin:0;padding-left:18px;font-size:.74rem;color:#57534e;line-height:1.45;"><li>Fully classroom-based: lectures, readings, exams only</li><li>No internship, capstone, practicum, or client work</li><li>No projects tied to real sports analytics problems</li></ul></div></div>
+          <div style="display:flex;flex-direction:column;gap:8px;">
+            <div style="display:flex;border-radius:10px;overflow:hidden;border:1px solid #43140722;"><div style="width:6px;background:#431407;flex-shrink:0"></div><div style="padding:10px 14px;flex:1;background:#43140708;"><div style="display:flex;align-items:center;gap:10px;margin-bottom:5px;"><span style="min-width:30px;height:30px;border-radius:50%;background:#431407;color:white;font-weight:800;font-size:.9rem;display:flex;align-items:center;justify-content:center;flex-shrink:0;box-shadow:0 2px 6px #43140750">5</span><span style="font-weight:700;font-size:.88rem;color:#431407;">Fully Immersive</span></div><ul style="margin:0;padding-left:18px;font-size:.74rem;color:#57534e;line-height:1.5;"><li>Multiple required components; direct work with real sports organizations</li><li>Structured multi-semester experiences; deliverables used in the field</li><li>Dedicated labs, strong partnerships, consistent industry engagement</li></ul></div></div>
+            <div style="display:flex;border-radius:10px;overflow:hidden;border:1px solid #b4530922;"><div style="width:6px;background:#b45309;flex-shrink:0"></div><div style="padding:10px 14px;flex:1;background:#b4530908;"><div style="display:flex;align-items:center;gap:10px;margin-bottom:5px;"><span style="min-width:30px;height:30px;border-radius:50%;background:#b45309;color:white;font-weight:800;font-size:.9rem;display:flex;align-items:center;justify-content:center;flex-shrink:0;box-shadow:0 2px 6px #b4530950">4</span><span style="font-weight:700;font-size:.88rem;color:#b45309;">Required Real-World Component</span></div><ul style="margin:0;padding-left:18px;font-size:.74rem;color:#57534e;line-height:1.5;"><li>At least one required internship, capstone, or practicum in sports analytics</li><li>Students work with real data and applied problems</li><li>Substantial recurring projects; some external partner connection</li></ul></div></div>
+            <div style="display:flex;border-radius:10px;overflow:hidden;border:1px solid #f59e0b22;"><div style="width:6px;background:#f59e0b;flex-shrink:0"></div><div style="padding:10px 14px;flex:1;background:#f59e0b08;"><div style="display:flex;align-items:center;gap:10px;margin-bottom:5px;"><span style="min-width:30px;height:30px;border-radius:50%;background:#f59e0b;color:white;font-weight:800;font-size:.9rem;display:flex;align-items:center;justify-content:center;flex-shrink:0;box-shadow:0 2px 6px #f59e0b50">3</span><span style="font-weight:700;font-size:.88rem;color:#b45309;">Optional or Inconsistent</span></div><ul style="margin:0;padding-left:18px;font-size:.74rem;color:#57534e;line-height:1.5;"><li>Class projects, simulations, and sports datasets in coursework</li><li>Optional internships or research opportunities available</li><li>Limited or one-off external exposure; no sustained engagement</li></ul></div></div>
+            <div style="display:flex;border-radius:10px;overflow:hidden;border:1px solid #fcd34d55;"><div style="width:6px;background:#fcd34d;flex-shrink:0"></div><div style="padding:10px 14px;flex:1;background:#fcd34d10;"><div style="display:flex;align-items:center;gap:10px;margin-bottom:5px;"><span style="min-width:30px;height:30px;border-radius:50%;background:#fcd34d;color:#92400e;font-weight:800;font-size:.9rem;display:flex;align-items:center;justify-content:center;flex-shrink:0;box-shadow:0 2px 6px #fcd34d60">2</span><span style="font-weight:700;font-size:.88rem;color:#92400e;">Surface-Level Exposure</span></div><ul style="margin:0;padding-left:18px;font-size:.74rem;color:#57534e;line-height:1.5;"><li>Guest speakers, panels, or networking events only</li><li>Sports examples discussed but not applied in practice</li><li>Projects are short, low-stakes, or not tied to real analytics work</li></ul></div></div>
+            <div style="display:flex;border-radius:10px;overflow:hidden;border:1px solid #fcd34d55;"><div style="width:6px;background:#fef9c3;border-right:1px solid #fcd34d;flex-shrink:0"></div><div style="padding:10px 14px;flex:1;background:#fef9c350;"><div style="display:flex;align-items:center;gap:10px;margin-bottom:5px;"><span style="min-width:30px;height:30px;border-radius:50%;background:#fef9c3;color:#92400e;font-weight:800;font-size:.9rem;display:flex;align-items:center;justify-content:center;flex-shrink:0;border:1.5px solid #fcd34d">1</span><span style="font-weight:700;font-size:.88rem;color:#92400e;">No Meaningful Learning</span></div><ul style="margin:0;padding-left:18px;font-size:.74rem;color:#57534e;line-height:1.5;"><li>Fully classroom-based: lectures, readings, exams only</li><li>No internship, capstone, practicum, or client work</li><li>No projects tied to real sports analytics problems</li></ul></div></div>
           </div>
         </div>
 
         <!-- Technical Scale Slide -->
-        <div style="flex:1;min-width:0;background:white;border-radius:16px;border:1.5px solid #e2e8f0;box-shadow:0 4px 24px rgba(0,0,0,.08);overflow:hidden;aspect-ratio:4/3;display:flex;flex-direction:column;padding:28px 30px;">
+        <div style="flex:1;min-width:0;background:white;border-radius:16px;border:1.5px solid #e2e8f0;box-shadow:0 4px 24px rgba(0,0,0,.08);display:flex;flex-direction:column;padding:28px 30px;">
           <div style="margin-bottom:14px;flex-shrink:0">
             <div style="font-size:1.2rem;font-weight:800;color:#0f172a;letter-spacing:-.01em">Degree of Technical Learning</div>
             <div style="font-size:.78rem;color:#64748b;margin-top:2px;">How technically rigorous the program's curriculum is</div>
           </div>
           <div style="height:10px;border-radius:99px;background:linear-gradient(to right,#dbeafe,#93c5fd,#3b82f6,#1d4ed8,#0f172a);margin-bottom:14px;flex-shrink:0;border:1px solid #e2e8f0"></div>
-          <div style="display:flex;flex-direction:column;flex:1;justify-content:space-between;gap:6px;">
-            <div style="display:flex;border-radius:10px;overflow:hidden;border:1px solid #0f172a22;flex:1"><div style="width:6px;background:#0f172a;flex-shrink:0"></div><div style="padding:10px 14px;flex:1;background:#0f172a08;display:flex;flex-direction:column;justify-content:center;"><div style="display:flex;align-items:center;gap:10px;margin-bottom:5px;"><span style="min-width:30px;height:30px;border-radius:50%;background:#0f172a;color:white;font-weight:800;font-size:.9rem;display:flex;align-items:center;justify-content:center;flex-shrink:0;box-shadow:0 2px 6px #0f172a50">5</span><span style="font-weight:700;font-size:.88rem;color:#0f172a;">Highly Technical</span></div><ul style="margin:0;padding-left:18px;font-size:.74rem;color:#334155;line-height:1.45;"><li>Deep focus on data science, modeling, and computation</li><li>Advanced statistics, machine learning, predictive modeling, optimization</li><li>Heavily technical curriculum; sports as a domain, not a limitation</li></ul></div></div>
-            <div style="display:flex;border-radius:10px;overflow:hidden;border:1px solid #1d4ed822;flex:1"><div style="width:6px;background:#1d4ed8;flex-shrink:0"></div><div style="padding:10px 14px;flex:1;background:#1d4ed808;display:flex;flex-direction:column;justify-content:center;"><div style="display:flex;align-items:center;gap:10px;margin-bottom:5px;"><span style="min-width:30px;height:30px;border-radius:50%;background:#1d4ed8;color:white;font-weight:800;font-size:.9rem;display:flex;align-items:center;justify-content:center;flex-shrink:0;box-shadow:0 2px 6px #1d4ed850">4</span><span style="font-weight:700;font-size:.88rem;color:#1d4ed8;">Technical-Leaning</span></div><ul style="margin:0;padding-left:18px;font-size:.74rem;color:#334155;line-height:1.45;"><li>Strong emphasis on coding, statistics, and data analysis</li><li>Multiple advanced technical courses; sports as main application domain</li><li>Limited emphasis on communication or stakeholder interaction</li></ul></div></div>
-            <div style="display:flex;border-radius:10px;overflow:hidden;border:1px solid #3b82f622;flex:1"><div style="width:6px;background:#3b82f6;flex-shrink:0"></div><div style="padding:10px 14px;flex:1;background:#3b82f608;display:flex;flex-direction:column;justify-content:center;"><div style="display:flex;align-items:center;gap:10px;margin-bottom:5px;"><span style="min-width:30px;height:30px;border-radius:50%;background:#3b82f6;color:white;font-weight:800;font-size:.9rem;display:flex;align-items:center;justify-content:center;flex-shrink:0;box-shadow:0 2px 6px #3b82f650">3</span><span style="font-weight:700;font-size:.88rem;color:#2563eb;">Balanced</span></div><ul style="margin:0;padding-left:18px;font-size:.74rem;color:#334155;line-height:1.45;"><li>Multiple technical courses; R, Python, SQL, Tableau in use</li><li>Students analyze data and connect it to sports strategy or performance</li><li>Equal emphasis on analysis and communication</li></ul></div></div>
-            <div style="display:flex;border-radius:10px;overflow:hidden;border:1px solid #93c5fd55;flex:1"><div style="width:6px;background:#93c5fd;flex-shrink:0"></div><div style="padding:10px 14px;flex:1;background:#93c5fd10;display:flex;flex-direction:column;justify-content:center;"><div style="display:flex;align-items:center;gap:10px;margin-bottom:5px;"><span style="min-width:30px;height:30px;border-radius:50%;background:#93c5fd;color:#1e3a8a;font-weight:800;font-size:.9rem;display:flex;align-items:center;justify-content:center;flex-shrink:0;box-shadow:0 2px 6px #93c5fd60">2</span><span style="font-weight:700;font-size:.88rem;color:#1e40af;">Applied-Leaning</span></div><ul style="margin:0;padding-left:18px;font-size:.74rem;color:#334155;line-height:1.45;"><li>Introductory stats; basic tools like Excel or Tableau</li><li>Students perform basic reporting or analysis</li><li>Limited programming; no advanced quantitative progression</li></ul></div></div>
-            <div style="display:flex;border-radius:10px;overflow:hidden;border:1px solid #bfdbfe;flex:1"><div style="width:6px;background:#dbeafe;border-right:1px solid #bfdbfe;flex-shrink:0"></div><div style="padding:10px 14px;flex:1;background:#dbeafe40;display:flex;flex-direction:column;justify-content:center;"><div style="display:flex;align-items:center;gap:10px;margin-bottom:5px;"><span style="min-width:30px;height:30px;border-radius:50%;background:#dbeafe;color:#1e3a8a;font-weight:800;font-size:.9rem;display:flex;align-items:center;justify-content:center;flex-shrink:0;border:1.5px solid #93c5fd">1</span><span style="font-weight:700;font-size:.88rem;color:#1e40af;">Strongly Applied</span></div><ul style="margin:0;padding-left:18px;font-size:.74rem;color:#334155;line-height:1.45;"><li>Sport management, communication, and decision-making focus</li><li>Analytics used conceptually; little to no programming</li><li>Emphasis on how analytics informs decisions, not building them</li></ul></div></div>
+          <div style="display:flex;flex-direction:column;gap:8px;">
+            <div style="display:flex;border-radius:10px;overflow:hidden;border:1px solid #0f172a22;"><div style="width:6px;background:#0f172a;flex-shrink:0"></div><div style="padding:10px 14px;flex:1;background:#0f172a08;"><div style="display:flex;align-items:center;gap:10px;margin-bottom:5px;"><span style="min-width:30px;height:30px;border-radius:50%;background:#0f172a;color:white;font-weight:800;font-size:.9rem;display:flex;align-items:center;justify-content:center;flex-shrink:0;box-shadow:0 2px 6px #0f172a50">5</span><span style="font-weight:700;font-size:.88rem;color:#0f172a;">Highly Technical</span></div><ul style="margin:0;padding-left:18px;font-size:.74rem;color:#334155;line-height:1.5;"><li>Deep focus on data science, modeling, and computation</li><li>Advanced statistics, machine learning, predictive modeling, optimization</li><li>Heavily technical curriculum; sports as a domain, not a limitation</li></ul></div></div>
+            <div style="display:flex;border-radius:10px;overflow:hidden;border:1px solid #1d4ed822;"><div style="width:6px;background:#1d4ed8;flex-shrink:0"></div><div style="padding:10px 14px;flex:1;background:#1d4ed808;"><div style="display:flex;align-items:center;gap:10px;margin-bottom:5px;"><span style="min-width:30px;height:30px;border-radius:50%;background:#1d4ed8;color:white;font-weight:800;font-size:.9rem;display:flex;align-items:center;justify-content:center;flex-shrink:0;box-shadow:0 2px 6px #1d4ed850">4</span><span style="font-weight:700;font-size:.88rem;color:#1d4ed8;">Technical-Leaning</span></div><ul style="margin:0;padding-left:18px;font-size:.74rem;color:#334155;line-height:1.5;"><li>Strong emphasis on coding, statistics, and data analysis</li><li>Multiple advanced technical courses; sports as main application domain</li><li>Limited emphasis on communication or stakeholder interaction</li></ul></div></div>
+            <div style="display:flex;border-radius:10px;overflow:hidden;border:1px solid #3b82f622;"><div style="width:6px;background:#3b82f6;flex-shrink:0"></div><div style="padding:10px 14px;flex:1;background:#3b82f608;"><div style="display:flex;align-items:center;gap:10px;margin-bottom:5px;"><span style="min-width:30px;height:30px;border-radius:50%;background:#3b82f6;color:white;font-weight:800;font-size:.9rem;display:flex;align-items:center;justify-content:center;flex-shrink:0;box-shadow:0 2px 6px #3b82f650">3</span><span style="font-weight:700;font-size:.88rem;color:#2563eb;">Balanced</span></div><ul style="margin:0;padding-left:18px;font-size:.74rem;color:#334155;line-height:1.5;"><li>Multiple technical courses; R, Python, SQL, Tableau in use</li><li>Students analyze data and connect it to sports strategy or performance</li><li>Equal emphasis on analysis and communication</li></ul></div></div>
+            <div style="display:flex;border-radius:10px;overflow:hidden;border:1px solid #93c5fd55;"><div style="width:6px;background:#93c5fd;flex-shrink:0"></div><div style="padding:10px 14px;flex:1;background:#93c5fd10;"><div style="display:flex;align-items:center;gap:10px;margin-bottom:5px;"><span style="min-width:30px;height:30px;border-radius:50%;background:#93c5fd;color:#1e3a8a;font-weight:800;font-size:.9rem;display:flex;align-items:center;justify-content:center;flex-shrink:0;box-shadow:0 2px 6px #93c5fd60">2</span><span style="font-weight:700;font-size:.88rem;color:#1e40af;">Applied-Leaning</span></div><ul style="margin:0;padding-left:18px;font-size:.74rem;color:#334155;line-height:1.5;"><li>Introductory stats; basic tools like Excel or Tableau</li><li>Students perform basic reporting or analysis</li><li>Limited programming; no advanced quantitative progression</li></ul></div></div>
+            <div style="display:flex;border-radius:10px;overflow:hidden;border:1px solid #bfdbfe;"><div style="width:6px;background:#dbeafe;border-right:1px solid #bfdbfe;flex-shrink:0"></div><div style="padding:10px 14px;flex:1;background:#dbeafe40;"><div style="display:flex;align-items:center;gap:10px;margin-bottom:5px;"><span style="min-width:30px;height:30px;border-radius:50%;background:#dbeafe;color:#1e3a8a;font-weight:800;font-size:.9rem;display:flex;align-items:center;justify-content:center;flex-shrink:0;border:1.5px solid #93c5fd">1</span><span style="font-weight:700;font-size:.88rem;color:#1e40af;">Strongly Applied</span></div><ul style="margin:0;padding-left:18px;font-size:.74rem;color:#334155;line-height:1.5;"><li>Sport management, communication, and decision-making focus</li><li>Analytics used conceptually; little to no programming</li><li>Emphasis on how analytics informs decisions, not building them</li></ul></div></div>
           </div>
         </div>
 
@@ -1358,25 +1201,23 @@
 <!-- DEPARTMENTS -->
 <div class="tab-panel" id="tab-depts">
   <div class="dept-filter-bar" id="deptFilterBar"></div>
-  <div class="chart-row">
-    <div class="card">
-      <div class="ov-header">
-        <div class="ov-icon" style="background:rgba(59,130,246,.1)">
-          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#3b82f6" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="7" width="20" height="14" rx="2"/><path d="M16 7V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v2"/></svg>
-        </div>
-        <div><div class="ov-title">Programs by Department Category</div><div class="ov-sub">How many programs are housed in each academic division</div></div>
+  <div class="card">
+    <div class="ov-header">
+      <div class="ov-icon" style="background:rgba(59,130,246,.1)">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#3b82f6" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="7" width="20" height="14" rx="2"/><path d="M16 7V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v2"/></svg>
       </div>
-      <div id="chartDeptBar"></div>
+      <div><div class="ov-title">Programs by Department Category</div><div class="ov-sub">How many programs are housed in each academic division</div></div>
     </div>
-    <div class="card">
-      <div class="ov-header">
-        <div class="ov-icon" style="background:rgba(139,92,246,.1)">
-          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#8b5cf6" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/></svg>
-        </div>
-        <div><div class="ov-title">Share by Department Category</div><div class="ov-sub">Proportional breakdown across academic homes</div></div>
+    <div id="chartDeptBar"></div>
+  </div>
+  <div class="card">
+    <div class="ov-header">
+      <div class="ov-icon" style="background:rgba(139,92,246,.1)">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#8b5cf6" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/></svg>
       </div>
-      <div id="chartDeptPie"></div>
+      <div><div class="ov-title">Share by Department Category</div><div class="ov-sub">Proportional breakdown across academic homes</div></div>
     </div>
+    <div id="chartDeptPie"></div>
   </div>
   <div class="card">
     <div class="ov-header">
@@ -1546,6 +1387,33 @@ let chSubjects = new Set();
 let showPac12 = false;
 let mapView = 'types';
 let ovMapView = 'types';
+let scatterView = 'types';
+function setScatterView(v) {
+  scatterView = v;
+  const cfg = {types:['#3b82f6','#3b82f6'], technical:['#6366f1','#6366f1'], experiential:['#f59e0b','#f59e0b']};
+  ['types','technical','experiential'].forEach(function(k) {
+    const btn = document.getElementById('scatterViewBtn-'+k);
+    if (!btn) return;
+    btn.style.background = k===v ? cfg[k][0] : 'white';
+    btn.style.color = k===v ? 'white' : cfg[k][1];
+    btn.style.borderColor = cfg[k][0];
+  });
+  const legend = document.getElementById('scatterLegend');
+  const gradLegend = document.getElementById('scatterGradLegend');
+  if (legend) legend.style.display = v==='types' ? '' : 'none';
+  if (gradLegend) {
+    gradLegend.style.display = v!=='types' ? 'flex' : 'none';
+    if (v!=='types') {
+      const gc = MAP_GRAD[v];
+      document.getElementById('scatterGradBar').style.background =
+        v==='technical' ? 'linear-gradient(to right,#dbeafe,#93c5fd,#3b82f6,#1d4ed8,#0f172a)'
+                        : 'linear-gradient(to right,#fef9c3,#fcd34d,#f59e0b,#b45309,#431407)';
+      document.getElementById('scatterGradLow').textContent = gc.low;
+      document.getElementById('scatterGradHigh').textContent = gc.high;
+    }
+  }
+  renderScatter(getFiltered());
+}
 function setOvMapView(v) {
   ovMapView = v;
   ['types','technical','experiential'].forEach(function(k) {
@@ -1725,7 +1593,7 @@ function resetFilters() {
 }
 
 // ── Tabs ──────────────────────────────────────────────────────────────────
-const TABS = ['title','overview','directory','map','scatter','partners','credits','depts','profile','others'];
+const TABS = ['title','overview','directory','map','scatter','credits','depts','partners','profile','others'];
 function switchTab(name) {
   TABS.forEach((t,i) => {
     document.getElementById('tab-'+t).classList.toggle('active',t===name);
@@ -1851,31 +1719,53 @@ function renderScatter(data) {
     });
   });
 
-  const progTypes = [...new Set(plotData.map(d=>(d['Program type (dropdown)']||'Other')))].sort();
-
-  const traces = progTypes.map(pt => {
-    const sub = plotData.filter(d=>(d['Program type (dropdown)']||'Other')===pt);
-    return {
-      type:'scatter', mode:'markers', name:pt,
-      x: sub.map(d=>d['Technical vs Applied (0-5)'] + (ox[d['University Name']]||0)),
-      y: sub.map(d=>d['Degree of Experiential Learning (0-5)'] + (oy[d['University Name']]||0)),
-      text: sub.map(d=>d['University Name']),
-      customdata: sub.map(d=>[
-        d['Program type (dropdown)']||'—',
-        d['State']||'—',
+  let traces;
+  if (scatterView === 'types') {
+    const progTypes = [...new Set(plotData.map(d=>(d['Program type (dropdown)']||'Other')))].sort();
+    traces = progTypes.map(pt => {
+      const sub = plotData.filter(d=>(d['Program type (dropdown)']||'Other')===pt);
+      return {
+        type:'scatter', mode:'markers', name:pt,
+        x: sub.map(d=>d['Technical vs Applied (0-5)'] + (ox[d['University Name']]||0)),
+        y: sub.map(d=>d['Degree of Experiential Learning (0-5)'] + (oy[d['University Name']]||0)),
+        text: sub.map(d=>d['University Name']),
+        customdata: sub.map(d=>[
+          d['Program type (dropdown)']||'—', d['State']||'—',
+          d['Sports Analytics or Sports Science']||'—',
+          d['Technical vs Applied (0-5)'], d['Degree of Experiential Learning (0-5)'],
+          d['University Name']
+        ]),
+        hovertemplate:'<b>%{customdata[5]}</b><br>%{customdata[2]} | %{customdata[0]} | %{customdata[1]}<br>Technical: <b>%{customdata[3]}/5</b><br>Experiential: <b>%{customdata[4]}/5</b><extra></extra>',
+        marker:{size:13, color:TYPE_COLORS[pt]||'#94a3b8', opacity:1, line:{width:2,color:'white'}}
+      };
+    });
+  } else {
+    const cfg = MAP_GRAD[scatterView];
+    traces = [{
+      type:'scatter', mode:'markers', name:cfg.label,
+      x: plotData.map(d=>d['Technical vs Applied (0-5)'] + (ox[d['University Name']]||0)),
+      y: plotData.map(d=>d['Degree of Experiential Learning (0-5)'] + (oy[d['University Name']]||0)),
+      text: plotData.map(d=>d['University Name']),
+      customdata: plotData.map(d=>[
+        d['Program type (dropdown)']||'—', d['State']||'—',
         d['Sports Analytics or Sports Science']||'—',
-        d['Technical vs Applied (0-5)'],
-        d['Degree of Experiential Learning (0-5)'],
-        d['University Name']
+        d['Technical vs Applied (0-5)'], d['Degree of Experiential Learning (0-5)'],
+        d['University Name'], parseFloat(d[cfg.field])||null
       ]),
-      hovertemplate:'<b>%{customdata[5]}</b><br>%{customdata[2]} | %{customdata[0]} | %{customdata[1]}<br>Technical: <b>%{customdata[3]}/5</b><br>Experiential: <b>%{customdata[4]}/5</b><extra></extra>',
-      marker:{size:13, color:TYPE_COLORS[pt]||'#94a3b8', opacity:1, line:{width:2,color:'white'}}
-    };
-  });
+      hovertemplate:'<b>%{customdata[5]}</b><br>%{customdata[2]} | %{customdata[0]} | %{customdata[1]}<br>Technical: <b>%{customdata[3]}/5</b><br>Experiential: <b>%{customdata[4]}/5</b><br>'+cfg.label+': <b>%{customdata[6]}/5</b><extra></extra>',
+      marker:{
+        size:13, opacity:1, line:{width:2,color:'white'},
+        color: plotData.map(d=>{
+          const score = parseFloat(d[cfg.field]);
+          return isNaN(score) ? '#e2e8f0' : _gradColor(cfg.scale, (score-1)/4);
+        })
+      }
+    }];
+  }
 
   const layout = {
-    xaxis:{title:'Degree of Technical Learning', range:[0.5,5.5], tick0:1, dtick:1, zeroline:false, gridcolor:'#000000', tickfont:{size:11}},
-    yaxis:{title:'Degree of Experiential Learning', range:[0.5,5.5], tick0:1, dtick:1, zeroline:false, gridcolor:'#000000'},
+    xaxis:{title:'Degree of Technical Learning', range:[0.5,5.5], tick0:1, dtick:1, zeroline:false, gridcolor:'#e2e8f0', tickfont:{size:11}},
+    yaxis:{title:'Degree of Experiential Learning', range:[0.5,5.5], tick0:1, dtick:1, zeroline:false, gridcolor:'#e2e8f0'},
     plot_bgcolor:'#f8fafc', paper_bgcolor:'white',
     margin:{l:55,r:15,t:15,b:50},
     showlegend:false,
@@ -1883,7 +1773,7 @@ function renderScatter(data) {
     shapes:[], annotations:[]
   };
 
-  Plotly.newPlot('chartScatter', traces, layout, {responsive:true,displayModeBar:false}).then(gd => {
+  Plotly.newPlot('chartScatter', traces, layout, {responsive:true, displayModeBar:false}).then(gd => {
     gd.on('plotly_click', evt => {
       const name = evt.points[0].customdata[5];
       if (name) openProfile(name);
@@ -2196,7 +2086,8 @@ function renderDepts() {
   }, {responsive:true, displayModeBar:false});
 
   // Pie chart
-  document.getElementById('chartDeptPie').style.height = '340px';
+  const pieH = barH;
+  document.getElementById('chartDeptPie').style.height = pieH + 'px';
   Plotly.newPlot('chartDeptPie', [{
     type:'pie', hole:0.55,
     labels: catEntries.map(e=>e[0]),
@@ -2209,7 +2100,7 @@ function renderDepts() {
     hovertemplate:'<b>%{label}</b><br>%{value} programs (%{percent})<extra></extra>'
   }], {
     margin:{l:100,r:100,t:40,b:40},
-    plot_bgcolor:'white', paper_bgcolor:'white', height:340,
+    plot_bgcolor:'white', paper_bgcolor:'white', height:pieH,
     showlegend:false, font:{family:'inherit'}
   }, {responsive:true, displayModeBar:false});
 
